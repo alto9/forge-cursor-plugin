@@ -5,16 +5,13 @@
   "engines": { "node": ">=18.0.0" },
   "description": "Cursor plugin adding Forge—structured development workflow with skills, agents, and commands",
   "scripts": {
-    "test": "npm run test:unit && npm run test:skills",
-    "test:unit": "vitest run",
-    "test:watch": "vitest",
-    "test:skills": "bats test/skills"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "node-html-markdown": "^2.0.0"
   },
   "devDependencies": {
-    "bats": "^1.11.0",
     "vitest": "^2.0.0"
   }
 }

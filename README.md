@@ -112,13 +112,10 @@ npm test
 
 | Command | Purpose |
 |---------|---------|
-| `npm test` | Run all tests (unit + skills) |
-| `npm run test:unit` | Vitest tests for the JSON schema validation hook |
-| `npm run test:skills` | Bats tests for shell script skills (init-forge) |
+| `npm test` | Run all Vitest tests |
+| `npm run test:watch` | Run tests in watch mode |
 
-**Unit tests** cover the `validate-json-schema` hook and Node skills (commit, create-feature-branch, fetch-url, gh-create-issue): payload parsing, path resolution, schema inference, validation rules, and argument parsing.
-
-**Skills tests** cover argument validation, usage output, and init-forge scaffolding. Skills that call external tools (e.g. `gh`, `git`) are tested for input validation only; full integration requires a real environment.
+**Tests** cover the `validate-json-schema` hook and Node skills (commit, create-feature-branch, fetch-url, gh-create-issue, init-forge): payload parsing, path resolution, schema inference, validation rules, argument parsing, and init-forge scaffolding. Skills that call external tools (e.g. `gh`, `git`) are tested for input validation only; full integration requires a real environment.
 
 ---
 
