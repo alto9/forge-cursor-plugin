@@ -15,8 +15,10 @@ Use the provided script to create the `.forge` folder and file structure defined
 - Creates blank templates by file type:
   - `.json` -> `{}` + trailing newline
   - `.md` -> blank file
-- Special case: `.forge/skill_registry.json` is created from `references/skill_registry.json` (full static asset).
-- Does not overwrite existing files.
+- Canonical assets (always overwritten from references):
+  - `.forge/skill_registry.json` from `references/skill_registry.json`
+  - `.forge/knowledge_map.json` from `references/knowledge_map.json`
+- Other files: created only if missing (never overwritten).
 
 ## Usage
 

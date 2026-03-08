@@ -22,7 +22,7 @@ Projects using Forge get predictable structure, schema-validated JSON, and a sha
 | Component | Purpose |
 |-----------|---------|
 | **Skills** | 20+ scripts: `init-forge`, `gh-create-pr`, `gh-get-issue`, `commit`, `create-feature-branch`, `unit-test`, `lint-test`, `fetch-url`, and more |
-| **Agents** | 15+ subagent definitions: Visionary, Architect, Planner, Scribe, Build stages, Review stages, domain agents |
+| **Agents** | 15+ subagent definitions: Visionary, Architect (delegation-first), Planner, Scribe, Build stages, Review stages, domain agents (runtime, data, business_logic, interface, integration, operations). See `agents/AGENT_FLOW.md` for responsibility delegation. |
 | **Commands** | `start-issue-build`, `start-pr-review` — orchestrate skills and agents from an issue or PR |
 | **Hooks** | JSON schema validation for `.forge/vision.json`, `project.json`, `roadmap.json` on edit |
 

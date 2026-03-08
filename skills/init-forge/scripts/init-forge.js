@@ -79,11 +79,13 @@ function main() {
   }
 
   const created = [];
+  const updated = [];
   const existing = [];
   const skipped = [];
 
-  const skillRegistryRel = ".forge/skill_registry.json".replace(/\\/g, "/");
+  const assetPaths = new Set([".forge/skill_registry.json", ".forge/knowledge_map.json"]);
   const assetContent = fs.readFileSync(skillRegistryAsset, "utf8");
+  const mapContent = fs.readFileSync(mapFile, "utf8");
 
   for (const rel of sortedPaths) {
     const relPath = path.normalize(rel).replace(/\\/g, "/");
@@ -103,15 +105,27 @@ function main() {
     const parentDir = path.dirname(outPath);
     fs.mkdirSync(parentDir, { recursive: true });
 
-    if (fs.existsSync(outPath)) {
-      existing.push(path.relative(targetRoot, outPath));
+    const relNorm = relPath.replace(/\\/g, "/");
+    const isAsset = assetPaths.has(relNorm);
+
+    if (isAsset) {
+      const existed = fs.existsSync(outPath);
+      if (relNorm === ".forge/skill_registry.json") {
+        fs.writeFileSync(outPath, assetContent, "utf8");
+      } else {
+        fs.writeFileSync(outPath, mapContent, "utf8");
+      }
+      const relToTarget = path.relative(targetRoot, outPath);
+      if (existed) {
+        updated.push(relToTarget);
+      } else {
+        created.push(relToTarget);
+      }
       continue;
     }
 
-    const relNorm = relPath.replace(/\\/g, "/");
-    if (relNorm === ".forge/skill_registry.json") {
-      fs.writeFileSync(outPath, assetContent, "utf8");
-      created.push(path.relative(targetRoot, outPath));
+    if (fs.existsSync(outPath)) {
+      existing.push(path.relative(targetRoot, outPath));
       continue;
     }
 
@@ -126,13 +140,22 @@ function main() {
 
   console.log(`Forge init complete in: ${targetRoot}`);
   console.log(`Created files: ${created.length}`);
-  console.log(`Existing files: ${existing.length}`);
+  if (updated.length > 0) {
+    console.log(`Updated assets: ${updated.length}`);
+  }
+  console.log(`Existing files (unchanged): ${existing.length}`);
   if (skipped.length > 0) {
     console.log(`Skipped unsafe paths: ${skipped.length}`);
   }
   if (created.length > 0) {
     console.log("\nCreated:");
     for (const p of created) {
+      console.log(`  - ${p}`);
+    }
+  }
+  if (updated.length > 0) {
+    console.log("\nUpdated (canonical assets):");
+    for (const p of updated) {
       console.log(`  - ${p}`);
     }
   }

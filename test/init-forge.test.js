@@ -91,6 +91,7 @@ describe("init-forge integration", () => {
     expect(fs.existsSync(path.join(testDir, ".forge", "project.json"))).toBe(true);
     expect(fs.existsSync(path.join(testDir, ".forge", "roadmap.json"))).toBe(true);
     expect(fs.existsSync(path.join(testDir, ".forge", "skill_registry.json"))).toBe(true);
+    expect(fs.existsSync(path.join(testDir, ".forge", "knowledge_map.json"))).toBe(true);
     expect(fs.existsSync(path.join(testDir, ".forge", "schemas"))).toBe(true);
   });
 
