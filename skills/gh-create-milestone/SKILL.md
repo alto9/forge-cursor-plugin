@@ -9,6 +9,6 @@ Use the provided script to create a milestone in GitHub.
 
 ## Usage
 
-Run the script: `scripts/gh-create-milestone.sh <title> [description] [due_date]`
+Run the script: `node scripts/gh-create-milestone.js <title> [description] [due_date]`
 
 - `due_date` format: `YYYY-MM-DD`

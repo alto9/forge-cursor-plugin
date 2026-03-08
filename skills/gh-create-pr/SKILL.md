@@ -9,6 +9,6 @@ Use the provided script to create a pull request for the current branch.
 
 ## Usage
 
-Run the script: `scripts/gh-create-pr.sh [base-branch]`
+Run the script: `node scripts/gh-create-pr.js [base-branch]`
 
 - If `base-branch` is omitted, the script uses the repo default branch.

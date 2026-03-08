@@ -11,4 +11,4 @@ Use the provided script to update issue fields.
 
 Run the script:
 
-`scripts/gh-edit-issue.sh <issue-ref> [--title "New title"] [--body "New body"] [--state open|closed]`
+`node scripts/gh-edit-issue.js <issue-ref> [--title "New title"] [--body "New body"] [--state open|closed]`

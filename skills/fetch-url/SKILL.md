@@ -11,11 +11,13 @@ Use the provided script to fetch webpage content safely with hard timeouts, then
 
 Run the script:
 
-`scripts/fetch-url.sh <url> [--timeout <seconds>] [--max-chars <count>]`
+`node scripts/fetch-url.js <url> [--timeout <seconds>] [--max-chars <count>]`
 
 Examples:
-- `scripts/fetch-url.sh "https://kubernetes.io/docs/home/"`
-- `scripts/fetch-url.sh "https://example.com" --timeout 20 --max-chars 18000`
+- `node scripts/fetch-url.js "https://kubernetes.io/docs/home/"`
+- `node scripts/fetch-url.js "https://example.com" --timeout 20 --max-chars 24000`
+
+Output is clean markdown with title, description, and main content—optimized for AI context ingestion.
 
 ## Agent instructions
 
@@ -24,4 +26,4 @@ Examples:
 - On success, include the script output in context as-is (it already includes title, description, content bounds, and links).
 - If the command fails or times out, report the error and ask for an alternate URL or timeout value.
 
-The script enforces both an outer `timeout` and `curl --max-time`, preventing hung fetches.
+The script uses Node fetch with AbortController for hard timeouts. Output is markdown with `<main>`/`<article>` content preferred over full page, reducing nav/sidebar noise.

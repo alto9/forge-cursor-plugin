@@ -9,4 +9,4 @@ Use the provided script to fetch review-relevant PR metadata and comments.
 
 ## Usage
 
-Run the script: `scripts/gh-pr-review.sh <pr-ref>`
+Run the script: `node scripts/gh-pr-review.js <pr-ref>`

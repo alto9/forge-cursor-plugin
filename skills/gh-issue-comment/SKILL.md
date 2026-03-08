@@ -9,6 +9,6 @@ Use the provided script to post a comment on a GitHub issue.
 
 ## Usage
 
-Run the script: `scripts/gh-issue-comment.sh <issue-ref> <comment>`
+Run the script: `node scripts/gh-issue-comment.js <issue-ref> <comment>`
 
 - `issue-ref` supports issue URL, `owner/repo#123`, or issue number.

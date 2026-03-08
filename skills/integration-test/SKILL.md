@@ -9,4 +9,4 @@ Use the provided script to run integration tests.
 
 ## Usage
 
-Run the script: `scripts/integration-test.sh`
+Run the script: `node scripts/integration-test.js`

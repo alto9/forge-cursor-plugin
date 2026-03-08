@@ -9,4 +9,4 @@ Use the provided script to fetch issue details and sub-issue metadata.
 
 ## Usage
 
-Run the script: `scripts/gh-get-issue.sh <issue-ref>`
+Run the script: `node scripts/gh-get-issue.js <issue-ref>`

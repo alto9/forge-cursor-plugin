@@ -9,4 +9,4 @@ Use the provided script to run unit tests.
 
 ## Usage
 
-Run the script: `scripts/unit-test.sh`
+Run the script: `node scripts/unit-test.js`

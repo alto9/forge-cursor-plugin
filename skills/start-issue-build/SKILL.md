@@ -9,7 +9,7 @@ Use the provided script to reset the working directory to a clean state before s
 
 ## Usage
 
-Run the script: `scripts/start-issue-build.sh`
+Run the script: `node scripts/start-issue-build.js`
 
 The script checks out the default branch, pulls latest, and runs the package manager install (npm/pnpm/yarn).
 

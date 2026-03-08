@@ -11,6 +11,6 @@ Use the provided script to add an issue to a GitHub Project.
 
 Run the script:
 
-`scripts/gh-project-item-add.sh <issue-ref> [project-url]`
+`node scripts/gh-project-item-add.js <issue-ref> [project-url]`
 
 - If `project-url` is omitted, `.forge/project.json.github_board` is used.

@@ -22,7 +22,7 @@ Use the provided script to create the `.forge` folder and file structure defined
 
 Run the script:
 
-`bash scripts/init-forge.sh [target-project-path]`
+`node scripts/init-forge.js [target-project-path]`
 
 - `target-project-path` is optional.
 - If omitted, the script uses the current working directory.

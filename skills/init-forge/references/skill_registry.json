@@ -13,8 +13,8 @@
       "status": "active",
       "category": "research",
       "retag": "url-ingestion",
-      "script_path": ".cursor/skills/fetch-url/scripts/fetch-url.sh",
-      "usage": ".cursor/skills/fetch-url/scripts/fetch-url.sh \"<url>\" --timeout 20 --max-chars 12000",
+      "script_path": ".cursor/skills/fetch-url/scripts/fetch-url.js",
+      "usage": "node .cursor/skills/fetch-url/scripts/fetch-url.js \"<url>\" --timeout 20 --max-chars 24000",
       "primary_consumers": [
         "visionary",
         "architect",
@@ -31,8 +31,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-get-milestones",
-      "script_path": ".cursor/skills/gh-get-milestones/scripts/gh-get-milestones.sh",
-      "usage": ".cursor/skills/gh-get-milestones/scripts/gh-get-milestones.sh [state] [per_page]",
+      "script_path": ".cursor/skills/gh-get-milestones/scripts/gh-get-milestones.js",
+      "usage": "node .cursor/skills/gh-get-milestones/scripts/gh-get-milestones.js [state] [per_page]",
       "primary_consumers": ["planner"]
     },
     {
@@ -40,8 +40,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-create-milestone",
-      "script_path": ".cursor/skills/gh-create-milestone/scripts/gh-create-milestone.sh",
-      "usage": ".cursor/skills/gh-create-milestone/scripts/gh-create-milestone.sh <title> [description] [due_date]",
+      "script_path": ".cursor/skills/gh-create-milestone/scripts/gh-create-milestone.js",
+      "usage": "node .cursor/skills/gh-create-milestone/scripts/gh-create-milestone.js <title> [description] [due_date]",
       "primary_consumers": ["planner"]
     },
     {
@@ -49,8 +49,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-save-milestone",
-      "script_path": ".cursor/skills/gh-save-milestone/scripts/gh-save-milestone.sh",
-      "usage": ".cursor/skills/gh-save-milestone/scripts/gh-save-milestone.sh",
+      "script_path": ".cursor/skills/gh-save-milestone/scripts/gh-save-milestone.js",
+      "usage": "node .cursor/skills/gh-save-milestone/scripts/gh-save-milestone.js",
       "primary_consumers": ["planner"]
     },
     {
@@ -58,8 +58,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-issue-list",
-      "script_path": ".cursor/skills/gh-issue-list/scripts/gh-issue-list.sh",
-      "usage": ".cursor/skills/gh-issue-list/scripts/gh-issue-list.sh [state] [limit]",
+      "script_path": ".cursor/skills/gh-issue-list/scripts/gh-issue-list.js",
+      "usage": "node .cursor/skills/gh-issue-list/scripts/gh-issue-list.js [state] [limit]",
       "primary_consumers": ["planner", "scribe", "build_preparation", "review_implementation"]
     },
     {
@@ -67,8 +67,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-create-issue",
-      "script_path": ".cursor/skills/gh-create-issue/scripts/gh-create-issue.sh",
-      "usage": ".cursor/skills/gh-create-issue/scripts/gh-create-issue.sh <title> [body]",
+      "script_path": ".cursor/skills/gh-create-issue/scripts/gh-create-issue.js",
+      "usage": "node .cursor/skills/gh-create-issue/scripts/gh-create-issue.js <title> [body] [--parent <parent-ref>]",
       "primary_consumers": ["planner", "scribe"]
     },
     {
@@ -76,8 +76,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-get-issue",
-      "script_path": ".cursor/skills/gh-get-issue/scripts/gh-get-issue.sh",
-      "usage": ".cursor/skills/gh-get-issue/scripts/gh-get-issue.sh <issue-ref>",
+      "script_path": ".cursor/skills/gh-get-issue/scripts/gh-get-issue.js",
+      "usage": "node .cursor/skills/gh-get-issue/scripts/gh-get-issue.js <issue-ref>",
       "primary_consumers": [
         "planner",
         "scribe",
@@ -91,8 +91,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-edit-issue",
-      "script_path": ".cursor/skills/gh-edit-issue/scripts/gh-edit-issue.sh",
-      "usage": ".cursor/skills/gh-edit-issue/scripts/gh-edit-issue.sh <issue-ref> [--title \"...\"] [--body \"...\"] [--state open|closed]",
+      "script_path": ".cursor/skills/gh-edit-issue/scripts/gh-edit-issue.js",
+      "usage": "node .cursor/skills/gh-edit-issue/scripts/gh-edit-issue.js <issue-ref> [--title \"...\"] [--body \"...\"] [--state open|closed]",
       "primary_consumers": ["planner"]
     },
     {
@@ -100,8 +100,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-project-item-add",
-      "script_path": ".cursor/skills/gh-project-item-add/scripts/gh-project-item-add.sh",
-      "usage": ".cursor/skills/gh-project-item-add/scripts/gh-project-item-add.sh <issue-ref> [project-url]",
+      "script_path": ".cursor/skills/gh-project-item-add/scripts/gh-project-item-add.js",
+      "usage": "node .cursor/skills/gh-project-item-add/scripts/gh-project-item-add.js <issue-ref> [project-url]",
       "primary_consumers": ["planner", "scribe"]
     },
     {
@@ -109,8 +109,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-pr-checkout",
-      "script_path": ".cursor/skills/gh-pr-checkout/scripts/gh-pr-checkout.sh",
-      "usage": ".cursor/skills/gh-pr-checkout/scripts/gh-pr-checkout.sh <pr-ref>",
+      "script_path": ".cursor/skills/gh-pr-checkout/scripts/gh-pr-checkout.js",
+      "usage": "node .cursor/skills/gh-pr-checkout/scripts/gh-pr-checkout.js <pr-ref>",
       "primary_consumers": ["review_implementation"]
     },
     {
@@ -118,8 +118,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-pr-review",
-      "script_path": ".cursor/skills/gh-pr-review/scripts/gh-pr-review.sh",
-      "usage": ".cursor/skills/gh-pr-review/scripts/gh-pr-review.sh <pr-ref>",
+      "script_path": ".cursor/skills/gh-pr-review/scripts/gh-pr-review.js",
+      "usage": "node .cursor/skills/gh-pr-review/scripts/gh-pr-review.js <pr-ref>",
       "primary_consumers": ["review_security", "review_wrap"]
     },
     {
@@ -127,8 +127,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-create-pr",
-      "script_path": ".cursor/skills/gh-create-pr/scripts/gh-create-pr.sh",
-      "usage": ".cursor/skills/gh-create-pr/scripts/gh-create-pr.sh [base-branch]",
+      "script_path": ".cursor/skills/gh-create-pr/scripts/gh-create-pr.js",
+      "usage": "node .cursor/skills/gh-create-pr/scripts/gh-create-pr.js [base-branch]",
       "primary_consumers": ["build_wrap"]
     },
     {
@@ -136,8 +136,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-issue-comment",
-      "script_path": ".cursor/skills/gh-issue-comment/scripts/gh-issue-comment.sh",
-      "usage": ".cursor/skills/gh-issue-comment/scripts/gh-issue-comment.sh <issue-ref> <comment>",
+      "script_path": ".cursor/skills/gh-issue-comment/scripts/gh-issue-comment.js",
+      "usage": "node .cursor/skills/gh-issue-comment/scripts/gh-issue-comment.js <issue-ref> <comment>",
       "primary_consumers": ["review_wrap"]
     },
     {
@@ -145,8 +145,8 @@
       "status": "active",
       "category": "gh_cli",
       "retag": "gh-pr-merge",
-      "script_path": ".cursor/skills/gh-pr-merge/scripts/gh-pr-merge.sh",
-      "usage": ".cursor/skills/gh-pr-merge/scripts/gh-pr-merge.sh <pr-ref> [merge|squash|rebase]",
+      "script_path": ".cursor/skills/gh-pr-merge/scripts/gh-pr-merge.js",
+      "usage": "node .cursor/skills/gh-pr-merge/scripts/gh-pr-merge.js <pr-ref> [merge|squash|rebase]",
       "primary_consumers": ["review_wrap"]
     },
     {
@@ -154,8 +154,8 @@
       "status": "active",
       "category": "npm_wrapper",
       "retag": "lint-test",
-      "script_path": ".cursor/skills/lint-test/scripts/lint-test.sh",
-      "usage": ".cursor/skills/lint-test/scripts/lint-test.sh",
+      "script_path": ".cursor/skills/lint-test/scripts/lint-test.js",
+      "usage": "node .cursor/skills/lint-test/scripts/lint-test.js",
       "primary_consumers": ["build_development", "review_implementation"]
     },
     {
@@ -163,8 +163,8 @@
       "status": "active",
       "category": "npm_wrapper",
       "retag": "unit-test",
-      "script_path": ".cursor/skills/unit-test/scripts/unit-test.sh",
-      "usage": ".cursor/skills/unit-test/scripts/unit-test.sh",
+      "script_path": ".cursor/skills/unit-test/scripts/unit-test.js",
+      "usage": "node .cursor/skills/unit-test/scripts/unit-test.js",
       "primary_consumers": ["build_development", "review_implementation"]
     },
     {
@@ -172,8 +172,8 @@
       "status": "active",
       "category": "npm_wrapper",
       "retag": "integration-test",
-      "script_path": ".cursor/skills/integration-test/scripts/integration-test.sh",
-      "usage": ".cursor/skills/integration-test/scripts/integration-test.sh",
+      "script_path": ".cursor/skills/integration-test/scripts/integration-test.js",
+      "usage": "node .cursor/skills/integration-test/scripts/integration-test.js",
       "primary_consumers": ["build_development", "review_implementation"]
     },
     {
@@ -181,8 +181,8 @@
       "status": "active",
       "category": "git_flow",
       "retag": "branch-create",
-      "script_path": ".cursor/skills/create-feature-branch/scripts/create-feature-branch.sh",
-      "usage": ".cursor/skills/create-feature-branch/scripts/create-feature-branch.sh <branch-name> [root-branch]",
+      "script_path": ".cursor/skills/create-feature-branch/scripts/create-feature-branch.js",
+      "usage": "node .cursor/skills/create-feature-branch/scripts/create-feature-branch.js <branch-name> [root-branch]",
       "primary_consumers": ["build_preparation"]
     },
     {
@@ -190,8 +190,8 @@
       "status": "active",
       "category": "git_flow",
       "retag": "workspace-bootstrap",
-      "script_path": ".cursor/skills/start-issue-build/scripts/start-issue-build.sh",
-      "usage": ".cursor/skills/start-issue-build/scripts/start-issue-build.sh",
+      "script_path": ".cursor/skills/start-issue-build/scripts/start-issue-build.js",
+      "usage": "node .cursor/skills/start-issue-build/scripts/start-issue-build.js",
       "primary_consumers": ["build_preparation"]
     },
     {
@@ -199,8 +199,8 @@
       "status": "active",
       "category": "git_flow",
       "retag": "commit-code",
-      "script_path": ".cursor/skills/commit/scripts/commit.sh",
-      "usage": ".cursor/skills/commit/scripts/commit.sh -m \"<message>\"",
+      "script_path": ".cursor/skills/commit/scripts/commit.js",
+      "usage": "node .cursor/skills/commit/scripts/commit.js -m \"<message>\"",
       "primary_consumers": ["build_wrap"]
     },
     {
@@ -208,8 +208,8 @@
       "status": "active",
       "category": "git_flow",
       "retag": "branch-push",
-      "script_path": ".cursor/skills/push-branch/scripts/push-branch.sh",
-      "usage": ".cursor/skills/push-branch/scripts/push-branch.sh",
+      "script_path": ".cursor/skills/push-branch/scripts/push-branch.js",
+      "usage": "node .cursor/skills/push-branch/scripts/push-branch.js",
       "primary_consumers": ["build_wrap"]
     }
   ],

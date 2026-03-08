@@ -9,4 +9,4 @@ Use the provided script to run project lint validation.
 
 ## Usage
 
-Run the script: `scripts/lint-test.sh`
+Run the script: `node scripts/lint-test.js`

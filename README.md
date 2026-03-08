@@ -58,7 +58,7 @@ Or symlink/copy from this repo into your project’s `.cursor/` and root.
 ### 2. Initialize Forge Structure
 
 ```bash
-bash .cursor/skills/init-forge/scripts/init-forge.sh .
+node .cursor/skills/init-forge/scripts/init-forge.js .
 ```
 
 This creates `.forge/` with `vision.json`, `project.json`, `roadmap.json`, domain folders, and schemas.
@@ -98,6 +98,27 @@ forge-cursor-plugin/
 - **Node.js** — For hooks (validate-json-schema.js) and skill scripts that use Node
 - **GitHub CLI (`gh`)** — For GitHub skills (create PR, get issue, etc.)
 - **Cursor** — With agent/command support
+
+---
+
+## Testing
+
+The plugin includes unit tests to validate skill functionality:
+
+```bash
+npm install
+npm test
+```
+
+| Command | Purpose |
+|---------|---------|
+| `npm test` | Run all tests (unit + skills) |
+| `npm run test:unit` | Vitest tests for the JSON schema validation hook |
+| `npm run test:skills` | Bats tests for shell script skills (init-forge) |
+
+**Unit tests** cover the `validate-json-schema` hook and Node skills (commit, create-feature-branch, fetch-url, gh-create-issue): payload parsing, path resolution, schema inference, validation rules, and argument parsing.
+
+**Skills tests** cover argument validation, usage output, and init-forge scaffolding. Skills that call external tools (e.g. `gh`, `git`) are tested for input validation only; full integration requires a real environment.
 
 ---
 

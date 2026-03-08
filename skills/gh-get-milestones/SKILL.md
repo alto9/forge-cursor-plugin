@@ -9,7 +9,7 @@ Use the provided script to fetch GitHub milestones and print JSON.
 
 ## Usage
 
-Run the script: `scripts/gh-get-milestones.sh [state] [per_page]`
+Run the script: `node scripts/gh-get-milestones.js [state] [per_page]`
 
 - `state`: `open`, `closed`, or `all` (default: `all`)
 - `per_page`: API page size (default: `100`)

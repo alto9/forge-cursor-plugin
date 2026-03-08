@@ -9,7 +9,7 @@ Use the provided script to list issues from the project repository.
 
 ## Usage
 
-Run the script: `scripts/gh-issue-list.sh [state] [limit]`
+Run the script: `node scripts/gh-issue-list.js [state] [limit]`
 
 - `state`: `open`, `closed`, or `all` (default: `open`)
 - `limit`: max issues returned (default: `100`)

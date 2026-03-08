@@ -9,4 +9,4 @@ Use the provided script to fetch and checkout a PR branch.
 
 ## Usage
 
-Run the script: `scripts/gh-pr-checkout.sh <pr-ref>`
+Run the script: `node scripts/gh-pr-checkout.js <pr-ref>`
