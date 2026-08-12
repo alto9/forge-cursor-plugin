@@ -57,6 +57,7 @@ Templates:
     skills/product-owner/templates/backlog.md
         # In progress
         # Ready
+        # Refinement
         # Blocked
         # Icebox
 
@@ -95,6 +96,8 @@ Templates:
         # Requirements
         # Acceptance criteria
         # Out of scope
+        # Constraints
+        # Verification
         # Open questions
         # Success metrics
 
@@ -102,6 +105,8 @@ Skills:
     skills/product-owner/discovery/SKILL.md
     skills/product-owner/problem-framing/SKILL.md
     skills/product-owner/prioritization/SKILL.md
+    skills/product-owner/groom-ticket/SKILL.md
+    skills/product-owner/agent-ready-ticket/SKILL.md
     skills/product-owner/requirements-writing/SKILL.md
     skills/product-owner/roadmapping/SKILL.md
     skills/product-owner/stakeholder-alignment/SKILL.md
@@ -114,6 +119,7 @@ Skills:
 Schedule:
     On demand: init-project
     Weekly: backlog-grooming
+    On demand: refinement
     Weekly: feedback-triage
     Weekly: stakeholder-sync
     Biweekly: metrics-review

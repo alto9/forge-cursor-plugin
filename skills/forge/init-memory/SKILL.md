@@ -16,7 +16,7 @@ Launching or repairing `memoryRoot` for a submodule (`init-project`, or gap-fill
 2. For each mapping below, if the memory file is missing, copy the template content into `memoryRoot/<memory path>`.
 3. Do **not** overwrite non-empty existing files.
 4. Safe to re-run (fills gaps only).
-5. Specs (`product/specs/<feature>.md`) are **not** seeded here — create during `backlog-grooming`.
+5. Specs (`product/specs/<feature>.md`) are **not** seeded here — create during `/refinement` (or launch-readiness) when multi-area.
 
 ## Template → memory map
 

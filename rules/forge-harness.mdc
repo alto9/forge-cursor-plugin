@@ -11,6 +11,7 @@ alwaysApply: true
 - Event commands are the parent: spawn listed agents as **propose-only** subagents; parent merges, HITLs, validates, then Applies (vendor/SCM first, then memory).
 - Subagents do not Apply, do not HITL, and do not mutate SCM unless executing parent-approved Apply steps.
 - Doc templates: required H2s only; empty sections OK; no extra H2s; current state only.
-- Orientation: run the `help` command. New project: `init-project` → roadmap-review → backlog-grooming (see README New project path).
+- Orientation: run the `help` command. New project: `init-project` → roadmap-review → backlog-grooming → refinement (see README New project path).
+- Board path: **Grooming → Refinement** (Intention + AC) → **`/refinement` → Ready** (full agent-ready body). `/implement-ticket` only takes Ready.
 - Optional `/sync-schedule` can mirror Weekly/Biweekly/Monthly rituals to Google Calendar reminders when MCP is available — not required; never auto-starts events.
 - Skill folder names are unique; see [docs/skill-naming.md](docs/skill-naming.md).

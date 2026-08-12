@@ -38,8 +38,10 @@ Pause when:
     Pushing to remote / requesting review
     in-flight.md would change Active/Approach/Blockers materially
 Instructions:
-Take one Ready backlog item (and its spec if any); implement in the active submodule — code/tests are the deliverable.
-Read brief/spec/architecture constraints as inputs; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
+Take **one** board **Ready** item (statusIds.ready — not Refinement). Before coding: load the issue body (vendor get) and linked spec if any; run the agent-ready-ticket checklist mentally.
+If the ticket is still in Refinement or fails the checklist: **stop**. Do not implement. Hand-off → `/refinement` (or demote Ready → Refinement if it drifted).
+If it passes: implement in the active submodule — code/tests are the deliverable. Treat the issue body (+ spec) as the contract; don’t invent scope.
+Read brief/architecture constraints as inputs; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
 Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state; remove the item from Active when PR is open or work is handed off — no done archive.
 When implementation is ready for verification, propose adding it to qa/queue.md Ready for QA (do not self-approve).
 Use vendor skills for branch/PR/MR; propose vendor actions in the hand-off before push/open/update.

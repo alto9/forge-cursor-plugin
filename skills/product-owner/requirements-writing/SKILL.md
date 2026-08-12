@@ -1,23 +1,25 @@
 ---
 name: requirements-writing
 description: >-
-  product-owner procedure: requirements writing. Propose-only when spawned from event commands; touch product/ docs via templates.
+  Expand Refinement briefs into full requirements and specs during /refinement
+  (agent-ready bodies). Not used to mark Ready from grooming alone.
 ---
 
 # requirements-writing
 
 ## When to use
 
-Invoked by Forge event commands or the product-owner agent for `product-owner/requirements-writing`.
+`/refinement` (primary), launch-readiness spec edits, or deepening acceptance detail on an existing Ready ticket.
 
 ## Steps
 
-1. Read in-scope memory under `memoryRoot/product/` (and related event Docs). Match templates in `skills/product-owner/templates/`.
-2. Propose updates with required H2s only; empty sections OK; no extra H2s.
-3. Current state only — remove stale items; leave files alone if unchanged.
-4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
-5. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Decisions needed, Left alone). Do **not** Apply, HITL, or mutate SCM.
+1. Start from the board issue in **Refinement** (Intention + Acceptance criteria from grooming).
+2. Expand to the full agent-ready body per **agent-ready-ticket** (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None).
+3. Acceptance criteria must be falsifiable; add edges that would change implementation.
+4. For multi-area work, propose `product/specs/<feature>.md` from the template; clear Open questions before Ready.
+5. Align backlog.md: leave in `# Refinement` until checklist passes, then `# Ready` with board statusIds.ready.
+6. When event-spawned: propose-only hand-off; do not Apply.
 
 ## Outputs / stop conditions
 
-Hand-off blob for the parent command. Stop if path/config unresolved (parent should have run resolve-paths).
+Full issue bodies (+ optional specs) that pass agent-ready-ticket, or an explicit stay-in-Refinement with failing checklist items.

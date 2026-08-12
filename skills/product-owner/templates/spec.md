@@ -8,6 +8,10 @@
 
 # Out of scope
 
+# Constraints
+
+# Verification
+
 # Open questions
 
 # Success metrics

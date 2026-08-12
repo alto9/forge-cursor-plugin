@@ -38,6 +38,8 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/marketing-manager/proof-harvest/SKILL.md | skills/marketing-manager/proof-harvest/ | proof-harvest |
 | skills/marketing-manager/social-post/SKILL.md | skills/marketing-manager/social-post/ | social-post |
 | skills/marketing-manager/voice/SKILL.md | skills/marketing-manager/voice/ | voice |
+| skills/product-owner/agent-ready-ticket/SKILL.md | skills/product-owner/agent-ready-ticket/ | agent-ready-ticket |
+| skills/product-owner/groom-ticket/SKILL.md | skills/product-owner/groom-ticket/ | groom-ticket |
 | skills/product-owner/decision-hygiene/SKILL.md | skills/product-owner/decision-hygiene/ | decision-hygiene |
 | skills/product-owner/discovery/SKILL.md | skills/product-owner/discovery/ | discovery |
 | skills/product-owner/feedback-synthesis/SKILL.md | skills/product-owner/feedback-synthesis/ | feedback-synthesis |

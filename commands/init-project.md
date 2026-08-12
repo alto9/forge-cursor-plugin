@@ -40,10 +40,11 @@ Pause when:
 Instructions:
 Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”).
 Parent runs ensure-config + init-memory (propose seed of missing template files only; never overwrite non-empty docs).
-PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes, not fully refined Ready), metrics.md stubs if known.
+PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known.
 Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
 PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice.
-Do not deep-refine every ticket here — stop at a coherent starting backlog; fine detail comes from repeated backlog-grooming (+ specs).
+Do not deep-refine tickets here — next: `/backlog-grooming` (→ Refinement) then `/refinement` (→ Ready + specs as needed).
+Ensure forge.json statusIds includes `refinement` when board fields are collected.
 Other role docs may be seeded empty via init-memory and left alone until their events need them.
 Docs:
 <super-repo>/.ai/memory/<submodule>/forge.json

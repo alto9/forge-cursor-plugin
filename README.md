@@ -77,7 +77,11 @@ Script: `npm run resolve-paths -- [--cwd DIR] [--submodule PATH] [--super-repo D
 
 Always required: `version`, `path` (= submodulePath), `host`, and host identity (`github.owner`+`repo` or `gitlab.projectId`).
 
-Board fields (`projectId` / `boardId` / `statusIds`) required only before board-sync events.
+Board fields (`projectId` / `boardId` / `statusIds`) required only before board-sync events. Include:
+
+`backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
+
+(`/backlog-grooming` → `refinement`; `/refinement` → `ready`.)
 
 Optional `release.gates[]`: ordered event ids for **this** submodule (no harness-wide pipeline). Events stay independently callable; gates define default checklist / pre-cut expectations for `prepare-release` / `cut-release` / launch-readiness. Missing/empty gates → no automatic enforcement.
 
@@ -99,11 +103,12 @@ One concern per file; reference board issue id/URL.
 1. `help` — optional orientation (observe-only)
 2. `init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch
 3. `roadmap-review` — shape Now/Next/Later
-4. `backlog-grooming` — board tickets (SCM SoT); refresh memory; deepen Ready + specs
-5. Specs as needed for Ready work (not seeded at init)
+4. `backlog-grooming` — high-level Intention + acceptance → board **Refinement**
+5. `refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (+ specs when multi-area)
 6. `plan-refresh` — delivery sequence once Ready work exists
+7. `implement-ticket` — only Ready; refuses Refinement / weak briefs
 
-Fine detail = board Ready ticket + spec. Memory mirrors the board.
+**Two-step tickets:** grooming = product intent; refinement = agent-ready implementation contract (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None).
 
 ## Execution model
 

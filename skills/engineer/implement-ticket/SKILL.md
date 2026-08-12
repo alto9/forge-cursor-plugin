@@ -1,23 +1,24 @@
 ---
 name: implement-ticket
 description: >-
-  engineer procedure: implement ticket. Propose-only when spawned from event commands; touch engineering/ docs via templates.
+  Implement one agent-ready board ticket in the submodule. Stop and send back
+  to grooming if the issue body fails the Ready gate.
 ---
 
 # implement-ticket
 
 ## When to use
 
-Invoked by Forge event commands or the engineer agent for `engineer/implement-ticket`.
+`/implement-ticket` or Engineer agent when taking Ready work.
 
 ## Steps
 
-1. Read in-scope memory under `memoryRoot/engineering/` (and related event Docs). Match templates in `skills/engineer/templates/`.
-2. Propose updates with required H2s only; empty sections OK; no extra H2s.
-3. Current state only — remove stale items; leave files alone if unchanged.
-4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
-5. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Decisions needed, Left alone). Do **not** Apply, HITL, or mutate SCM.
+1. Load the board issue body (vendor get) and linked `product/specs/<feature>.md` if any.
+2. If status is Refinement or it fails `skills/product-owner/agent-ready-ticket` → **stop**. Hand off to `/refinement`; do not invent scope.
+3. Read architecture constraints/interfaces and engineering/in-flight. Implement the smallest change that meets Acceptance criteria + Verification.
+4. Propose in-flight / QA queue updates per the parent command. **Board/SCM wins** over memory.
+5. When event-spawned: propose-only hand-off; do not Apply until parent Apply.
 
 ## Outputs / stop conditions
 
-Hand-off blob for the parent command. Stop if path/config unresolved (parent should have run resolve-paths).
+Code/tests meeting acceptance, or a stop hand-off if not agent-ready.

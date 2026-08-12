@@ -1,10 +1,12 @@
 ---
 name: backlog-grooming
 description: >-
-  Weekly; lead Product Owner. Forge event command.
+  Weekly; lead Product Owner. High-level backlog shaping — Intention + acceptance → board Refinement.
 ---
 
 # backlog-grooming
+
+High-level design pass. **Does not** produce agent-ready Ready tickets — that is the sibling event `/refinement`.
 
 ## Parent execution model
 
@@ -22,6 +24,7 @@ description: >-
 - **Proposed vendor actions** — none, or explicit list
 - **Decisions needed** — yes/no or A/B
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Refinement queue** — issue ids moved/kept in Refinement (candidates for `/refinement`)
 
 Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
 
@@ -31,30 +34,31 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 Cadence: Weekly
 Lead: Product Owner
 HITL:
-Mode: approve-before-write
+Mode: approve-before-vendor
 Pause when:
-    Ready/In progress priority changes
-    Items removed (won't-do / delete) or moved to Icebox
-    Spec created or deleted
-    plan.md sequence changes
-# If vendor ticket updates are in scope for the session, escalate Mode to approve-before-vendor.
+    Priority / Icebox / kill decisions
+    Creating or reshaping issues (Intention + Acceptance criteria)
+    Moving items into board Refinement (statusIds.refinement)
+    plan.md sequence changes from re-ordering
 Instructions:
-# Primary path to fine detail: repeat until Ready items have clear acceptance (spec when needed).
 Read roadmap.md for focus; propose roadmap edits only if grooming exposes a clear conflict (otherwise leave for roadmap-review).
-Propose backlog.md changes: re-rank In progress/Ready; remove shipped, duplicate, or won't-do items (no done archive here — delete or Icebox).
-Propose create/edit specs/<feature>.md only for Ready work that lacks acceptance detail; propose delete for killed work or features no longer in flight.
+Shape work at **high level**: Intention + Acceptance criteria via skills/product-owner/groom-ticket. Do not require full Scope/Constraints/Verification/agent-ready bodies here.
+Propose vendor issue create/update and set status to **Refinement** (forge.json statusIds.refinement). Mirror under backlog.md # Refinement.
+Do **not** move items to Ready in this event. Do not say “ready for implementation” — say “ready for refinement” / list the Refinement queue.
+Re-rank In progress / Refinement; remove shipped, duplicate, or won't-do (delete or Icebox). Leave existing Ready alone unless roadmap kills it (then demote/Icebox).
 Propose plan.md Sequence/Dependencies only when backlog order changes delivery order; otherwise leave plan.md alone.
-Coarse items from init-project are expected — split, clarify, or Icebox them here; don’t require perfect specs on day one.
+Coarse init-project outcomes → split/clarify into Refinement briefs or Icebox. Escalate product decisions under Decisions needed.
+Suggested next after Apply: `/refinement` on the Refinement queue.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md
-<super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
 <super-repo>/.ai/memory/<submodule>/project/plan.md
 Agents:
 Product Owner:
+    skills/product-owner/groom-ticket/SKILL.md
     skills/product-owner/prioritization/SKILL.md
-    skills/product-owner/requirements-writing/SKILL.md
     skills/product-owner/scope-control/SKILL.md
+    skills/product-owner/outcome-definition/SKILL.md
 Project Manager:
     skills/project-manager/sequencing/SKILL.md
     skills/project-manager/work-planning/SKILL.md
