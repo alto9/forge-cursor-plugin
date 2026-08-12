@@ -2,11 +2,14 @@
   "name": "forge-cursor-plugin",
   "version": "1.0.0",
   "type": "module",
-  "engines": { "node": ">=18.0.0" },
-  "description": "Cursor plugin adding Forge—structured development workflow with skills, agents, and commands",
+  "engines": { "node": ">=22.0.0" },
+  "description": "Forge harness: agents, event commands, skills, and super-repo memory for structured solo SDLC across GitHub/GitLab submodules",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "generate": "node scripts/generate-from-readme.mjs",
+    "validate-memory": "node scripts/validate-memory.js",
+    "resolve-paths": "node scripts/resolve-paths.js"
   },
   "dependencies": {
     "node-html-markdown": "^2.0.0"

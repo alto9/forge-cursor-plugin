@@ -1,0 +1,24 @@
+---
+name: vendor-issues-get
+description: >-
+  Vendor MCP operation: issues / get.
+---
+
+# vendor-issues-get
+
+## When to use
+
+Invoked by Forge event commands or agents for `vendor/issues/get`.
+
+1. resolve-paths + resolve-config first.
+2. Prefer MCP tools for host in forge.json (github | gitlab).
+3. Never invent ticket ids; board/SCM is source of truth.
+4. Propose vendor actions in HITL hand-off before mutating unless parent Apply already approved them.
+
+## MCP mapping
+
+```
+github MCP: issue_read
+gitlab MCP: get_issue
+```
+

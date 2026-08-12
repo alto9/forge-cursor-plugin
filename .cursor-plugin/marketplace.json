@@ -1,0 +1,17 @@
+{
+  "name": "forge-cursor-marketplace",
+  "owner": {
+    "name": "Alto9"
+  },
+  "metadata": {
+    "description": "Forge harness Cursor plugin (solo SDLC agents, commands, skills)",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "forge-cursor",
+      "source": ".",
+      "description": "Forge harness: agents, event commands, skills, and super-repo memory for structured solo SDLC across GitHub/GitLab submodules."
+    }
+  ]
+}

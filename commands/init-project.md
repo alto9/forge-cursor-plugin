@@ -1,0 +1,70 @@
+---
+name: init-project
+description: >-
+  On demand; lead Product Owner. Forge event command.
+---
+
+# init-project
+
+## Parent execution model
+
+1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
+3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
+4. HITL pause using the Mode / Pause when / hand-off shape below.
+5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM. Never Apply invalid templates.
+
+
+### Hand-off shape (required)
+
+- **Intent** — 1–2 sentences
+- **Proposed memory edits** — per file: update / remove / create
+- **Proposed vendor actions** — none, or explicit list
+- **Decisions needed** — yes/no or A/B
+- **Left alone** — in-scope docs/actions intentionally unchanged
+
+Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
+
+
+## Event contract
+
+Cadence: On demand
+Lead: Product Owner
+HITL:
+Mode: approve-before-write
+Pause when:
+    Always — first brief/roadmap/backlog (and forge.json if incomplete) need orchestrator OK
+    Seeding new memory files from templates
+    Any vendor project/board bootstrap actions
+# Escalate to approve-before-vendor if creating remote issues/labels/board columns.
+Instructions:
+Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”).
+Parent runs ensure-config + init-memory (propose seed of missing template files only; never overwrite non-empty docs).
+PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes, not fully refined Ready), metrics.md stubs if known.
+Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
+PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice.
+Do not deep-refine every ticket here — stop at a coherent starting backlog; fine detail comes from repeated backlog-grooming (+ specs).
+Other role docs may be seeded empty via init-memory and left alone until their events need them.
+Docs:
+<super-repo>/.ai/memory/<submodule>/forge.json
+<super-repo>/.ai/memory/<submodule>/product/brief.md
+<super-repo>/.ai/memory/<submodule>/product/roadmap.md
+<super-repo>/.ai/memory/<submodule>/product/backlog.md
+<super-repo>/.ai/memory/<submodule>/product/metrics.md
+<super-repo>/.ai/memory/<submodule>/architecture/overview.md
+<super-repo>/.ai/memory/<submodule>/architecture/constraints.md
+<super-repo>/.ai/memory/<submodule>/project/plan.md
+<super-repo>/.ai/memory/<submodule>/project/status.md
+<super-repo>/.ai/memory/<submodule>/project/milestones.md
+Agents:
+Product Owner:
+    skills/product-owner/problem-framing/SKILL.md
+    skills/product-owner/roadmapping/SKILL.md
+    skills/product-owner/prioritization/SKILL.md
+    skills/product-owner/outcome-definition/SKILL.md
+Architect:
+    skills/architect/system-design/SKILL.md
+    skills/architect/constraint-mapping/SKILL.md
+Project Manager:
+    skills/project-manager/work-planning/SKILL.md
+    skills/project-manager/milestone-tracking/SKILL.md
