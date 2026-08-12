@@ -1,11 +1,10 @@
 ---
-name: implement-ticket
+name: forge.respond-to-review
 description: >-
   On demand; lead Engineer. Forge event command.
 ---
 
-# implement-ticket
-
+# forge.respond-to-review
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -33,35 +32,29 @@ Lead: Engineer
 HITL:
 Mode: approve-before-vendor
 Pause when:
-    Approach / scope interpretation before substantial coding (if ambiguous vs spec)
-    Opening or updating a PR/MR
-    Pushing to remote / requesting review
-    in-flight.md would change Active/Approach/Blockers materially
+    Pushing review fixes
+    Replying to or resolving review threads
+    Expanding scope beyond the review ask
+    in-flight.md Review state would change
+    Clearing or returning items from qa/queue.md Passed back
 Instructions:
-Take **one** board **Ready** item (statusIds.ready — not Refinement). Before coding: load the issue body (vendor get) and linked spec if any; run the agent-ready-ticket checklist mentally.
-If the ticket is still in Refinement or fails the checklist: **stop**. Do not implement. Hand-off → `/refinement` (or demote Ready → Refinement if it drifted).
-If it passes: implement in the active submodule — code/tests are the deliverable. Treat the issue body (+ spec) as the contract; don’t invent scope.
-Read brief/architecture constraints as inputs; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
-Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state; remove the item from Active when PR is open or work is handed off — no done archive.
-When implementation is ready for verification, propose adding it to qa/queue.md Ready for QA (do not self-approve).
-Use vendor skills for branch/PR/MR; propose vendor actions in the hand-off before push/open/update.
-Prefer smallest change that meets acceptance criteria; refactor only when required for the ticket.
+Clear open PR/MR review feedback and/or QA pass-back findings for the active change — reply, fix, or explicitly defer with reason.
+Don’t turn review response into unrelated refactors or new features; escalate scope fights to PO/Architect.
+Propose in-flight.md Review state / Blockers updates; clear Review state when merge-ready or when waiting on others.
+When fixing QA pass-backs, propose queue.md moves (Passed back → Ready for QA) and findings.md removals only for items actually fixed.
+Propose vendor actions (push, reply, resolve threads, re-request review) in the hand-off before mutating the host.
+Leave product/architecture docs alone unless a review reveals a real contract/spec mismatch (then call it out; don’t silently rewrite).
 Docs:
 <super-repo>/.ai/memory/<submodule>/engineering/in-flight.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
 <super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
-<super-repo>/.ai/memory/<submodule>/architecture/constraints.md
 <super-repo>/.ai/memory/<submodule>/architecture/interfaces.md
 <super-repo>/.ai/memory/<submodule>/project/status.md
 <super-repo>/.ai/memory/<submodule>/qa/queue.md
+<super-repo>/.ai/memory/<submodule>/qa/findings.md
 Agents:
 Engineer:
-    skills/engineer/implement-ticket/SKILL.md
+    skills/engineer/respond-to-review/SKILL.md
     skills/engineer/fix-bug/SKILL.md
     skills/engineer/write-tests/SKILL.md
     skills/engineer/debug/SKILL.md
-    skills/engineer/refactor/SKILL.md
-    skills/engineer/open-pr/SKILL.md
     skills/engineer/update-branch/SKILL.md
-Project Manager:
-    skills/project-manager/status-update/SKILL.md

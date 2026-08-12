@@ -1,11 +1,10 @@
 ---
-name: outcomes-retro
+name: forge.outcomes-retro
 description: >-
   Per release; lead Product Owner. Forge event command.
 ---
 
-# outcomes-retro
-
+# forge.outcomes-retro
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

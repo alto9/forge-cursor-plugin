@@ -1,11 +1,10 @@
 ---
-name: discovery
+name: forge.delivery-status
 description: >-
-  Monthly; lead Product Owner. Forge event command.
+  Weekly; lead Project Manager. Forge event command.
 ---
 
-# discovery
-
+# forge.delivery-status
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,26 +27,26 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Monthly
-Lead: Product Owner
+Cadence: Weekly
+Lead: Project Manager
 HITL:
-Mode: approve-before-write
+Mode: propose
 Pause when:
-    insights.md / personas.md / backlog.md / brief.md would change
-    Promoting discovery into backlog candidates
+    Material blocker/ask changes
+    plan.md would change
+# Unchanged run: observe (report only). Routine status refreshes apply only after orchestrator says apply.
 Instructions:
-Run or synthesize discovery against open questions; no work invented from thin anecdotes.
-Propose insights.md updates: replace stale Themes/Evidence/Implications; remove Open questions that are answered.
-Propose personas.md edits only with durable evidence; delete personas/segments you are not actually designing for.
-Propose backlog.md changes only for validated promotions; remove speculative items discovery disproved.
-Propose brief.md edits only when who/problem clearly changed; otherwise leave brief.md alone.
+Refresh delivery truth; leave files alone if nothing material changed.
+Propose status.md updates in place (Summary/In flight/Blockers/Next up/Asks); remove cleared blockers and finished in-flight items.
+Read plan.md and backlog.md for reconciliation; propose plan.md edits only if sequence/ownership drifted from reality.
+Propose risks.md edits only for blockers that are true risks/dependencies; delete entries that are no longer active.
 Docs:
-<super-repo>/.ai/memory/<submodule>/product/insights.md
-<super-repo>/.ai/memory/<submodule>/product/personas.md
-<super-repo>/.ai/memory/<submodule>/product/brief.md
+<super-repo>/.ai/memory/<submodule>/project/status.md
+<super-repo>/.ai/memory/<submodule>/project/plan.md
+<super-repo>/.ai/memory/<submodule>/project/risks.md
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
 Agents:
-Product Owner:
-    skills/product-owner/discovery/SKILL.md
-    skills/product-owner/problem-framing/SKILL.md
-    skills/product-owner/feedback-synthesis/SKILL.md
+Project Manager:
+    skills/project-manager/status-update/SKILL.md
+    skills/project-manager/blocker-resolution/SKILL.md
+    skills/project-manager/dependency-management/SKILL.md

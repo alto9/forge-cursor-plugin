@@ -1,11 +1,10 @@
 ---
-name: metrics-review
+name: forge.dependency-audit
 description: >-
-  Biweekly; lead Product Owner. Forge event command.
+  Monthly; lead Security. Forge event command.
 ---
 
-# metrics-review
-
+# forge.dependency-audit
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,25 +27,28 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Biweekly
-Lead: Product Owner
+Cadence: Monthly
+Lead: Security
 HITL:
 Mode: approve-before-write
 Pause when:
-    stay / adjust / stop decision is non-trivial
-    metrics.md, experiments.md, or insights.md would change
-# If unchanged read: Mode may downgrade to observe for that run (report only).
+    findings.md would gain/remove dependency issues
+    checklist.md Dependencies gate would change
+    Proposed upgrade/removal actions in the submodule (vendor/code) — escalate to approve-before-vendor before applying
 Instructions:
-Decide stay / adjust / stop against targets; leave files alone if the read is unchanged.
-Propose metrics.md Current read (and Targets only if the target itself changed); remove retired metrics from Primary/Supporting.
-Propose experiments.md changes: stop dead bets (Active → Concluded, then remove when no longer needed for the next decision); don’t accumulate old experiments.
-Propose insights.md edits only when the metrics read changes themes/implications; drop implications that no longer drive action.
+Audit dependencies for known issues and risky upgrades; current posture only.
+Propose findings.md updates for actionable dependency issues; delete noise and cleared items.
+Propose checklist.md Dependencies updates when the recurring gate itself should change.
+Recommend upgrade/remove actions in the hand-off; don’t silently bump deps — Engineer/implement-ticket or a dedicated change applies after approval.
+Leave threat-model.md alone unless the dependency changes a trust boundary.
 Docs:
-<super-repo>/.ai/memory/<submodule>/product/metrics.md
-<super-repo>/.ai/memory/<submodule>/product/experiments.md
-<super-repo>/.ai/memory/<submodule>/product/insights.md
+<super-repo>/.ai/memory/<submodule>/security/findings.md
+<super-repo>/.ai/memory/<submodule>/security/checklist.md
+<super-repo>/.ai/memory/<submodule>/security/threat-model.md
 Agents:
-Product Owner:
-    skills/product-owner/outcome-definition/SKILL.md
-    skills/product-owner/feedback-synthesis/SKILL.md
-    skills/product-owner/decision-hygiene/SKILL.md
+Security:
+    skills/security/dependency-audit/SKILL.md
+    skills/security/security-pass-back/SKILL.md
+    skills/security/security-approve-change/SKILL.md
+Engineer:
+    skills/engineer/implement-ticket/SKILL.md

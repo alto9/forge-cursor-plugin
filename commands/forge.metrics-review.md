@@ -1,11 +1,10 @@
 ---
-name: stakeholder-sync
+name: forge.metrics-review
 description: >-
-  Weekly; lead Product Owner. Forge event command.
+  Biweekly; lead Product Owner. Forge event command.
 ---
 
-# stakeholder-sync
-
+# forge.metrics-review
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,30 +27,25 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Weekly
+Cadence: Biweekly
 Lead: Product Owner
 HITL:
 Mode: approve-before-write
 Pause when:
-    brief.md / roadmap.md / backlog.md would change
-    status.md or risks.md would drop or add material items
-# Always pause for the “still true / changed” call even if proposed edits are empty.
+    stay / adjust / stop decision is non-trivial
+    metrics.md, experiments.md, or insights.md would change
+# If unchanged read: Mode may downgrade to observe for that run (report only).
 Instructions:
-Align on intent vs delivery; hand-off must lead with “still true / changed.”
-Propose brief.md edits only when who/problem/goals/non-goals/current focus actually changed — not for status color commentary.
-Propose roadmap.md / backlog.md edits only for decisions that change priority or cuts; remove killed items from Now/Ready rather than striking through.
-Propose status.md and risks.md updates to current delivery truth; delete cleared blockers/risks/issues (do not keep resolved history in-file).
+Decide stay / adjust / stop against targets; leave files alone if the read is unchanged.
+Propose metrics.md Current read (and Targets only if the target itself changed); remove retired metrics from Primary/Supporting.
+Propose experiments.md changes: stop dead bets (Active → Concluded, then remove when no longer needed for the next decision); don’t accumulate old experiments.
+Propose insights.md edits only when the metrics read changes themes/implications; drop implications that no longer drive action.
 Docs:
-<super-repo>/.ai/memory/<submodule>/product/brief.md
-<super-repo>/.ai/memory/<submodule>/product/roadmap.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/project/status.md
-<super-repo>/.ai/memory/<submodule>/project/risks.md
+<super-repo>/.ai/memory/<submodule>/product/metrics.md
+<super-repo>/.ai/memory/<submodule>/product/experiments.md
+<super-repo>/.ai/memory/<submodule>/product/insights.md
 Agents:
 Product Owner:
-    skills/product-owner/stakeholder-alignment/SKILL.md
-    skills/product-owner/roadmapping/SKILL.md
+    skills/product-owner/outcome-definition/SKILL.md
+    skills/product-owner/feedback-synthesis/SKILL.md
     skills/product-owner/decision-hygiene/SKILL.md
-Project Manager:
-    skills/project-manager/status-update/SKILL.md
-    skills/project-manager/risk-tracking/SKILL.md

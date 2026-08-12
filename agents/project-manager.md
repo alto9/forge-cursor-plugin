@@ -64,8 +64,8 @@ Skills:
     skills/project-manager/handoff-coordination/SKILL.md
 
 Schedule:
-    Weekly: delivery-status
-    Weekly: risk-review
-    Biweekly: plan-refresh
-    Per milestone: milestone-check
+    Weekly: forge.delivery-status
+    Weekly: forge.risk-review
+    Biweekly: forge.plan-refresh
+    Per milestone: forge.milestone-check
     # Also participates in PO-led events below

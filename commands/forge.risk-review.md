@@ -1,11 +1,10 @@
 ---
-name: milestone-check
+name: forge.risk-review
 description: >-
-  Per milestone; lead Project Manager. Forge event command.
+  Weekly; lead Project Manager. Forge event command.
 ---
 
-# milestone-check
-
+# forge.risk-review
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,25 +27,23 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Per milestone
+Cadence: Weekly
 Lead: Project Manager
 HITL:
-Mode: approve-before-write
+Mode: propose
 Pause when:
-    Always — met / at risk / slipped is a required orchestrator decision
-    milestones.md, status.md, plan.md, or risks.md would change
+    Risks/issues/dependencies added or removed
+    status.md or plan.md would change from risk posture
 Instructions:
-Recommend milestone call: met, at risk, or slipped. Escalate scope/priority to PO events — don’t rewrite product intent here.
-Propose milestones.md updates: remove met milestones from Active; move failed timing to Slipped then resolve (re-date into Upcoming or delete if abandoned).
-Propose status.md updates to match the call; clear finished in-flight work tied to a met milestone.
-Propose plan.md / risks.md edits only when slip/risk changes execution; delete risks closed by meeting the milestone.
+Keep risks.md as live posture only — not a history log.
+Propose risks.md updates: add only active Risks/Issues/Dependencies/Assumptions; delete resolved, expired, or irrelevant rows (no “mitigated on …” archive).
+Propose status.md / plan.md edits only when risk posture changes delivery (new blocker, resequence, handoff); otherwise leave them alone.
 Docs:
-<super-repo>/.ai/memory/<submodule>/project/milestones.md
-<super-repo>/.ai/memory/<submodule>/project/status.md
-<super-repo>/.ai/memory/<submodule>/project/plan.md
 <super-repo>/.ai/memory/<submodule>/project/risks.md
+<super-repo>/.ai/memory/<submodule>/project/plan.md
+<super-repo>/.ai/memory/<submodule>/project/status.md
 Agents:
 Project Manager:
-    skills/project-manager/milestone-tracking/SKILL.md
-    skills/project-manager/status-update/SKILL.md
     skills/project-manager/risk-tracking/SKILL.md
+    skills/project-manager/dependency-management/SKILL.md
+    skills/project-manager/blocker-resolution/SKILL.md

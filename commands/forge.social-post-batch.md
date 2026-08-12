@@ -1,11 +1,10 @@
 ---
-name: social-post-batch
+name: forge.social-post-batch
 description: >-
   Weekly; lead Marketing Manager. Forge event command.
 ---
 
-# social-post-batch
-
+# forge.social-post-batch
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

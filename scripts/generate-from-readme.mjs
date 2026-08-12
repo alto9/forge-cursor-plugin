@@ -205,7 +205,7 @@ for (const part of eventParts) {
   const m = part.match(/^    ([a-z0-9-]+)\n([\s\S]*)$/);
   if (!m) continue;
   // skip HITL / Execution model style blocks that aren't events — events have Cadence or Lead
-  if (!/^\s+Cadence:/m.test(m[2]) && m[1] !== "help") {
+  if (!/^\s+Cadence:/m.test(m[2]) && m[1] !== "help" && m[1] !== "forge.help") {
     if (!/^\s+Lead:/m.test(m[2])) continue;
   }
   if (["execution", "hitl"].includes(m[1])) continue;
@@ -250,14 +250,16 @@ for (const ev of events) {
     200
   );
 
-  const isHelp = ev.id === "help";
+  const bareId = ev.id.replace(/^forge\./, "");
+  const cmdId = bareId.startsWith("forge.") ? bareId : `forge.${bareId}`;
+  const isHelp = bareId === "help";
   const content = `---
-name: ${ev.id}
+name: ${cmdId}
 description: >-
   ${description}
 ---
 
-# ${ev.id}
+# ${cmdId}
 
 ${isHelp ? "Observe-only harness orientation. Do not spawn role subagents unless the user asks for a deep dive on one agent (still no writes)." : EXEC_MODEL}
 
@@ -267,7 +269,7 @@ ${HITL_SHAPE}
 
 ${body}
 `;
-  writeFile(path.join(root, "commands", `${ev.id}.md`), content);
+  writeFile(path.join(root, "commands", `${cmdId}.md`), content);
 }
 
 // --- Generate skills ---
@@ -374,7 +376,7 @@ Parsed forge config object for the active submodule.
 1. resolve-paths when possible; if ambiguous, explain \`FORGE_SUPER_REPO\` and \`--submodule\`.
 2. Summarize SoT (board/SCM wins), memory layout, HITL, parent/subagent Apply rules.
 3. List agents (one-liner) and event commands (cadence + lead), grouped.
-4. Suggest 1–3 next commands from current state (missing forge.json → init-project; weak Ready → backlog-grooming; etc.).
+4. Suggest 1–3 next commands from current state (missing forge.json → /forge.init-project; weak Ready → /forge.backlog-grooming; etc.).
 5. If topic arg provided, expand that agent/event contract.
 6. **Never** write memory or call vendor mutations.
 `;

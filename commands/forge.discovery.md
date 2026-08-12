@@ -1,11 +1,10 @@
 ---
-name: risk-review
+name: forge.discovery
 description: >-
-  Weekly; lead Project Manager. Forge event command.
+  Monthly; lead Product Owner. Forge event command.
 ---
 
-# risk-review
-
+# forge.discovery
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,23 +27,26 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Weekly
-Lead: Project Manager
+Cadence: Monthly
+Lead: Product Owner
 HITL:
-Mode: propose
+Mode: approve-before-write
 Pause when:
-    Risks/issues/dependencies added or removed
-    status.md or plan.md would change from risk posture
+    insights.md / personas.md / backlog.md / brief.md would change
+    Promoting discovery into backlog candidates
 Instructions:
-Keep risks.md as live posture only — not a history log.
-Propose risks.md updates: add only active Risks/Issues/Dependencies/Assumptions; delete resolved, expired, or irrelevant rows (no “mitigated on …” archive).
-Propose status.md / plan.md edits only when risk posture changes delivery (new blocker, resequence, handoff); otherwise leave them alone.
+Run or synthesize discovery against open questions; no work invented from thin anecdotes.
+Propose insights.md updates: replace stale Themes/Evidence/Implications; remove Open questions that are answered.
+Propose personas.md edits only with durable evidence; delete personas/segments you are not actually designing for.
+Propose backlog.md changes only for validated promotions; remove speculative items discovery disproved.
+Propose brief.md edits only when who/problem clearly changed; otherwise leave brief.md alone.
 Docs:
-<super-repo>/.ai/memory/<submodule>/project/risks.md
-<super-repo>/.ai/memory/<submodule>/project/plan.md
-<super-repo>/.ai/memory/<submodule>/project/status.md
+<super-repo>/.ai/memory/<submodule>/product/insights.md
+<super-repo>/.ai/memory/<submodule>/product/personas.md
+<super-repo>/.ai/memory/<submodule>/product/brief.md
+<super-repo>/.ai/memory/<submodule>/product/backlog.md
 Agents:
-Project Manager:
-    skills/project-manager/risk-tracking/SKILL.md
-    skills/project-manager/dependency-management/SKILL.md
-    skills/project-manager/blocker-resolution/SKILL.md
+Product Owner:
+    skills/product-owner/discovery/SKILL.md
+    skills/product-owner/problem-framing/SKILL.md
+    skills/product-owner/feedback-synthesis/SKILL.md

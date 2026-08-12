@@ -1,7 +1,8 @@
 ---
 name: milestone-tracking
 description: >-
-  project-manager procedure: milestone tracking. Propose-only when spawned from event commands; touch project/ docs via templates.
+  project-manager procedure: milestone tracking. Prefer host milestones as SoT;
+  memory project/milestones.md is a projection. Propose-only when event-spawned.
 ---
 
 # milestone-tracking
@@ -10,12 +11,18 @@ description: >-
 
 Invoked by Forge event commands or the project-manager agent for `project-manager/milestone-tracking`.
 
+## Host vs memory
+
+- **Host milestones** (GitHub/GitLab) are the source of truth for grouping tickets.
+- Host milestones are created/assigned when a group has **5 or more** related actionable tickets (see groom-ticket). Never invent epic issues.
+- Memory `project/milestones.md` projects host state: title, URL/id, related board issue ids/URLs, Active / Upcoming / Slipped. **Board/SCM wins** — refresh memory to match the host.
+
 ## Steps
 
-1. Read in-scope memory under `memoryRoot/project/` (and related event Docs). Match templates in `skills/project-manager/templates/`.
-2. Propose updates with required H2s only; empty sections OK; no extra H2s.
+1. Prefer listing host milestones + assigned issues (vendor MCP) when available; then read `memoryRoot/project/` docs.
+2. Propose memory updates with required H2s only; empty sections OK; no extra H2s. Reference host milestone title/URL and board issue ids — never invent parallel ticket numbers.
 3. Current state only — remove stale items; leave files alone if unchanged.
-4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
+4. When host milestone create/close/reopen is needed, list explicit **Proposed vendor actions** (do not invent epic issues).
 5. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Decisions needed, Left alone). Do **not** Apply, HITL, or mutate SCM.
 
 ## Outputs / stop conditions

@@ -1,12 +1,11 @@
 ---
-name: backlog-grooming
+name: forge.backlog-grooming
 description: >-
   Weekly; lead Product Owner. High-level backlog shaping — Intention + acceptance → board Refinement.
 ---
 
-# backlog-grooming
-
-High-level design pass. **Does not** produce agent-ready Ready tickets — that is the sibling event `/refinement`.
+# forge.backlog-grooming
+High-level design pass. **Does not** produce Ready tickets — that is the sibling event `/forge.refinement`.
 
 ## Parent execution model
 
@@ -24,7 +23,7 @@ High-level design pass. **Does not** produce agent-ready Ready tickets — that 
 - **Proposed vendor actions** — none, or explicit list
 - **Decisions needed** — yes/no or A/B
 - **Left alone** — in-scope docs/actions intentionally unchanged
-- **Refinement queue** — issue ids moved/kept in Refinement (candidates for `/refinement`)
+- **Refinement queue** — issue ids moved/kept in Refinement (candidates for `/forge.refinement`)
 
 Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
 
@@ -42,13 +41,14 @@ Pause when:
     plan.md sequence changes from re-ordering
 Instructions:
 Read roadmap.md for focus; propose roadmap edits only if grooming exposes a clear conflict (otherwise leave for roadmap-review).
-Shape work at **high level**: Intention + Acceptance criteria via skills/product-owner/groom-ticket. Do not require full Scope/Constraints/Verification/agent-ready bodies here.
-Propose vendor issue create/update and set status to **Refinement** (forge.json statusIds.refinement). Mirror under backlog.md # Refinement.
+Shape work at **high level**: Intention + Acceptance criteria via skills/product-owner/groom-ticket. Do not require full Scope/Constraints/Verification/Ready bodies here.
+**Tickets are actionable only** — never create epic/parent/umbrella issues. If a theme splits into **5 or more** related tickets, create/reuse a **host milestone** and assign those issues; below 5, leave ungrouped.
+Propose vendor issue create/update and set status to **Refinement** (forge.json statusIds.refinement). Mirror under backlog.md # Refinement. Do not apply ai-ready/human-ready here.
 Do **not** move items to Ready in this event. Do not say “ready for implementation” — say “ready for refinement” / list the Refinement queue.
 Re-rank In progress / Refinement; remove shipped, duplicate, or won't-do (delete or Icebox). Leave existing Ready alone unless roadmap kills it (then demote/Icebox).
 Propose plan.md Sequence/Dependencies only when backlog order changes delivery order; otherwise leave plan.md alone.
 Coarse init-project outcomes → split/clarify into Refinement briefs or Icebox. Escalate product decisions under Decisions needed.
-Suggested next after Apply: `/refinement` on the Refinement queue.
+Suggested next after Apply: `/forge.refinement` on the Refinement queue.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md

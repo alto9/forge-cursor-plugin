@@ -1,11 +1,10 @@
 ---
-name: feedback-triage
+name: forge.stakeholder-sync
 description: >-
   Weekly; lead Product Owner. Forge event command.
 ---
 
-# feedback-triage
-
+# forge.stakeholder-sync
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -31,23 +30,27 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 Cadence: Weekly
 Lead: Product Owner
 HITL:
-Mode: approve-before-vendor
+Mode: approve-before-write
 Pause when:
-    Insights themes rewritten or removed
-    Backlog candidates added, re-ranked, or dropped
-    Experiments started or stopped
-    Any GitHub/GitLab issue/ticket mutation
+    brief.md / roadmap.md / backlog.md would change
+    status.md or risks.md would drop or add material items
+# Always pause for the “still true / changed” call even if proposed edits are empty.
 Instructions:
-Pull new signal (issues, comments, usage, user feedback); do not paste raw threads into docs.
-Propose insights.md updates: rewrite Themes/Open questions/Implications to current truth; remove themes that are resolved or no longer relevant.
-Propose backlog.md changes only when triage creates, re-ranks, or drops a candidate; remove won't-do items rather than commenting them out.
-Propose experiments.md changes only when triage starts/stops a bet; move stopped work out of Active (Concluded briefly, then drop when no longer actionable).
+Align on intent vs delivery; hand-off must lead with “still true / changed.”
+Propose brief.md edits only when who/problem/goals/non-goals/current focus actually changed — not for status color commentary.
+Propose roadmap.md / backlog.md edits only for decisions that change priority or cuts; remove killed items from Now/Ready rather than striking through.
+Propose status.md and risks.md updates to current delivery truth; delete cleared blockers/risks/issues (do not keep resolved history in-file).
 Docs:
-<super-repo>/.ai/memory/<submodule>/product/insights.md
+<super-repo>/.ai/memory/<submodule>/product/brief.md
+<super-repo>/.ai/memory/<submodule>/product/roadmap.md
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/product/experiments.md
+<super-repo>/.ai/memory/<submodule>/project/status.md
+<super-repo>/.ai/memory/<submodule>/project/risks.md
 Agents:
 Product Owner:
-    skills/product-owner/feedback-synthesis/SKILL.md
-    skills/product-owner/problem-framing/SKILL.md
-    skills/product-owner/prioritization/SKILL.md
+    skills/product-owner/stakeholder-alignment/SKILL.md
+    skills/product-owner/roadmapping/SKILL.md
+    skills/product-owner/decision-hygiene/SKILL.md
+Project Manager:
+    skills/project-manager/status-update/SKILL.md
+    skills/project-manager/risk-tracking/SKILL.md

@@ -41,11 +41,13 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 
 **Board / SCM wins.** Memory is a working projection — not the authority.
 
-- Tickets, PR/MR state, labels, board columns → GitHub/GitLab
+- Tickets, PR/MR state, labels, milestones, board columns → GitHub/GitLab
 - Code → submodule git history
-- Memory (`.ai/memory/...`) → local notes, plans, queues for agents
+- Memory (`.ai/memory/...`) → local notes, plans, queues for agents (never linked from Ready issue bodies)
 
 If memory disagrees with SCM, update or discard memory drift. When grooming/init writes tickets: write to the board first (HITL), then refresh memory to match. Memory backlog/queue files should reference board issue ids/URLs — never invent a parallel ticket numbering system.
+
+**Tickets are actionable only** — never create epic/umbrella issues. Group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `/forge.implement-ticket` takes only `ai-ready`.
 
 ## Memory layout
 
@@ -81,9 +83,11 @@ Board fields (`projectId` / `boardId` / `statusIds`) required only before board-
 
 `backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
 
-(`/backlog-grooming` → `refinement`; `/refinement` → `ready`.)
+(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`.)
 
-Optional `release.gates[]`: ordered event ids for **this** submodule (no harness-wide pipeline). Events stay independently callable; gates define default checklist / pre-cut expectations for `prepare-release` / `cut-release` / launch-readiness. Missing/empty gates → no automatic enforcement.
+Optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-ready`) — ensured on the host during init/refinement.
+
+Optional `release.gates[]`: ordered event ids for **this** submodule (no harness-wide pipeline). Events stay independently callable; gates define default checklist / pre-cut expectations for `/forge.prepare-release` / `/forge.cut-release` / launch-readiness. Missing/empty gates → no automatic enforcement.
 
 See [`ensure-config`](skills/forge/ensure-config/SKILL.md), [`init-memory`](skills/forge/init-memory/SKILL.md), [`validate-memory`](skills/forge/validate-memory/SKILL.md).
 
@@ -100,15 +104,15 @@ One concern per file; reference board issue id/URL.
 
 ## New project path
 
-1. `help` — optional orientation (observe-only)
-2. `init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch
-3. `roadmap-review` — shape Now/Next/Later
-4. `backlog-grooming` — high-level Intention + acceptance → board **Refinement**
-5. `refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (+ specs when multi-area)
-6. `plan-refresh` — delivery sequence once Ready work exists
-7. `implement-ticket` — only Ready; refuses Refinement / weak briefs
+1. `/forge.help` — optional orientation (observe-only)
+2. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch
+3. `/forge.roadmap-review` — shape Now/Next/Later
+4. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
+5. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
+6. `/forge.plan-refresh` — delivery sequence once Ready work exists
+7. `/forge.implement-ticket` — only Ready + `ai-ready`; refuses Refinement / `human-ready` / weak briefs
 
-**Two-step tickets:** grooming = product intent; refinement = agent-ready implementation contract (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None).
+**Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.
 
 ## Execution model
 
@@ -142,7 +146,7 @@ See [`agents/*.md`](agents/) — Architect, Engineer, Marketing Manager, Product
 
 ## Event commands
 
-See [`commands/<event-id>.md`](commands/) — including `help`, `init-project`, build loop (`backlog-grooming`, `implement-ticket`, `respond-to-review`, `qa-verify`, …), and release/marketing/security suite. Full list: [`docs/inventory.json`](docs/inventory.json).
+See [`commands/forge.<event-id>.md`](commands/) — all slash commands use a `forge.` prefix (e.g. `/forge.help`, `/forge.init-project`, `/forge.backlog-grooming`, `/forge.refinement`, `/forge.implement-ticket`, `/forge.respond-to-review`, `/forge.qa-verify`, …). Full list: [`docs/inventory.json`](docs/inventory.json).
 
 ## Skills
 
@@ -154,7 +158,7 @@ Collision map: [docs/skill-naming.md](docs/skill-naming.md).
 
 ### Optional: calendar reminders
 
-`/sync-schedule` ([`commands/sync-schedule.md`](commands/sync-schedule.md), skill [`sync-schedule-calendar`](skills/forge/sync-schedule-calendar/SKILL.md)) can upsert recurring Google Calendar reminders (`Forge: <event-id>`) from agent Schedule cadences when Calendar MCP is available. Not required by init, gates, or other events; never auto-starts commands. Prefs live in optional `forge.json` → `calendar`.
+`/forge.sync-schedule` ([`commands/forge.sync-schedule.md`](commands/forge.sync-schedule.md), skill [`sync-schedule-calendar`](skills/forge/sync-schedule-calendar/SKILL.md)) can upsert recurring Google Calendar reminders (`Forge: forge.<event-id>`) from agent Schedule cadences when Calendar MCP is available. Not required by init, gates, or other events; never auto-starts commands. Prefs live in optional `forge.json` → `calendar`.
 
 ## Scripts & tests
 

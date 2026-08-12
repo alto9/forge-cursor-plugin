@@ -117,14 +117,14 @@ Skills:
     skills/product-owner/launch-readiness/SKILL.md
 
 Schedule:
-    On demand: init-project
-    Weekly: backlog-grooming
-    On demand: refinement
-    Weekly: feedback-triage
-    Weekly: stakeholder-sync
-    Biweekly: metrics-review
-    Biweekly: roadmap-review
-    Monthly: discovery
-    Monthly: competitive-scan
-    Per release: launch-readiness-check
-    Per release: outcomes-retro
+    On demand: forge.init-project
+    Weekly: forge.backlog-grooming
+    On demand: forge.refinement
+    Weekly: forge.feedback-triage
+    Weekly: forge.stakeholder-sync
+    Biweekly: forge.metrics-review
+    Biweekly: forge.roadmap-review
+    Monthly: forge.discovery
+    Monthly: forge.competitive-scan
+    Per release: forge.launch-readiness-check
+    Per release: forge.outcomes-retro

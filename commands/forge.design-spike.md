@@ -1,11 +1,10 @@
 ---
-name: design-spike
+name: forge.design-spike
 description: >-
   Per major bet; lead Architect. Forge event command.
 ---
 
-# design-spike
-
+# forge.design-spike
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

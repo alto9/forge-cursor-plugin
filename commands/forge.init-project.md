@@ -1,11 +1,10 @@
 ---
-name: init-project
+name: forge.init-project
 description: >-
   On demand; lead Product Owner. Forge event command.
 ---
 
-# init-project
-
+# forge.init-project
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -36,15 +35,15 @@ Pause when:
     Always — first brief/roadmap/backlog (and forge.json if incomplete) need orchestrator OK
     Seeding new memory files from templates
     Any vendor project/board bootstrap actions
-# Escalate to approve-before-vendor if creating remote issues/labels/board columns.
+# Escalate to approve-before-vendor if creating remote issues/labels/board columns/milestones.
 Instructions:
 Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”).
 Parent runs ensure-config + init-memory (propose seed of missing template files only; never overwrite non-empty docs).
-PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known.
+PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known. Do not create epic issues; Icebox holds coarse outcomes until grooming splits them into actionable tickets.
 Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
-PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice.
-Do not deep-refine tickets here — next: `/backlog-grooming` (→ Refinement) then `/refinement` (→ Ready + specs as needed).
-Ensure forge.json statusIds includes `refinement` when board fields are collected.
+PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice (memory projection; host milestones come later when ≥5 related tickets exist).
+Do not deep-refine tickets here — next: `/forge.backlog-grooming` (→ Refinement) then `/forge.refinement` (→ Ready + `ai-ready`/`human-ready`).
+Ensure forge.json statusIds includes `refinement` when board fields are collected. Ensure `labels.aiReady` / `labels.humanReady` (defaults `ai-ready` / `human-ready`) and propose creating those host labels under HITL if missing.
 Other role docs may be seeded empty via init-memory and left alone until their events need them.
 Docs:
 <super-repo>/.ai/memory/<submodule>/forge.json

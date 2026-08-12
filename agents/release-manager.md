@@ -55,7 +55,7 @@ Skills:
     skills/release-manager/rollback-plan/SKILL.md
 
 Schedule:
-    Per release: prepare-release
-    Per release: cut-release
+    Per release: forge.prepare-release
+    Per release: forge.cut-release
     # Also participates in launch-readiness-check and regression-pass when those gates are configured
     # Actual release sequence comes from forge.json release.gates[] for this submodule — not a global pipeline

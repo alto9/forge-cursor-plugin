@@ -76,7 +76,7 @@ Skills:
     skills/marketing-manager/proof-harvest/SKILL.md
 
 Schedule:
-    Weekly: social-post-batch
-    Monthly: messaging-refresh
-    Per release: launch-comms
+    Weekly: forge.social-post-batch
+    Monthly: forge.messaging-refresh
+    Per release: forge.launch-comms
     # Also participates in competitive-scan and outcomes-retro

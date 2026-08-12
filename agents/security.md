@@ -56,7 +56,7 @@ Skills:
     skills/security/security-approve-change/SKILL.md
 
 Schedule:
-    On demand: security-review
-    Monthly: dependency-audit
-    Per release: security-release-gate
+    On demand: forge.security-review
+    Monthly: forge.dependency-audit
+    Per release: forge.security-release-gate
     # Also participates in launch-readiness-check

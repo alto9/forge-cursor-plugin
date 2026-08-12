@@ -1,11 +1,10 @@
 ---
-name: help
+name: forge.help
 description: >-
   On demand; lead (harness — no role Lead). Forge event command.
 ---
 
-# help
-
+# forge.help
 Observe-only harness orientation. Do not spawn role subagents unless the user asks for a deep dive on one agent (still no writes).
 
 ### Hand-off shape (required)

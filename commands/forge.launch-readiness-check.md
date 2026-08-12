@@ -1,11 +1,10 @@
 ---
-name: launch-readiness-check
+name: forge.launch-readiness-check
 description: >-
   Per release; lead Product Owner. Forge event command.
 ---
 
-# launch-readiness-check
-
+# forge.launch-readiness-check
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

@@ -1,11 +1,10 @@
 ---
-name: security-release-gate
+name: forge.security-release-gate
 description: >-
   Per release; lead Security. Forge event command.
 ---
 
-# security-release-gate
-
+# forge.security-release-gate
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

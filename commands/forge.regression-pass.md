@@ -1,11 +1,10 @@
 ---
-name: regression-pass
+name: forge.regression-pass
 description: >-
   Per release; lead Quality Assurance. Forge event command.
 ---
 
-# regression-pass
-
+# forge.regression-pass
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

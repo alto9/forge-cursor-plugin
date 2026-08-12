@@ -1,11 +1,10 @@
 ---
-name: roadmap-review
+name: forge.plan-refresh
 description: >-
-  Biweekly; lead Product Owner. Forge event command.
+  Biweekly; lead Project Manager. Forge event command.
 ---
 
-# roadmap-review
-
+# forge.plan-refresh
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -29,39 +28,33 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 ## Event contract
 
 Cadence: Biweekly
-Lead: Product Owner
+Lead: Project Manager
 HITL:
 Mode: approve-before-write
 Pause when:
-    Any Now/Next/Later/Not planning move or delete
-    brief.md, backlog.md, plan.md, or milestones.md would change
+    plan.md rewrite/resequence
+    milestones.md moves, slips, or deletes
+    Any product doc cut proposed (prefer redirect to PO events)
+    Architecture dependency/order changes proposed
 Instructions:
-Reconcile Now/Next/Later with brief, metrics, and delivery capacity.
-Propose roadmap.md updates in place: move items across sections; put hard cuts in Not planning; delete items that are obsolete even as “not planning.”
-Propose brief.md edits only if roadmap changes force a goals/non-goals/current-focus rewrite.
-Propose backlog.md updates to match roadmap cuts/promotions; remove items that roadmap killed.
-Propose plan.md and milestones.md updates so delivery matches the new story; remove milestones that are done or abandoned (Slipped is temporary — clear or convert, don’t hoard).
-Read metrics.md; don’t propose metrics edits here unless a target/metric ownership change is explicit.
-Architect: read architecture docs; flag Now/Next items that violate constraints or need a design-spike before commit; propose architecture doc edits only when roadmap forces a structural change.
+Propose rewrite of plan.md to the current execution story (replace stale Sequence/Dependencies/Handoffs; don’t append old plan versions).
+Read backlog.md and roadmap.md as inputs; don’t propose product doc edits here unless a delivery constraint forces an explicit cut (prefer PO grooming/roadmap-review).
+Propose milestones.md updates to match the plan: move/remove completed or abandoned milestones; use Slipped temporarily, then clear or re-date — don’t stockpile slips.
+Architect: read constraints/interfaces/risks; propose plan Dependency/Handoff changes only when sequence is structurally forced; leave architecture docs alone unless plan exposes a new structural risk (then prefer architecture-review).
 Docs:
-<super-repo>/.ai/memory/<submodule>/product/roadmap.md
-<super-repo>/.ai/memory/<submodule>/product/brief.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/product/metrics.md
 <super-repo>/.ai/memory/<submodule>/project/plan.md
 <super-repo>/.ai/memory/<submodule>/project/milestones.md
-<super-repo>/.ai/memory/<submodule>/architecture/overview.md
+<super-repo>/.ai/memory/<submodule>/product/backlog.md
+<super-repo>/.ai/memory/<submodule>/product/roadmap.md
 <super-repo>/.ai/memory/<submodule>/architecture/constraints.md
+<super-repo>/.ai/memory/<submodule>/architecture/interfaces.md
 <super-repo>/.ai/memory/<submodule>/architecture/risks.md
 Agents:
-Product Owner:
-    skills/product-owner/roadmapping/SKILL.md
-    skills/product-owner/prioritization/SKILL.md
-    skills/product-owner/scope-control/SKILL.md
 Project Manager:
     skills/project-manager/work-planning/SKILL.md
+    skills/project-manager/sequencing/SKILL.md
     skills/project-manager/milestone-tracking/SKILL.md
+    skills/project-manager/handoff-coordination/SKILL.md
 Architect:
     skills/architect/change-impact/SKILL.md
     skills/architect/constraint-mapping/SKILL.md
-    skills/architect/technical-risk/SKILL.md

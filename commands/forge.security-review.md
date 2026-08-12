@@ -1,11 +1,10 @@
 ---
-name: dependency-audit
+name: forge.security-review
 description: >-
-  Monthly; lead Security. Forge event command.
+  On demand; lead Security. Forge event command.
 ---
 
-# dependency-audit
-
+# forge.security-review
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,28 +27,35 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Monthly
+Cadence: On demand
 Lead: Security
 HITL:
 Mode: approve-before-write
 Pause when:
-    findings.md would gain/remove dependency issues
-    checklist.md Dependencies gate would change
-    Proposed upgrade/removal actions in the submodule (vendor/code) — escalate to approve-before-vendor before applying
+    Always — security approve or pass-back required
+    findings.md / checklist.md / threat-model.md would change
+    Vendor comments or secret-scan follow-ups proposed
+# If mutating GitHub/GitLab (comments, alerts), escalate Mode to approve-before-vendor.
 Instructions:
-Audit dependencies for known issues and risky upgrades; current posture only.
-Propose findings.md updates for actionable dependency issues; delete noise and cleared items.
-Propose checklist.md Dependencies updates when the recurring gate itself should change.
-Recommend upgrade/remove actions in the hand-off; don’t silently bump deps — Engineer/implement-ticket or a dedicated change applies after approval.
-Leave threat-model.md alone unless the dependency changes a trust boundary.
+Review a change or surface (PR/MR, config, dependency bump) for security issues against checklist + threat-model.
+Call: approve or pass back — no silent OK.
+On approve: propose clearing related Open findings; note checklist gates that passed for this change only if durable.
+On pass-back: propose findings.md Open/Blockers with impact + fix intent; remove findings that no longer apply.
+Propose threat-model.md updates only when assets/boundaries/threats actually changed; delete obsolete threats/mitigations.
+Don’t rewrite product/architecture docs; escalate design-level issues to Architect/PO events.
 Docs:
 <super-repo>/.ai/memory/<submodule>/security/findings.md
 <super-repo>/.ai/memory/<submodule>/security/checklist.md
 <super-repo>/.ai/memory/<submodule>/security/threat-model.md
+<super-repo>/.ai/memory/<submodule>/engineering/in-flight.md
+<super-repo>/.ai/memory/<submodule>/architecture/constraints.md
+<super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
 Agents:
 Security:
-    skills/security/dependency-audit/SKILL.md
+    skills/security/security-review/SKILL.md
+    skills/security/secret-scan/SKILL.md
+    skills/security/harden-config/SKILL.md
     skills/security/security-pass-back/SKILL.md
     skills/security/security-approve-change/SKILL.md
 Engineer:
-    skills/engineer/implement-ticket/SKILL.md
+    skills/engineer/respond-to-review/SKILL.md

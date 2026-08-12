@@ -1,11 +1,10 @@
 ---
-name: launch-comms
+name: forge.messaging-refresh
 description: >-
-  Per release; lead Marketing Manager. Forge event command.
+  Monthly; lead Marketing Manager. Forge event command.
 ---
 
-# launch-comms
-
+# forge.messaging-refresh
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,35 +27,34 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Per release
+Cadence: Monthly
 Lead: Marketing Manager
 HITL:
 Mode: approve-before-write
 Pause when:
-    Always — launch posts/announcement copy require approval
-    social-queue.md or calendar.md would change
-    messaging.md one-liner/CTA tweaks for the launch
+    positioning.md / messaging.md / voice.md / calendar.md would change
 Instructions:
-Turn the release into external comms: announcement + a few social variants aligned to release/notes.md and positioning.
-Read release notes, brief, messaging, voice; don’t invent features that didn’t ship.
-Propose social-queue.md Ready to post (and Holding if embargoed until cut-release); remove drafts for features that were cut.
-Propose calendar.md Upcoming hooks for launch day; clear after launch window.
-Coordinate with Release Manager notes.md — marketing does not own the changelog; it owns the public narrative and posts.
-Publishing still happens outside the harness after approval (unless a later vendor skill posts for you).
+Refresh external story against current brief, competitive notes, and proof — not a slogan brainstorm dump.
+Propose positioning.md and messaging.md updates in place; delete pillars/CTAs/proof that are no longer true.
+Propose voice.md Example/Anti-pattern updates only when tone drift is real; keep rules short.
+Propose calendar.md Themes for the next period; clear stale Upcoming hooks.
+Leave social-queue.md alone unless a messaging change kills queued drafts (then remove/revise those items).
 Docs:
-<super-repo>/.ai/memory/<submodule>/marketing/social-queue.md
-<super-repo>/.ai/memory/<submodule>/marketing/calendar.md
+<super-repo>/.ai/memory/<submodule>/marketing/positioning.md
 <super-repo>/.ai/memory/<submodule>/marketing/messaging.md
 <super-repo>/.ai/memory/<submodule>/marketing/voice.md
-<super-repo>/.ai/memory/<submodule>/marketing/positioning.md
-<super-repo>/.ai/memory/<submodule>/release/notes.md
-<super-repo>/.ai/memory/<submodule>/release/status.md
+<super-repo>/.ai/memory/<submodule>/marketing/calendar.md
+<super-repo>/.ai/memory/<submodule>/marketing/social-queue.md
 <super-repo>/.ai/memory/<submodule>/product/brief.md
+<super-repo>/.ai/memory/<submodule>/product/competitive.md
+<super-repo>/.ai/memory/<submodule>/product/insights.md
 Agents:
 Marketing Manager:
-    skills/marketing-manager/launch-announcement/SKILL.md
-    skills/marketing-manager/social-post/SKILL.md
+    skills/marketing-manager/positioning/SKILL.md
     skills/marketing-manager/messaging/SKILL.md
     skills/marketing-manager/voice/SKILL.md
-Release Manager:
-    skills/release-manager/write-release-notes/SKILL.md
+    skills/marketing-manager/content-calendar/SKILL.md
+    skills/marketing-manager/competitive-angle/SKILL.md
+    skills/marketing-manager/proof-harvest/SKILL.md
+Product Owner:
+    skills/product-owner/stakeholder-alignment/SKILL.md

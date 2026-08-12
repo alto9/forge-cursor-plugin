@@ -1,11 +1,10 @@
 ---
-name: sync-schedule
+name: forge.sync-schedule
 description: >-
   On demand; lead (harness). Optional Google Calendar sync for Forge ritual reminders. Not required by any other event.
 ---
 
-# sync-schedule
-
+# forge.sync-schedule
 Optional convenience. **Not** part of New project path, release gates, or role schedules. Calendar reminders never auto-start harness commands.
 
 ## Parent execution model

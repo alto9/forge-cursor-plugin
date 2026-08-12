@@ -1,11 +1,10 @@
 ---
-name: cut-release
+name: forge.cut-release
 description: >-
   Per release; lead Release Manager. Forge event command.
 ---
 
-# cut-release
-
+# forge.cut-release
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

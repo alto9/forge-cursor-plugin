@@ -1,11 +1,10 @@
 ---
-name: prepare-release
+name: forge.prepare-release
 description: >-
   Per release; lead Release Manager. Forge event command.
 ---
 
-# prepare-release
-
+# forge.prepare-release
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

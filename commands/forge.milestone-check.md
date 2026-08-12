@@ -1,11 +1,10 @@
 ---
-name: delivery-status
+name: forge.milestone-check
 description: >-
-  Weekly; lead Project Manager. Forge event command.
+  Per milestone; lead Project Manager. Forge event command.
 ---
 
-# delivery-status
-
+# forge.milestone-check
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -28,26 +27,27 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 
 ## Event contract
 
-Cadence: Weekly
+Cadence: Per milestone
 Lead: Project Manager
 HITL:
-Mode: propose
+Mode: approve-before-write
 Pause when:
-    Material blocker/ask changes
-    plan.md would change
-# Unchanged run: observe (report only). Routine status refreshes apply only after orchestrator says apply.
+    Always — met / at risk / slipped is a required orchestrator decision
+    milestones.md, status.md, plan.md, or risks.md would change
 Instructions:
-Refresh delivery truth; leave files alone if nothing material changed.
-Propose status.md updates in place (Summary/In flight/Blockers/Next up/Asks); remove cleared blockers and finished in-flight items.
-Read plan.md and backlog.md for reconciliation; propose plan.md edits only if sequence/ownership drifted from reality.
-Propose risks.md edits only for blockers that are true risks/dependencies; delete entries that are no longer active.
+Prefer host milestone state (GitHub/GitLab) as SoT; memory milestones.md is a projection.
+Recommend milestone call: met, at risk, or slipped. Escalate scope/priority to PO events — don’t rewrite product intent here.
+Propose host milestone close/reopen/date updates when needed; never create epic/umbrella issues.
+Propose milestones.md updates to match host: remove met milestones from Active; move failed timing to Slipped then resolve (re-date into Upcoming or delete if abandoned). Reference host milestone URL + issue ids.
+Propose status.md updates to match the call; clear finished in-flight work tied to a met milestone.
+Propose plan.md / risks.md edits only when slip/risk changes execution; delete risks closed by meeting the milestone.
 Docs:
+<super-repo>/.ai/memory/<submodule>/project/milestones.md
 <super-repo>/.ai/memory/<submodule>/project/status.md
 <super-repo>/.ai/memory/<submodule>/project/plan.md
 <super-repo>/.ai/memory/<submodule>/project/risks.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
 Agents:
 Project Manager:
+    skills/project-manager/milestone-tracking/SKILL.md
     skills/project-manager/status-update/SKILL.md
-    skills/project-manager/blocker-resolution/SKILL.md
-    skills/project-manager/dependency-management/SKILL.md
+    skills/project-manager/risk-tracking/SKILL.md

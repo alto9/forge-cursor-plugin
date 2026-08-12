@@ -1,11 +1,10 @@
 ---
-name: plan-refresh
+name: forge.architecture-review
 description: >-
-  Biweekly; lead Project Manager. Forge event command.
+  Biweekly; lead Architect. Forge event command.
 ---
 
-# plan-refresh
-
+# forge.architecture-review
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
@@ -29,33 +28,31 @@ Orchestrator reply gates Apply: approve all | approve subset | reject | redirect
 ## Event contract
 
 Cadence: Biweekly
-Lead: Project Manager
+Lead: Architect
 HITL:
 Mode: approve-before-write
 Pause when:
-    plan.md rewrite/resequence
-    milestones.md moves, slips, or deletes
-    Any product doc cut proposed (prefer redirect to PO events)
-    Architecture dependency/order changes proposed
+    overview.md / constraints.md / interfaces.md / risks.md would change
+    New or superseded ADR in decisions.md
 Instructions:
-Propose rewrite of plan.md to the current execution story (replace stale Sequence/Dependencies/Handoffs; don’t append old plan versions).
-Read backlog.md and roadmap.md as inputs; don’t propose product doc edits here unless a delivery constraint forces an explicit cut (prefer PO grooming/roadmap-review).
-Propose milestones.md updates to match the plan: move/remove completed or abandoned milestones; use Slipped temporarily, then clear or re-date — don’t stockpile slips.
-Architect: read constraints/interfaces/risks; propose plan Dependency/Handoff changes only when sequence is structurally forced; leave architecture docs alone unless plan exposes a new structural risk (then prefer architecture-review).
+Reconcile architecture memory with code and near-term roadmap/plan — current shape only.
+Propose overview.md updates when major components, data flow, or deployment shape drifted; remove obsolete components rather than archiving them in-file.
+Propose constraints.md / interfaces.md rewrites to current truth; delete constraints/interfaces that no longer apply; clear finished Contracts in flight.
+Propose risks.md updates for structural risks only (not delivery blockers — those stay in project/risks.md); delete resolved structural risks.
+Propose decisions.md entries only when a decision actually landed or was superseded; do not narrate deliberation.
+Read product roadmap and project plan as inputs; don’t edit product/project docs here (redirect to roadmap-review / plan-refresh).
 Docs:
-<super-repo>/.ai/memory/<submodule>/project/plan.md
-<super-repo>/.ai/memory/<submodule>/project/milestones.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/product/roadmap.md
+<super-repo>/.ai/memory/<submodule>/architecture/overview.md
 <super-repo>/.ai/memory/<submodule>/architecture/constraints.md
 <super-repo>/.ai/memory/<submodule>/architecture/interfaces.md
+<super-repo>/.ai/memory/<submodule>/architecture/decisions.md
 <super-repo>/.ai/memory/<submodule>/architecture/risks.md
+<super-repo>/.ai/memory/<submodule>/product/roadmap.md
+<super-repo>/.ai/memory/<submodule>/project/plan.md
 Agents:
-Project Manager:
-    skills/project-manager/work-planning/SKILL.md
-    skills/project-manager/sequencing/SKILL.md
-    skills/project-manager/milestone-tracking/SKILL.md
-    skills/project-manager/handoff-coordination/SKILL.md
 Architect:
-    skills/architect/change-impact/SKILL.md
+    skills/architect/system-design/SKILL.md
     skills/architect/constraint-mapping/SKILL.md
+    skills/architect/interface-contracts/SKILL.md
+    skills/architect/architecture-decision/SKILL.md
+    skills/architect/technical-risk/SKILL.md

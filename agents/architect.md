@@ -74,6 +74,6 @@ Skills:
     skills/architect/review-design/SKILL.md
 
 Schedule:
-    Biweekly: architecture-review
-    Per major bet: design-spike
+    Biweekly: forge.architecture-review
+    Per major bet: forge.design-spike
     # Also participates in roadmap-review, plan-refresh, launch-readiness-check

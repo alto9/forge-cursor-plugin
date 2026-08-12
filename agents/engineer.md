@@ -41,7 +41,7 @@ Skills:
     skills/engineer/update-branch/SKILL.md
 
 Schedule:
-    On demand: implement-ticket
-    On demand: respond-to-review
+    On demand: forge.implement-ticket
+    On demand: forge.respond-to-review
     # Hands verified-ready work to Quality Assurance (qa-verify)
     # Also participates in design-spike when implementation constraints matter

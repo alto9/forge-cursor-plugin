@@ -1,11 +1,10 @@
 ---
-name: competitive-scan
+name: forge.competitive-scan
 description: >-
   Monthly; lead Product Owner. Forge event command.
 ---
 
-# competitive-scan
-
+# forge.competitive-scan
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

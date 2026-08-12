@@ -1,11 +1,10 @@
 ---
-name: qa-verify
+name: forge.qa-verify
 description: >-
   On demand; lead Quality Assurance. Forge event command.
 ---
 
-# qa-verify
-
+# forge.qa-verify
 ## Parent execution model
 
 1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).

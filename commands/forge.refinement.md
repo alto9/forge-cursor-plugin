@@ -1,12 +1,12 @@
 ---
-name: refinement
+name: forge.refinement
 description: >-
-  On demand / as needed; lead Product Owner. Expand Refinement-column tickets into agent-ready Ready work.
+  On demand / as needed; lead Product Owner. Expand Refinement-column tickets into
+  self-contained Ready work labeled ai-ready or human-ready.
 ---
 
-# refinement
-
-Sibling to `backlog-grooming`. Grooming lands high-level Intention + Acceptance in **Refinement**; this event builds full low-level tickets and promotes to **Ready**.
+# forge.refinement
+Sibling to `/forge.backlog-grooming`. Grooming lands high-level Intention + Acceptance in **Refinement**; this event builds full low-level tickets and promotes to **Ready** with an executor label.
 
 ## Parent execution model
 
@@ -24,7 +24,7 @@ Sibling to `backlog-grooming`. Grooming lands high-level Intention + Acceptance 
 - **Proposed vendor actions** — none, or explicit list
 - **Decisions needed** — yes/no or A/B
 - **Left alone** — in-scope docs/actions intentionally unchanged
-- **Ready gate** — issue id | pass/fail | failing checklist items
+- **Ready gate** — issue id | pass/fail | failing checklist items | proposed label (`ai-ready` | `human-ready`)
 
 Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
 
@@ -36,18 +36,20 @@ Lead: Product Owner
 HITL:
 Mode: approve-before-vendor
 Pause when:
-    Expanding issue bodies to agent-ready shape
+    Expanding issue bodies to self-contained Ready shape
     Moving board status Refinement → Ready (or back to Refinement/Blocked)
-    Spec created or materially edited
+    Applying ai-ready / human-ready labels
+    Memory spec projection created or materially edited
     Open product/tech decisions that block Ready
 Instructions:
 Work the board **Refinement** column (forge.json statusIds.refinement) — pull issue ids from board + backlog.md # Refinement.
-For each selected item: expand grooming brief into full agent-ready body via skills/product-owner/agent-ready-ticket + requirements-writing.
-Architect: propose Constraints / interface pointers from architecture docs; call out design gaps (may spawn design-spike instead of Ready).
+For each selected item: expand grooming brief into a full self-contained Ready body via skills/product-owner/agent-ready-ticket + requirements-writing. Issue body must stand alone — no links to memory paths.
+Architect: propose Constraints / interface facts **to inline** into the issue body (from architecture docs); call out design gaps (may spawn design-spike instead of Ready).
 Engineer (optional collaborator): propose Verification steps and flag missing implementation detail — propose-only, no coding here.
-Only checklist **pass** → vendor move to statusIds.ready + backlog.md # Ready. Failures stay Refinement or Blocked; never promote weak tickets.
-Create/edit product/specs/<feature>.md when multi-area; Open questions must be empty before Ready.
-HITL must include Ready gate table. Do not claim ready for /implement-ticket unless promoting to Ready.
+Classify executor: exactly one of `ai-ready` | `human-ready` (forge.json labels.aiReady / labels.humanReady).
+Only checklist **pass** → vendor move to statusIds.ready, apply the readiness label (strip the other), + backlog.md # Ready. Failures stay Refinement or Blocked; never promote weak tickets.
+Optionally create/edit product/specs/<feature>.md as a memory projection when multi-area — never link it from the issue. Open questions must be empty before Ready.
+HITL must include Ready gate table (pass/fail + label). Do not claim ready for /forge.implement-ticket unless promoting with `ai-ready`.
 Do not run high-level prioritization/Icebox cleanup here — that is backlog-grooming.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
