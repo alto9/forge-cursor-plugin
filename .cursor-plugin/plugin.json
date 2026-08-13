@@ -1,6 +1,6 @@
 {
-  "name": "forge-cursor",
-  "description": "Forge harness: agents, event commands, skills, and super-repo memory for structured solo SDLC across GitHub/GitLab submodules.",
+  "name": "Forge by Alto9",
+  "description": "Forge SDLC harness: agents, event commands, skills, and super-repo memory for structured agentic SDLC across GitHub/GitLab submodules.",
   "version": "1.0.0",
   "author": { "name": "Alto9" }
 }

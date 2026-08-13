@@ -55,8 +55,8 @@ Skills:
     skills/quality-assurance/qa-approve-change/SKILL.md
 
 Schedule:
-    On demand: forge.qa-verify
+    On demand: forge.validate-mr
     Per release: forge.regression-pass
     # Also participates in launch-readiness-check
     # Receives work from Engineer; returns via pass-back or approve-change
-    # approve-change includes merge of the PR/MR when verification passes (no separate merge event)
+    # validate-mr merges only when QA and Security both approve (no separate merge event)

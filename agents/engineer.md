@@ -43,5 +43,5 @@ Skills:
 Schedule:
     On demand: forge.implement-ticket
     On demand: forge.respond-to-review
-    # Hands verified-ready work to Quality Assurance (qa-verify)
+    # Hands verified-ready work to /forge.validate-mr (QA + Security)
     # Also participates in design-spike when implementation constraints matter

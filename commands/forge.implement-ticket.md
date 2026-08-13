@@ -43,7 +43,7 @@ If the ticket is still in Refinement, missing readiness label, or fails the chec
 If it passes: implement in the active submodule — code/tests are the deliverable. Don’t invent scope beyond the issue body.
 Optionally read brief/architecture memory as session context; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
 Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state; remove the item from Active when PR is open or work is handed off — no done archive.
-When implementation is ready for verification, propose adding it to qa/queue.md Ready for QA (do not self-approve).
+When implementation is ready for verification, propose adding it to qa/queue.md Ready for QA (do not self-approve). Next human command: `/forge.validate-mr`.
 Use vendor skills for branch/PR/MR; propose vendor actions in the hand-off before push/open/update.
 Prefer smallest change that meets acceptance criteria; refactor only when required for the ticket.
 Docs:

@@ -56,7 +56,9 @@ Skills:
     skills/security/security-approve-change/SKILL.md
 
 Schedule:
+    On demand: forge.validate-mr
     On demand: forge.security-review
     Monthly: forge.dependency-audit
     Per release: forge.security-release-gate
     # Also participates in launch-readiness-check
+    # validate-mr is the PR/MR gate (with QA); security-review covers non-MR surfaces

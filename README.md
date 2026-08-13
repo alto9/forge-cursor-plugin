@@ -146,7 +146,7 @@ See [`agents/*.md`](agents/) — Architect, Engineer, Marketing Manager, Product
 
 ## Event commands
 
-See [`commands/forge.<event-id>.md`](commands/) — all slash commands use a `forge.` prefix (e.g. `/forge.help`, `/forge.init-project`, `/forge.backlog-grooming`, `/forge.refinement`, `/forge.implement-ticket`, `/forge.respond-to-review`, `/forge.qa-verify`, …). Full list: [`docs/inventory.json`](docs/inventory.json).
+See [`commands/forge.<event-id>.md`](commands/) — all slash commands use a `forge.` prefix (e.g. `/forge.help`, `/forge.init-project`, `/forge.backlog-grooming`, `/forge.refinement`, `/forge.implement-ticket`, `/forge.respond-to-review`, `/forge.validate-mr`, …). Full list: [`docs/inventory.json`](docs/inventory.json).
 
 ## Skills
 
