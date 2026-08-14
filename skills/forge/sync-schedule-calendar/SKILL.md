@@ -14,34 +14,29 @@ Skip if Calendar MCP is unavailable — report that and stop (do not invent CLI 
 
 ## Scope (optional, not plumbing)
 
-- **Does:** create/update recurring calendar reminders titled `Forge: forge.<event-id>` so rituals are hard to forget.
-- **Does not:** auto-run event commands, mutate board/SCM, or require calendar for any other Forge flow.
+- **Does:** create/update recurring calendar reminders titled `Forge: forge.<event-id>` so rituals are hard to forget. One reminder set for **all** Forge projects — not per submodule.
+- **Does not:** run `resolve-paths` / `sync-memory` / `resolve-config`; read or write memory or `forge.json`; auto-run event commands; mutate board/SCM; require calendar for any other Forge flow.
 - Not listed on role agents or release gates. Safe to ignore forever.
 
 ## Inputs
 
-1. Plugin `agents/*.md` → each agent's `Schedule:` lines (`Cadence: event-id`).
-2. Optional prefs in `memoryRoot/forge.json` → `calendar` (create/propose on first run):
+1. Plugin `agents/*.md` → each agent's `Schedule:` lines (`Cadence: event-id`). Commands live in the plugin; no project path needed.
+2. Existing Google Calendar events titled `Forge: forge.<event-id>` (slot source of truth on re-runs).
+3. HITL for first-run timezone, calendar id, and slot times. Defaults if the orchestrator does not specify:
 
-```json
-"calendar": {
-  "calendarId": "primary",
-  "timeZone": "America/New_York",
-  "durationMinutes": 30,
-  "availability": "AVAILABILITY_FREE",
-  "includeCadences": ["Weekly", "Biweekly", "Monthly"],
-  "skipEventIds": [],
-  "slots": {
-    "forge.backlog-grooming": { "weekday": "MO", "time": "09:00" }
-  }
-}
+```
+calendarId: primary
+durationMinutes: 30
+availability: AVAILABILITY_FREE
+includeCadences: Weekly, Biweekly, Monthly
 ```
 
 - `weekday`: `MO`…`SU` (RRULE `BYDAY`)
-- `time`: local `HH:MM` in `timeZone`
+- `time`: local `HH:MM` in the chosen `timeZone`
 - `dayOfMonth`: optional for Monthly (default `1`)
 - Biweekly → `RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=…`
-- Monthly → `RRULE:FREQ=MONTHLY;BYMONTHDAY=…` (or `BYDAY=1MO` if slot says so)
+- Monthly → `RRULE:FREQ=MONTHLY;BYMONTHDAY=…` (or `BYDAY=1MO` if the slot says so)
+- Ignore any per-project `forge.json` `calendar` block — reminders are not project-linked.
 
 ## Default include / skip
 
@@ -56,30 +51,29 @@ List skipped events under **Left alone**. Orchestrator may opt in to specific sk
 ## Steps
 
 1. Confirm Google Calendar MCP tools are available (`list_calendars`). If not → stop with clear message.
-2. `resolve-paths` (optional submodule context for description text). `forge.json` / `calendar` prefs are niceties, not required for a dry propose.
-3. Collect unique `event-id` + cadence from all `agents/*.md` Schedule sections (and optionally `commands/*.md` cadence lines for completeness). Dedupe by event-id; if cadences conflict, prefer the Lead agent's schedule or ask in Decisions needed.
-4. Filter by `includeCadences` / `skipEventIds`.
-5. For each included event without a `slots` entry, propose a default slot (spread weeklies across mornings; biweeklies Tuesday; monthlies day 1). Put defaults in HITL for approval — do not invent times silently on Apply. Slot keys and event ids use the slash command id (`forge.<name>`).
-6. Idempotency: `search_events` (or `list_events`) for summary `Forge: forge.<event-id>`.
-   - Missing → propose `create_event`
-   - Exists → propose `update_event` only if time/RRULE/description drift
-7. Event payload:
+2. Do **not** run `resolve-paths`, `sync-memory`, or `resolve-config`. Do not ask for `--submodule` or `FORGE_SUPER_REPO`. Continue even if the workspace is not a Forge super-repo.
+3. Collect unique `event-id` + cadence from plugin `agents/*.md` Schedule sections (and optionally `commands/*.md` cadence lines for completeness). Dedupe by event-id; if cadences conflict, prefer the Lead agent's schedule or ask in Decisions needed.
+4. Filter by default include/skip (Weekly / Biweekly / Monthly in; On demand and per-release/milestone/bet out unless HITL opts in).
+5. Idempotency: `search_events` (or `list_events`) for summary `Forge: forge.<event-id>`.
+   - Missing → propose `create_event` with a default slot (spread weeklies across mornings; biweeklies Tuesday; monthlies day 1). Put defaults in HITL — do not invent times silently on Apply.
+   - Exists → keep its time/RRULE; propose `update_event` only if description (or orchestrator-requested time) drifted.
+6. Event payload:
    - `summary`: `Forge: forge.<event-id>` (keep this exact string — idempotency key)
-   - `description`: human goal first (catalog below), then how to run it. Shape:
+   - `description`: human goal first (catalog below), then how to run it across all Forge projects. Shape:
 
      ```
      <Ritual name> — <dictionary-style goal. What this time is for, in plain language.>
 
-     When this reminder fires, run /forge.<event-id> in Cursor. The calendar does not start the harness.
+     When this reminder fires, run /forge.<event-id> in Cursor for each Forge project you manage. This reminder is not tied to one repo. The calendar does not start the harness.
      ```
 
-     Optional last line if paths resolved: `Project: <submodulePath>`
+     Never add a project or submodule line.
    - Use the catalog verbatim. If an event-id is missing, write one sentence in the same voice from the command’s purpose — never use the slash command as the description.
-   - `startTime` / `endTime` from slot + `durationMinutes`
+   - `startTime` / `endTime` from existing event or HITL-approved slot + `durationMinutes`
    - `timeZone`, `recurrenceData` (`RRULE:...`), `availability` (prefer FREE so it doesn't block the day)
-   - `calendarId` from prefs or primary
-8. HITL: Mode `approve-before-vendor` (calendar writes). Proposed vendor actions = calendar create/update/delete list. Optional memory edit = `forge.json` `calendar` prefs / slot map.
-9. On approve: Apply calendar ops via MCP; then write approved `calendar` prefs to `forge.json` if proposed.
+   - `calendarId` from HITL or primary
+7. HITL: Mode `approve-before-vendor` (calendar writes). Proposed vendor actions = calendar create/update/delete list. Proposed memory edits = none.
+8. On approve: Apply calendar ops via MCP only.
 
 ## Reminder descriptions
 
@@ -122,7 +116,7 @@ Example body for `forge.backlog-grooming`:
 ```
 Backlog grooming — A regular review of the planned work to clarify each item's intent, drop what no longer matters, and decide what is worth shaping next. This is not the pass that makes tickets ready to build.
 
-When this reminder fires, run /forge.backlog-grooming in Cursor. The calendar does not start the harness.
+When this reminder fires, run /forge.backlog-grooming in Cursor for each Forge project you manage. This reminder is not tied to one repo. The calendar does not start the harness.
 ```
 
 ## MCP mapping
@@ -138,5 +132,5 @@ delete_event   (only if orchestrator asks to remove Forge reminders)
 ## Outputs / stop conditions
 
 - Hand-off with create/update/skip tables.
-- Stop if MCP missing or path/calendar ambiguous.
+- Stop if Calendar MCP is missing. Do not stop for path, submodule, or memory-repo issues.
 - Never start a Forge event from a calendar trigger.

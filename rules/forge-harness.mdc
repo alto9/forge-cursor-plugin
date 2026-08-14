@@ -7,7 +7,7 @@ alwaysApply: true
 
 - Workspace is the **super-repo**. Code lives in git submodules; agent memory lives in the **memory-repo** submodule at `.ai/memory/` (`memoryRoot = .ai/memory/<submodulePath>/`).
 - **Board/SCM wins.** Memory is a projection. On discrepancy, update memory — do not "fix" the board to match memory.
-- Every event/command starts with **resolve-paths** → **sync-memory** (pull memory-repo `origin/main`) → **resolve-config**. Path ambiguity or sync failure is a hard stop (`FORGE_SUPER_REPO`, `--submodule`, missing `.ai/memory` submodule).
+- Every event/command starts with **resolve-paths** → **sync-memory** (pull memory-repo `origin/main`) → **resolve-config**, except `/forge.sync-schedule` (harness-wide calendar reminders; skip path/memory). Path ambiguity or sync failure is a hard stop for project events (`FORGE_SUPER_REPO`, `--submodule`, missing `.ai/memory` submodule).
 - Event commands are the parent: spawn listed agents as **propose-only** subagents; parent merges, HITLs, validates, then Applies (vendor/SCM first, then memory, then **commit-memory** push to memory-repo `main`).
 - Memory-repo is agent-owned git: **no branches, no PRs/MRs** — commit and push `main` only. Subagents do not Apply, do not HITL, and do not mutate SCM unless executing parent-approved Apply steps.
 - Doc templates: required H2s only; empty sections OK; no extra H2s; current state only.

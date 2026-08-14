@@ -173,7 +173,7 @@ Collision map: [docs/skill-naming.md](docs/skill-naming.md).
 
 ### Optional: calendar reminders
 
-`/forge.sync-schedule` ([`commands/forge.sync-schedule.md`](commands/forge.sync-schedule.md), skill [`sync-schedule-calendar`](skills/forge/sync-schedule-calendar/SKILL.md)) can upsert recurring Google Calendar reminders (`Forge: forge.<event-id>`) from agent Schedule cadences when Calendar MCP is available. Not required by init, gates, or other events; never auto-starts commands. Prefs live in optional `forge.json` → `calendar`.
+`/forge.sync-schedule` ([`commands/forge.sync-schedule.md`](commands/forge.sync-schedule.md), skill [`sync-schedule-calendar`](skills/forge/sync-schedule-calendar/SKILL.md)) can upsert recurring Google Calendar reminders (`Forge: forge.<event-id>`) from agent Schedule cadences when Calendar MCP is available. Reminders are harness-wide (all Forge projects), not tied to one submodule. Not required by init, gates, or other events; never auto-starts commands; skips path/memory resolution.
 
 ## Scripts & tests
 
