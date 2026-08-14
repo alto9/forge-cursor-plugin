@@ -42,7 +42,7 @@ Build the reminder set from agents/*.md Schedule sections (unique event ids).
 Default include: Weekly, Biweekly, Monthly. Default skip: On demand, Per release, Per milestone, Per major bet.
 Propose sensible default slots when forge.json calendar.slots is incomplete; require orchestrator OK on times.
 Idempotent upsert by event summary "Forge: <event-id>".
-Reminders only — description must say the human runs /<event-id>; calendar does not start the harness.
+Reminders only — description leads with the human ritual name and a dictionary-style goal (skill catalog); then says the human runs /<event-id>. Calendar does not start the harness.
 Docs:
 <super-repo>/.ai/memory/<submodulePath>/forge.json
 # Optional calendar prefs only; other memory docs out of scope

@@ -64,13 +64,66 @@ List skipped events under **Left alone**. Orchestrator may opt in to specific sk
    - Missing → propose `create_event`
    - Exists → propose `update_event` only if time/RRULE/description drift
 7. Event payload:
-   - `summary`: `Forge: forge.<event-id>`
-   - `description`: run `/forge.<event-id>` in Cursor (Forge); reminders only — does not start the harness; optional submodulePath
+   - `summary`: `Forge: forge.<event-id>` (keep this exact string — idempotency key)
+   - `description`: human goal first (catalog below), then how to run it. Shape:
+
+     ```
+     <Ritual name> — <dictionary-style goal. What this time is for, in plain language.>
+
+     When this reminder fires, run /forge.<event-id> in Cursor. The calendar does not start the harness.
+     ```
+
+     Optional last line if paths resolved: `Project: <submodulePath>`
+   - Use the catalog verbatim. If an event-id is missing, write one sentence in the same voice from the command’s purpose — never use the slash command as the description.
    - `startTime` / `endTime` from slot + `durationMinutes`
    - `timeZone`, `recurrenceData` (`RRULE:...`), `availability` (prefer FREE so it doesn't block the day)
    - `calendarId` from prefs or primary
 8. HITL: Mode `approve-before-vendor` (calendar writes). Proposed vendor actions = calendar create/update/delete list. Optional memory edit = `forge.json` `calendar` prefs / slot map.
 9. On approve: Apply calendar ops via MCP; then write approved `calendar` prefs to `forge.json` if proposed.
+
+## Reminder descriptions
+
+Plain-language goal of the ritual — not the harness steps. Lead with the industry name a human would look up.
+
+| Event id | Ritual name | Goal (use as the first paragraph) |
+|---|---|---|
+| `forge.backlog-grooming` | Backlog grooming | A regular review of the planned work to clarify each item's intent, drop what no longer matters, and decide what is worth shaping next. This is not the pass that makes tickets ready to build. |
+| `forge.feedback-triage` | Feedback triage | Sorting new user and market signal into themes, then promoting, re-ranking, or dropping work so the product stays pointed at real problems. |
+| `forge.stakeholder-sync` | Stakeholder sync | A check that the product story and delivery reality still match: what is still true, what changed, and what needs a decision. |
+| `forge.delivery-status` | Delivery status | A snapshot of what is in flight, what is blocked, and what comes next, so the plan reflects current truth. |
+| `forge.risk-review` | Risk review | A live look at threats, issues, and dependencies that could derail delivery, keeping only what is still active. |
+| `forge.social-post-batch` | Social post batch | Drafting a small set of on-brand posts for the coming week so there is something ready to publish. Publishing still happens by hand. |
+| `forge.metrics-review` | Metrics review | Reading outcomes against targets and deciding whether to stay the course, adjust, or stop a bet. |
+| `forge.roadmap-review` | Roadmap review | Reconciling what you will do now, next, and later with the product brief, the numbers, and actual capacity — including hard cuts. |
+| `forge.architecture-review` | Architecture review | Checking that the system's shape, constraints, and interfaces still match how the product is being built. |
+| `forge.plan-refresh` | Plan refresh | Rewriting the execution sequence so order, dependencies, and milestones match the work as it stands now. |
+| `forge.discovery` | Discovery | Looking for evidence about users and problems, then updating what you believe is true. This is research, not a feature brainstorm. |
+| `forge.competitive-scan` | Competitive scan | Refreshing how alternatives win or lose so the product story stays honest. This is not a feature-parity checklist. |
+| `forge.messaging-refresh` | Messaging refresh | Updating the external story — positioning, words, and voice — so it still matches the product and the market. |
+| `forge.dependency-audit` | Dependency audit | Checking third-party packages for known issues and risky upgrades, then recommending what to change. |
+| `forge.refinement` | Refinement | Turning a high-level idea into a self-contained ticket someone can actually build, with clear scope and acceptance. |
+| `forge.init-project` | Project init | Standing up the first product sketch and working memory for a repo so later rituals have something to work from. |
+| `forge.launch-readiness-check` | Launch readiness | A go/no-go call on whether this release is actually ready to ship. |
+| `forge.outcomes-retro` | Outcomes retro | Looking back at what the release changed — results, learnings, and what to do next. |
+| `forge.milestone-check` | Milestone check | Confirming whether a milestone was met, slipped, or should be dropped, and updating the plan to match. |
+| `forge.design-spike` | Design spike | A time-boxed investigation of a major technical bet before you commit to a design. |
+| `forge.regression-pass` | Regression pass | Re-checking that existing behavior still works before a release. |
+| `forge.security-review` | Security review | Reviewing surfaces outside a single pull request — config, dependencies, threats — for security issues. |
+| `forge.security-release-gate` | Security release gate | The security go/no-go for this release. |
+| `forge.prepare-release` | Prepare release | Assembling version, notes, and checklist so a cut can happen cleanly. |
+| `forge.cut-release` | Cut release | Tagging and publishing the prepared release. |
+| `forge.launch-comms` | Launch comms | Preparing the public narrative and posts for a ship. |
+| `forge.implement-ticket` | Implement ticket | Building a ticket that is already ready to execute. |
+| `forge.respond-to-review` | Respond to review | Addressing review comments on an open change. |
+| `forge.validate-mr` | Validate merge request | The combined quality and security gate before a change is merged. |
+
+Example body for `forge.backlog-grooming`:
+
+```
+Backlog grooming — A regular review of the planned work to clarify each item's intent, drop what no longer matters, and decide what is worth shaping next. This is not the pass that makes tickets ready to build.
+
+When this reminder fires, run /forge.backlog-grooming in Cursor. The calendar does not start the harness.
+```
 
 ## MCP mapping
 
