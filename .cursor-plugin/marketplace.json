@@ -1,5 +1,5 @@
 {
-  "name": "Forge SDLC by Alto9",
+  "name": "Forge Harness by Alto9",
   "owner": {
     "name": "Alto9"
   },
@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "Forge SDLC",
+      "name": "Forge Harness",
       "source": ".",
       "description": "Forge harness: agents, event commands, skills, and super-repo memory for structured solo SDLC across GitHub/GitLab submodules."
     }

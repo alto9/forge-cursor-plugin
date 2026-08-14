@@ -1,5 +1,5 @@
 {
-  "name": "Forge SDLC",
+  "name": "Forge Harness",
   "description": "Forge SDLC harness: agents, event commands, skills, and super-repo memory for structured agentic SDLC across GitHub/GitLab submodules.",
   "version": "1.0.0",
   "author": { "name": "Alto9" }
