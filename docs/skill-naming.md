@@ -28,6 +28,8 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/forge/init-memory/SKILL.md | skills/forge/init-memory/ | init-memory |
 | skills/forge/resolve-config/SKILL.md | skills/forge/resolve-config/ | resolve-config |
 | skills/forge/resolve-paths/SKILL.md | skills/forge/resolve-paths/ | resolve-paths |
+| skills/forge/sync-memory/SKILL.md | skills/forge/sync-memory/ | sync-memory |
+| skills/forge/commit-memory/SKILL.md | skills/forge/commit-memory/ | commit-memory |
 | skills/forge/validate-memory/SKILL.md | skills/forge/validate-memory/ | validate-memory |
 | skills/forge/sync-schedule-calendar/SKILL.md | skills/forge/sync-schedule-calendar/ | sync-schedule-calendar |
 | skills/marketing-manager/competitive-angle/SKILL.md | skills/marketing-manager/competitive-angle/ | competitive-angle |

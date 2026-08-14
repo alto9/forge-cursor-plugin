@@ -44,6 +44,8 @@
   ],
   "skills": [
     "skills/forge/resolve-paths",
+    "skills/forge/sync-memory",
+    "skills/forge/commit-memory",
     "skills/forge/ensure-config",
     "skills/forge/init-memory",
     "skills/forge/resolve-config",

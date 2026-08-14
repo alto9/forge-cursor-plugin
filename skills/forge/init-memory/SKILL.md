@@ -8,15 +8,16 @@ description: >-
 
 ## When to use
 
-Launching or repairing `memoryRoot` for a submodule (`init-project`, or gap-fill).
+Launching or repairing `memoryRoot` for a submodule (`init-project`, or gap-fill) inside the **memory-repo** checkout (`.ai/memory`).
 
 ## Steps
 
-1. Run **ensure-config** first (`forge.json` must exist).
+1. Run **ensure-config** first (`forge.json` must exist under `memoryRoot`).
 2. For each mapping below, if the memory file is missing, copy the template content into `memoryRoot/<memory path>`.
 3. Do **not** overwrite non-empty existing files.
 4. Safe to re-run (fills gaps only).
 5. Specs (`product/specs/<feature>.md`) are **not** seeded here — optional memory projections may be created during `/forge.refinement` (or launch-readiness) when multi-area; Ready tickets never link to them.
+6. Parent Apply + **commit-memory** publish seeds to memory-repo `origin/main` (this skill only proposes/writes local files when invoked by the parent).
 
 ## Template → memory map
 

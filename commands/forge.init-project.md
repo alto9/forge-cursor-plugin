@@ -7,11 +7,11 @@ description: >-
 # forge.init-project
 ## Parent execution model
 
-1. Run skills `resolve-paths` then `resolve-config` (fail closed on path ambiguity).
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
+1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
 3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
 4. HITL pause using the Mode / Pause when / hand-off shape below.
-5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM. Never Apply invalid templates.
+5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
 
 
 ### Hand-off shape (required)
@@ -37,8 +37,10 @@ Pause when:
     Any vendor project/board bootstrap actions
 # Escalate to approve-before-vendor if creating remote issues/labels/board columns/milestones.
 Instructions:
+If resolve-paths fails because `.ai/memory` is missing from `.gitmodules`: **STOP** — tell the orchestrator to add the memory-repo submodule (`git submodule add -b main <url> .ai/memory`), commit the super-repo, then re-run. Do not invent a memory path or write under a non-submodule folder.
 Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”).
 Parent runs ensure-config + init-memory (propose seed of missing template files only; never overwrite non-empty docs).
+After Apply, parent runs **commit-memory** so seeds land on memory-repo `origin/main`.
 PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known. Do not create epic issues; Icebox holds coarse outcomes until grooming splits them into actionable tickets.
 Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
 PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice (memory projection; host milestones come later when ≥5 related tickets exist).

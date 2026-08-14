@@ -1,17 +1,17 @@
 ---
-description: Forge harness invariants — super-repo memory, SCM SoT, event HITL/Apply
+description: Forge harness invariants — super-repo memory-repo, SCM SoT, event HITL/Apply
 alwaysApply: true
 ---
 
 # Forge harness
 
-- Workspace is the **super-repo**. Code lives in git submodules; agent memory lives at `.ai/memory/<submodulePath>/` (mirrors `.gitmodules` path).
+- Workspace is the **super-repo**. Code lives in git submodules; agent memory lives in the **memory-repo** submodule at `.ai/memory/` (`memoryRoot = .ai/memory/<submodulePath>/`).
 - **Board/SCM wins.** Memory is a projection. On discrepancy, update memory — do not "fix" the board to match memory.
-- Every event/command starts with **resolve-paths** then **resolve-config**. Path ambiguity is a hard stop (`FORGE_SUPER_REPO`, `--submodule`).
-- Event commands are the parent: spawn listed agents as **propose-only** subagents; parent merges, HITLs, validates, then Applies (vendor/SCM first, then memory).
-- Subagents do not Apply, do not HITL, and do not mutate SCM unless executing parent-approved Apply steps.
+- Every event/command starts with **resolve-paths** → **sync-memory** (pull memory-repo `origin/main`) → **resolve-config**. Path ambiguity or sync failure is a hard stop (`FORGE_SUPER_REPO`, `--submodule`, missing `.ai/memory` submodule).
+- Event commands are the parent: spawn listed agents as **propose-only** subagents; parent merges, HITLs, validates, then Applies (vendor/SCM first, then memory, then **commit-memory** push to memory-repo `main`).
+- Memory-repo is agent-owned git: **no branches, no PRs/MRs** — commit and push `main` only. Subagents do not Apply, do not HITL, and do not mutate SCM unless executing parent-approved Apply steps.
 - Doc templates: required H2s only; empty sections OK; no extra H2s; current state only.
-- Orientation: run `/forge.help`. New project: `/forge.init-project` → `/forge.roadmap-review` → `/forge.backlog-grooming` → `/forge.refinement` (see README New project path).
+- Orientation: run `/forge.help`. New project: ensure `.ai/memory` submodule → `/forge.init-project` → `/forge.roadmap-review` → `/forge.backlog-grooming` → `/forge.refinement` (see README New project path).
 - Board path: **Grooming → Refinement** (Intention + AC) → **`/forge.refinement` → Ready** (self-contained issue body + `ai-ready` or `human-ready`). `/forge.implement-ticket` only takes Ready + `ai-ready`.
 - Optional `/forge.sync-schedule` can mirror Weekly/Biweekly/Monthly rituals to Google Calendar reminders when MCP is available — not required; never auto-starts events.
 - Tickets are actionable only — never create epic/umbrella issues; use a host milestone when grouping **5+** related tickets.

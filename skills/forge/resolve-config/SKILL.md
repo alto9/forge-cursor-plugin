@@ -12,7 +12,7 @@ After resolve-paths, before vendor skills or board-sync events.
 
 ## Steps
 
-1. Requires **resolve-paths** first.
+1. Requires **resolve-paths** then **sync-memory** first (so `forge.json` is from latest `origin/main`).
 2. Read `memoryRoot/forge.json`. If missing, run **ensure-config** (or stop and tell orchestrator to run `/forge.init-project`).
 3. Ensure `forge.json.path` equals `submodulePath`.
 4. Expose: `host`, github/gitlab identity, optional `statusIds`, optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-ready`), optional `release.gates`.

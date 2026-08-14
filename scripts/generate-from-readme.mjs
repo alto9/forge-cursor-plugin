@@ -214,11 +214,11 @@ for (const part of eventParts) {
 
 const EXEC_MODEL = `## Parent execution model
 
-1. Run skills \`resolve-paths\` then \`resolve-config\` (fail closed on path ambiguity).
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
+1. Run skills \`resolve-paths\` → \`sync-memory\` → \`resolve-config\` (fail closed on path ambiguity or memory-repo sync failure).
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
 3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
 4. HITL pause using the Mode / Pause when / hand-off shape below.
-5. On orchestrator approve: run \`validate-memory\` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM. Never Apply invalid templates.
+5. On orchestrator approve: run \`validate-memory\` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run \`commit-memory\` (push memory-repo \`main\`) if memory files changed. Never Apply invalid templates.
 `;
 
 const HITL_SHAPE = `### Hand-off shape (required)
@@ -298,7 +298,7 @@ for (const [readmePath, mapped] of skillMap) {
     steps = `See plugin README forge section and this skill's steps below. Implement the procedure exactly; fail closed on ambiguity.\n`;
   } else if (kind === "vendor") {
     description = `Vendor MCP operation: ${parts.slice(1).join(" / ")}.`;
-    steps = `1. resolve-paths + resolve-config first.\n2. Prefer MCP tools for host in forge.json (github | gitlab).\n3. Never invent ticket ids; board/SCM is source of truth.\n4. Propose vendor actions in HITL hand-off before mutating unless parent Apply already approved them.\n`;
+    steps = `1. resolve-paths + sync-memory + resolve-config first.\n2. Prefer MCP tools for host in forge.json (github | gitlab).\n3. Never invent ticket ids; board/SCM is source of truth.\n4. Propose vendor actions in HITL hand-off before mutating unless parent Apply already approved them.\n5. Memory-repo refuse: if the target repo is the \`.ai/memory\` memory-repo (path or remote URL), **STOP** — no branches/PRs/MRs; use commit-memory on main only.\n`;
   } else {
     description =
       roleSkillMeta[parts[parts.length - 1]] ||
@@ -315,24 +315,41 @@ for (const [readmePath, mapped] of skillMap) {
    - Else walk upward from cwd for a directory containing \`.gitmodules\`.
    - Prefer a root that also has \`.ai/memory/\` when multiple ancestors match.
    - If zero or ambiguous: **STOP** and ask the orchestrator.
-2. Resolve **submodulePath**:
-   - Explicit \`--submodule <path>\` wins (path as in \`.gitmodules\`).
-   - Else if cwd is inside \`superRepoRoot/<gitmodules-path>/\`, use that path.
-   - Else if exactly one submodule is under both \`.gitmodules\` and \`.ai/memory/\`, use it.
-   - Else: **STOP** and list \`.gitmodules\` paths for the orchestrator to pick.
-3. Derive:
+2. Require memory-repo submodule at path \`.ai/memory\`. If missing: **STOP** (\`git submodule add -b main <url> .ai/memory\`).
+3. Resolve **submodulePath** (code only — never \`.ai/memory\`):
+   - Explicit \`--submodule <path>\` wins (path as in \`.gitmodules\` code list).
+   - Else if cwd is inside \`superRepoRoot/<code-gitmodules-path>/\`, use that path.
+   - Else if cwd is inside \`.ai/memory/\`, do not treat memory-repo as code; fall through.
+   - Else if exactly one code submodule has a tree under \`memoryRepoRoot\`, use it.
+   - Else: **STOP** and list code \`.gitmodules\` paths for the orchestrator to pick.
+4. Derive:
+   - \`memoryRepoRoot = superRepoRoot / .ai/memory\`
    - \`submoduleRoot = superRepoRoot / submodulePath\`
-   - \`memoryRoot = superRepoRoot / .ai/memory / submodulePath\`
-4. Sanity checks (fail closed): \`.gitmodules\` exists; path listed; memoryRoot under \`.ai/memory/\` (never under submoduleRoot).
+   - \`memoryRoot = memoryRepoRoot / submodulePath\`
+5. Sanity checks (fail closed): \`.gitmodules\` exists; code path listed; memory-repo present; memoryRoot under memoryRepoRoot (never under submoduleRoot).
 
 ## Outputs
 
-\`superRepoRoot\`, \`submodulePath\`, \`submoduleRoot\`, \`memoryRoot\`
+\`superRepoRoot\`, \`submodulePath\`, \`submoduleRoot\`, \`memoryRepoRoot\`, \`memoryRoot\`
+`;
+  } else if (mapped.leaf === "sync-memory") {
+    steps = `## Steps
+
+1. Requires resolve-paths (\`memoryRepoRoot\`).
+2. Ensure \`.ai/memory\` is a git checkout on \`main\`; \`git pull --ff-only origin main\`.
+3. Fail closed if detached, on another branch, or pull is not fast-forward. Never create branches.
+`;
+  } else if (mapped.leaf === "commit-memory") {
+    steps = `## Steps
+
+1. After validated memory Apply under \`memoryRoot\`.
+2. On memory-repo \`main\` only: stage under \`memoryRepoRoot\`, commit, \`git push origin main\`.
+3. On push reject: rebase onto origin/main or STOP for HITL — never branch or open a PR/MR.
 `;
   } else if (mapped.leaf === "resolve-config") {
     steps = `## Steps
 
-1. Requires resolve-paths first.
+1. Requires resolve-paths then sync-memory first.
 2. Read \`memoryRoot/forge.json\`.
 3. Ensure \`forge.json.path\` equals \`submodulePath\` (or note ensure-config must set it).
 4. Expose host, github/gitlab identity, statusIds, release.gates.
@@ -373,12 +390,13 @@ Parsed forge config object for the active submodule.
   } else if (mapped.leaf === "help") {
     steps = `## Steps
 
-1. resolve-paths when possible; if ambiguous, explain \`FORGE_SUPER_REPO\` and \`--submodule\`.
-2. Summarize SoT (board/SCM wins), memory layout, HITL, parent/subagent Apply rules.
-3. List agents (one-liner) and event commands (cadence + lead), grouped.
-4. Suggest 1–3 next commands from current state (missing forge.json → /forge.init-project; weak Ready → /forge.backlog-grooming; etc.).
-5. If topic arg provided, expand that agent/event contract.
-6. **Never** write memory or call vendor mutations.
+1. resolve-paths when possible; if ambiguous, explain \`FORGE_SUPER_REPO\` and \`--submodule\`. If \`.ai/memory\` memory-repo submodule is missing, say so.
+2. Note memory is the shared memory-repo on \`main\` (sync-memory / commit-memory); do not pull/write on /forge.help.
+3. Summarize SoT (board/SCM wins), memory layout, HITL, parent/subagent Apply rules.
+4. List agents (one-liner) and event commands (cadence + lead), grouped.
+5. Suggest 1–3 next commands from current state (missing memory-repo or forge.json → setup + /forge.init-project; etc.).
+6. If topic arg provided, expand that agent/event contract.
+7. **Never** write memory or call vendor mutations.
 `;
   }
 

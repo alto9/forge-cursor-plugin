@@ -12,13 +12,14 @@ description: >-
 
 ## Steps
 
-1. **resolve-paths** when possible; if ambiguous, explain `FORGE_SUPER_REPO` and `--submodule`.
-2. Summarize: board/SCM wins, memory layout, HITL, parent owns Apply / subagents propose-only.
-3. List agents (one-liner) from `agents/*.md` and event commands from `commands/forge.*.md` (invoke as `/forge.<id>`; cadence + lead), grouped.
-4. Suggest 1–3 next commands from current state (missing forge.json → `/forge.init-project`; coarse backlog → `/forge.backlog-grooming`; Refinement queue → `/forge.refinement`; Ready + `ai-ready` → `/forge.implement-ticket`; PR ready → `/forge.validate-mr`; etc.).
-5. If a topic/event/agent arg is provided, expand that contract from the matching file.
-6. Point at New project path in the plugin README when uninitialized.
-7. Mention optional `/forge.sync-schedule` only if the user asks about cadence tracking or calendar — not a required next step.
+1. **resolve-paths** when possible; if ambiguous, explain `FORGE_SUPER_REPO` and `--submodule`. If `.ai/memory` memory-repo submodule is missing, say so and point at README setup.
+2. When paths resolve, note that memory is the shared memory-repo on `main` (`sync-memory` / `commit-memory`); do not pull/write on `/forge.help`.
+3. Summarize: board/SCM wins, memory layout, HITL, parent owns Apply / subagents propose-only.
+4. List agents (one-liner) from `agents/*.md` and event commands from `commands/forge.*.md` (invoke as `/forge.<id>`; cadence + lead), grouped.
+5. Suggest 1–3 next commands from current state (missing memory-repo or forge.json → setup + `/forge.init-project`; coarse backlog → `/forge.backlog-grooming`; Refinement queue → `/forge.refinement`; Ready + `ai-ready` → `/forge.implement-ticket`; PR ready → `/forge.validate-mr`; etc.).
+6. If a topic/event/agent arg is provided, expand that contract from the matching file.
+7. Point at New project path in the plugin README when uninitialized.
+8. Mention optional `/forge.sync-schedule` only if the user asks about cadence tracking or calendar — not a required next step.
 
 ## Outputs / stop conditions
 

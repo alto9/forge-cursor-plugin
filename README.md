@@ -33,8 +33,8 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 ## Harness context
 
 - Workspace is the **super-repo**. Code work happens inside the active project submodule; agent memory does not.
-- Memory for each submodule: `<super-repo>/.ai/memory/<submodulePath>/` (mirrors `.gitmodules` path).
-- Batch-commit `.ai/` when a session ends — not after every event.
+- Memory lives in the **memory-repo**: the git submodule checked out at `<super-repo>/.ai/memory/` (tracks `main`). Per code submodule: `.ai/memory/<submodulePath>/`.
+- Agents **pull `origin/main`** before reading memory and **commit + push `main`** after Apply (no branches or PRs/MRs on the memory-repo).
 - Vendor skills are shared capabilities roles may call; they are not listed on Events by default.
 
 ## Source of truth
@@ -43,7 +43,7 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 
 - Tickets, PR/MR state, labels, milestones, board columns → GitHub/GitLab
 - Code → submodule git history
-- Memory (`.ai/memory/...`) → local notes, plans, queues for agents (never linked from Ready issue bodies)
+- Memory (`.ai/memory/...` memory-repo) → shared agent notes, plans, queues (never linked from Ready issue bodies)
 
 If memory disagrees with SCM, update or discard memory drift. When grooming/init writes tickets: write to the board first (HITL), then refresh memory to match. Memory backlog/queue files should reference board issue ids/URLs — never invent a parallel ticket numbering system.
 
@@ -53,23 +53,37 @@ If memory disagrees with SCM, update or discard memory drift. When grooming/init
 
 ```text
 <super-repo>/
-  .gitmodules
-  .ai/memory/<submodulePath>/
-    forge.json
-    product/  project/  architecture/  engineering/
-    qa/  security/  release/  marketing/
-  <submodulePath>/          # git submodule (code)
+  .gitmodules                 # includes path = .ai/memory (memory-repo)
+  .ai/memory/                 # memory-repo submodule on main
+    <submodulePath>/
+      forge.json
+      product/  project/  architecture/  engineering/
+      qa/  security/  release/  marketing/
+  <submodulePath>/            # code submodule
 ```
+
+### One-time memory-repo setup
+
+1. Create an empty remote (allow direct push to `main`; no required PR/MR / branch protection that blocks agents).
+2. From the super-repo: `git submodule add -b main <url> .ai/memory`
+3. Commit `.gitmodules` + gitlink on the super-repo.
+4. Run `/forge.init-project` — seeds `memoryRoot` and `commit-memory` pushes to `origin/main`.
+
+**Migration** from an in-tree `.ai/memory/` folder: extract that tree into the new remote, then add the submodule at the same path.
+
+The super-repo gitlink SHA is a **hint only**. Fresh clones and every event run `sync-memory` (always `origin/main`), not a stale `git submodule update` pin.
 
 ## Path resolution
 
-Every command starts with [`resolve-paths`](skills/forge/resolve-paths/SKILL.md) then [`resolve-config`](skills/forge/resolve-config/SKILL.md). Ambiguity is a hard stop.
+Every command starts with [`resolve-paths`](skills/forge/resolve-paths/SKILL.md) → [`sync-memory`](skills/forge/sync-memory/SKILL.md) → [`resolve-config`](skills/forge/resolve-config/SKILL.md). Ambiguity or sync failure is a hard stop.
 
-Outputs: `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRoot`.
+Outputs: `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRepoRoot`, `memoryRoot`.
 
 - Super-repo: `FORGE_SUPER_REPO`, else walk-up for `.gitmodules` (prefer a root that also has `.ai/memory/`).
-- Submodule: `--submodule <path>`, else cwd inside a gitmodules path, else unique configured submodule.
-- `memoryRoot = superRepoRoot / .ai/memory / submodulePath` (never under submodule code).
+- Memory-repo: required `.gitmodules` entry with `path = .ai/memory` (excluded from the code-submodule list).
+- Code submodule: `--submodule <path>`, else cwd inside a code gitmodules path, else unique configured code submodule.
+- `memoryRepoRoot = superRepoRoot / .ai/memory`
+- `memoryRoot = memoryRepoRoot / submodulePath` (never under submodule code).
 
 Script: `npm run resolve-paths -- [--cwd DIR] [--submodule PATH] [--super-repo DIR]`
 
@@ -89,7 +103,7 @@ Optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-rea
 
 Optional `release.gates[]`: ordered event ids for **this** submodule (no harness-wide pipeline). Events stay independently callable; gates define default checklist / pre-cut expectations for `/forge.prepare-release` / `/forge.cut-release` / launch-readiness. Missing/empty gates → no automatic enforcement.
 
-See [`ensure-config`](skills/forge/ensure-config/SKILL.md), [`init-memory`](skills/forge/init-memory/SKILL.md), [`validate-memory`](skills/forge/validate-memory/SKILL.md).
+See [`ensure-config`](skills/forge/ensure-config/SKILL.md), [`init-memory`](skills/forge/init-memory/SKILL.md), [`validate-memory`](skills/forge/validate-memory/SKILL.md), [`sync-memory`](skills/forge/sync-memory/SKILL.md), [`commit-memory`](skills/forge/commit-memory/SKILL.md).
 
 ## Risk & findings ownership
 
@@ -105,12 +119,13 @@ One concern per file; reference board issue id/URL.
 ## New project path
 
 1. `/forge.help` — optional orientation (observe-only)
-2. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch
-3. `/forge.roadmap-review` — shape Now/Next/Later
-4. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
-5. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
-6. `/forge.plan-refresh` — delivery sequence once Ready work exists
-7. `/forge.implement-ticket` — only Ready + `ai-ready`; refuses Refinement / `human-ready` / weak briefs
+2. Ensure memory-repo submodule at `.ai/memory` (see setup above)
+3. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch + `commit-memory`
+4. `/forge.roadmap-review` — shape Now/Next/Later
+5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
+6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
+7. `/forge.plan-refresh` — delivery sequence once Ready work exists
+8. `/forge.implement-ticket` — only Ready + `ai-ready`; refuses Refinement / `human-ready` / weak briefs
 
 **Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.
 
@@ -118,11 +133,11 @@ One concern per file; reference board issue id/URL.
 
 Each event is a **human-callable command** (not an automation). Parent owns the ritual:
 
-1. `resolve-paths` + `resolve-config` (fail closed)
+1. `resolve-paths` → `sync-memory` → `resolve-config` (fail closed)
 2. Spawn listed Agents as **propose-only** subagents with the event brief
 3. Merge proposals; Lead wins on ties unless Instructions say otherwise; **board/SCM wins over memory**
 4. HITL pause (hand-off shape below)
-5. On approve: `validate-memory` → Apply vendor/SCM first → Apply memory
+5. On approve: `validate-memory` → Apply vendor/SCM first → Apply memory → `commit-memory` (push memory-repo `main`) if memory changed
 
 Subagents never HITL, never Apply, never mutate SCM unless executing parent-approved Apply steps.
 
@@ -150,9 +165,9 @@ See [`commands/forge.<event-id>.md`](commands/) — all slash commands use a `fo
 
 ## Skills
 
-- **Forge** — paths, config, memory seed/validate, help
+- **Forge** — paths, sync/commit memory, config, memory seed/validate, help
 - **Role** — procedures under `skills/<role>/…` (unique leaf folder names)
-- **Vendor** — MCP-mapped under `skills/vendor/vendor-*` (resolve-config first; prefer MCP over CLI)
+- **Vendor** — MCP-mapped under `skills/vendor/vendor-*` (resolve-config first; prefer MCP over CLI). **Never** open branches/PRs/MRs against the memory-repo.
 
 Collision map: [docs/skill-naming.md](docs/skill-naming.md).
 
@@ -167,6 +182,7 @@ npm test
 npm run generate          # from design dump / README inventory helper
 npm run validate-memory
 npm run resolve-paths
+npm run memory-repo-git   # sync | commit --memory-repo-root <path>
 ```
 
 ## Out of scope (this plugin)
@@ -174,3 +190,4 @@ npm run resolve-paths
 - Automations / cron auto-start of HITL events
 - Real MCP auth setup in consumer repos
 - Populating a real super-repo’s memory beyond templates + skills
+- Actor/role registry (which human/machine owns which Forge role) — future; shared memory-repo is the prerequisite

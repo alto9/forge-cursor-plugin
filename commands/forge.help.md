@@ -31,8 +31,8 @@ Answer “what is this harness and what should I run?” using skills/forge/help
 Do not spawn role subagents unless the user asks for a deep dive on one agent (then explain that agent only — still no writes).
 Resolve paths when possible; if submodule is ambiguous, list .gitmodules paths and how to pass --submodule.
 Default output sections:
-    Where you are          # superRepoRoot, submodulePath, memoryRoot (or “unresolved”)
-    How this works         # SoT, memory vs code, HITL, parent/subagent Apply rules (short)
+    Where you are          # superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot (or “unresolved” / missing memory-repo)
+    How this works         # SoT, memory-repo on main vs code PRs, HITL, parent/subagent Apply rules (short)
     Agents                 # name + one-line description
     Event commands         # id, cadence, lead (group by: setup, product, delivery, build, quality, security, release, marketing)
     Suggested next         # 1–3 commands from current state, or New project path if uninitialized

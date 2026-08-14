@@ -9,12 +9,12 @@ Optional convenience. **Not** part of New project path, release gates, or role s
 
 ## Parent execution model
 
-1. Run `resolve-paths` when possible (for submodule context in event descriptions). Soft-fail OK if uninitialized — still can sync plugin-wide rituals.
+1. Run `resolve-paths` → `sync-memory` when possible (for submodule context in event descriptions). Soft-fail OK if uninitialized — still can sync plugin-wide rituals.
 2. Do **not** spawn role subagents. Parent runs `skills/forge/sync-schedule-calendar/SKILL.md` directly.
 3. If Google Calendar MCP is unavailable: report and stop (observe). No CLI fallback.
 4. Merge proposed calendar creates/updates + optional `forge.json` `calendar` prefs into one hand-off.
 5. HITL: `approve-before-vendor` before any calendar write; `approve-before-write` if also saving prefs to `forge.json`.
-6. On approve: Apply calendar MCP ops first; then Apply `forge.json` prefs if approved. Skip `validate-memory` template checks for forge.json calendar block (not a role doc) — still keep required forge.json fields intact.
+6. On approve: Apply calendar MCP ops first; then Apply `forge.json` prefs if approved; then `commit-memory` if forge.json changed. Skip `validate-memory` template checks for forge.json calendar block (not a role doc) — still keep required forge.json fields intact.
 
 
 ### Hand-off shape (required)
