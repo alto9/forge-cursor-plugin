@@ -12,7 +12,7 @@ alwaysApply: true
 - Memory-repo is agent-owned git: **no branches, no PRs/MRs** — commit and push `main` only. Subagents do not Apply, do not HITL, and do not mutate SCM unless executing parent-approved Apply steps.
 - Doc templates: required H2s only; empty sections OK; no extra H2s; current state only.
 - Orientation: run `/forge.help`. New project: ensure `.ai/memory` submodule → `/forge.init-project` → `/forge.roadmap-review` → `/forge.backlog-grooming` → `/forge.refinement` (see README New project path).
-- Board path: **Grooming → Refinement** (Intention + AC) → **`/forge.refinement` → Ready** (self-contained issue body + `ai-ready` or `human-ready`). `/forge.implement-ticket` only takes Ready + `ai-ready`.
+- Board path: **Grooming → Refinement** (Intention + AC) → **`/forge.refinement` → Ready** (self-contained issue body + `ai-ready` or `human-ready`). `/forge.implement-ticket` only takes Ready + `ai-ready`; claims **In Progress** immediately after the gate; moves to **In Review** when the PR/MR is ready. `/forge.validate-ticket` dual approve → **Done** (pass-back stays In Review).
 - Optional `/forge.sync-schedule` can mirror Weekly/Biweekly/Monthly rituals to Google Calendar reminders when MCP is available — not required; never auto-starts events.
 - Tickets are actionable only — never create epic/umbrella issues; use a host milestone when grouping **5+** related tickets.
 - Skill folder names are unique; see [docs/skill-naming.md](docs/skill-naming.md).

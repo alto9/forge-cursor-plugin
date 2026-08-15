@@ -1,11 +1,11 @@
 ---
-name: forge.validate-mr
+name: forge.validate-ticket
 description: >-
-  On demand; lead Quality Assurance. Combined QA + Security MR gate.
-  Forge event command.
+  On demand; lead Quality Assurance. Combined QA + Security ticket gate
+  (open PR/MR). Forge event command.
 ---
 
-# forge.validate-mr
+# forge.validate-ticket
 ## Parent execution model
 
 1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
@@ -19,7 +19,7 @@ description: >-
 
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
-- **Proposed vendor actions** — none, or explicit list
+- **Proposed vendor actions** — none, or explicit list (must include the required PR/MR verdict comment)
 - **Decisions needed** — yes/no or A/B
 - **Left alone** — in-scope docs/actions intentionally unchanged
 
@@ -37,18 +37,23 @@ Pause when:
     qa/queue.md, qa/findings.md, or security/findings.md would change
     qa/test-plan.md scope/checks would change for this item
     security/checklist.md or threat-model.md would change
-    Vendor actions: PR/MR comments, merge, board status moves
+    Vendor actions: PR/MR verdict comment, merge, board status moves
 Instructions:
-Take one Ready for QA item (from Engineer) with an open PR/MR. Run QA and Security together — no silent OK from either domain.
-QA: verify against spec acceptance criteria and test-plan checks (acceptance, exploratory, repro as needed). Call approve or pass back.
-Security: review the same PR/MR against checklist + threat-model (secret-scan, harden-config as needed). Call approve or pass back.
+Take one Ready for QA item (from Engineer) with an open PR/MR on board **In Review** (`statusIds.in_review`). Run QA and Security together — no silent OK from either domain.
+QA: verify against spec acceptance criteria and test-plan checks (acceptance, exploratory, repro as needed). Call approve or pass back; propose a one-line verdict for the parent PR/MR comment.
+Security: review the same PR/MR against checklist + threat-model (secret-scan, harden-config as needed). Call approve or pass back; propose a one-line verdict for the parent PR/MR comment.
 Keep qa/findings.md and security/findings.md separate — one concern per file; reference the board issue id/URL in both.
-**Merge only if both approve.** If either passes back: do not merge; propose qa/queue.md → Passed back; write Open/Blockers in the relevant findings file(s); optional vendor review comments; remove stale findings that no longer apply.
-On dual approve: propose vendor merge of the PR/MR (SCM SoT); move board issue to the configured done/in_review status per forge.json; then qa/queue.md → Approved; clear related Open findings in both QA and Security findings; refresh engineering/in-flight and memory backlog to match SCM; note security checklist gates that passed for this change only if durable.
+**Required PR/MR comment (both outcomes):** Parent composes and Applies **one** combined comment via `vendor-pulls-review` before any merge. Shape:
+- First line: `Forge validate-ticket: PASS` or `Forge validate-ticket: FAIL`
+- Then QA and Security verdict lines (from domain hand-offs)
+- On FAIL: short summary + pointers to Open/Blockers findings (no long diary)
+**Merge only if both approve.** If either passes back: do not merge; post FAIL comment; board stays `statusIds.in_review`; propose qa/queue.md → Passed back; write Open/Blockers in the relevant findings file(s); remove stale findings that no longer apply.
+On dual approve: post PASS comment → propose vendor merge of the PR/MR via `vendor-pulls-merge` (SCM SoT) → move board issue to `statusIds.done` via `vendor-issues-write`; then qa/queue.md → Approved; clear related Open findings in both QA and Security findings; remove from backlog.md `# In progress` and clear related in-flight Review state to match SCM; note security checklist gates that passed for this change only if durable.
+Vendor skills for this event: `vendor-pulls-review` (verdict comment), `vendor-pulls-merge` (dual approve only), `vendor-issues-write` (board → done).
 Propose qa/test-plan.md updates only when this item needs durable acceptance/regression checks; don’t build a novel per run.
 Propose security/threat-model.md updates only when assets/boundaries/threats actually changed; delete obsolete threats/mitigations.
 Read engineering/in-flight and product spec as inputs; don’t rewrite product/architecture docs here (escalate design-level issues to Architect/PO events).
-No separate merge event — dual approve via this command is the MR merge gate. Use `/forge.security-review` for non-MR surfaces (config, dependency bump). Use `/forge.regression-pass` for release-level QA.
+No separate merge event — dual approve via this command is the ticket merge gate. Use `/forge.security-review` for non-MR surfaces (config, dependency bump). Use `/forge.regression-pass` for release-level QA.
 Docs:
 <super-repo>/.ai/memory/<submodule>/qa/queue.md
 <super-repo>/.ai/memory/<submodule>/qa/findings.md

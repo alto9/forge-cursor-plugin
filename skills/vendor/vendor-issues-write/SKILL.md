@@ -28,6 +28,17 @@ gitlab MCP: create_issue, update_issue, update_issue_description_patch, delete_i
 - On Ready promotion (`/forge.refinement`): set exactly one readiness label; remove the other if present.
 - Ensure labels exist before apply (create via host label API under HITL if missing) — see ensure-config / init-project bootstrap.
 
+## Status / board columns
+
+Use `forge.json` `statusIds` values (host column/option ids). Documented transitions:
+
+- `/forge.backlog-grooming`: create/update → `statusIds.refinement`
+- `/forge.refinement` promote: `statusIds.refinement` → `statusIds.ready`
+- `/forge.implement-ticket` after Ready + `ai-ready` gate: → `statusIds.in_progress` (parent Applies immediately, no HITL)
+- `/forge.implement-ticket` when PR/MR ready (HITL): → `statusIds.in_review`
+- `/forge.validate-ticket` dual approve: → `statusIds.done` (pass-back leaves `in_review`)
+- `/forge.respond-to-review`: stay on `statusIds.in_review` (do not bounce back to In Progress)
+
 ## Milestones
 
 - Assign issues to a **host** milestone (GitHub/GitLab) when grouping **5 or more** related actionable tickets.

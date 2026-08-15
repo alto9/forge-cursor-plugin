@@ -109,7 +109,7 @@ Plain-language goal of the ritual — not the harness steps. Lead with the indus
 | `forge.launch-comms` | Launch comms | Preparing the public narrative and posts for a ship. |
 | `forge.implement-ticket` | Implement ticket | Building a ticket that is already ready to execute. |
 | `forge.respond-to-review` | Respond to review | Addressing review comments on an open change. |
-| `forge.validate-mr` | Validate merge request | The combined quality and security gate before a change is merged. |
+| `forge.validate-ticket` | Validate ticket | The combined quality and security gate before a change is merged. |
 
 Example body for `forge.backlog-grooming`:
 

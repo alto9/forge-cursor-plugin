@@ -30,7 +30,7 @@
     "forge.design-spike",
     "forge.implement-ticket",
     "forge.respond-to-review",
-    "forge.validate-mr",
+    "forge.validate-ticket",
     "forge.regression-pass",
     "forge.security-review",
     "forge.dependency-audit",

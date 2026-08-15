@@ -13,6 +13,8 @@ description: >-
 4. HITL pause using the Mode / Pause when / hand-off shape below.
 5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
 
+**Exception — claim In Progress:** After the Ready + `ai-ready` gate passes, the parent **Applies immediately** (before substantial coding, without waiting for the implementation HITL): board → `statusIds.in_progress` via `vendor-issues-write`, then mirror memory (`engineering/in-flight.md` `# Active`, `product/backlog.md` `# In progress`). Command invocation + gate pass **is** the claim authorization. If the gate fails, do **not** claim.
+
 
 ### Hand-off shape (required)
 
@@ -35,16 +37,17 @@ Pause when:
     Approach / scope interpretation before substantial coding (if ambiguous vs spec)
     Opening or updating a PR/MR
     Pushing to remote / requesting review
-    in-flight.md would change Active/Approach/Blockers materially
+    Moving board In Progress → In Review (`statusIds.in_review`)
+    in-flight.md would change Active/Approach/Blockers/Review state materially
 Instructions:
 Take **one** board **Ready** item with label **`ai-ready`** (statusIds.ready — not Refinement; not `human-ready`). Before coding: load the issue body (vendor get); run the agent-ready-ticket checklist mentally. The issue body alone is the contract — no memory links required.
 If the ticket is `human-ready`: **stop**. Do not implement; hand off that a human must execute.
 If the ticket is still in Refinement, missing readiness label, or fails the checklist: **stop**. Do not implement. Hand-off → `/forge.refinement` (or demote Ready → Refinement if it drifted).
-If it passes: implement in the active submodule — code/tests are the deliverable. Don’t invent scope beyond the issue body.
+**If it passes:** parent Applies claim immediately — board `statusIds.in_progress` (vendor-issues-write); memory `in-flight.md` `# Active` + `backlog.md` `# In progress`. Do **not** HITL the claim. Then implement in the active submodule — code/tests are the deliverable. Don’t invent scope beyond the issue body.
 Optionally read brief/architecture memory as session context; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
-Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state; remove the item from Active when PR is open or work is handed off — no done archive.
-When implementation is ready for verification, propose adding it to qa/queue.md Ready for QA (do not self-approve). Next human command: `/forge.validate-mr`.
-Use vendor skills for branch/PR/MR; propose vendor actions in the hand-off before push/open/update.
+Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state during work.
+When implementation is ready for verification: propose opening/updating the PR/MR; board move to `statusIds.in_review`; remove the item from in-flight `# Active` and set `# Review state`; add to qa/queue.md Ready for QA (do not self-approve). Keep backlog.md under `# In progress` until merge (no `# In Review` H2). On orchestrator approve of that hand-off: Apply vendor/SCM first (PR + board `in_review`), then memory. Next human command: `/forge.validate-ticket`.
+Use vendor skills for branch/PR/MR and status moves (`vendor-issues-write`, `vendor-branches-write`, `vendor-pulls-write`); propose vendor actions in the hand-off before push/open/update (except the early In Progress claim).
 Prefer smallest change that meets acceptance criteria; refactor only when required for the ticket.
 Docs:
 <super-repo>/.ai/memory/<submodule>/engineering/in-flight.md

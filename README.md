@@ -97,7 +97,7 @@ Board fields (`projectId` / `boardId` / `statusIds`) required only before board-
 
 `backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
 
-(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`.)
+(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress` then PR-ready → `in_review`; `/forge.validate-ticket` dual approve → `done`.)
 
 Optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-ready`) — ensured on the host during init/refinement.
 
@@ -125,7 +125,8 @@ One concern per file; reference board issue id/URL.
 5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
 6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
 7. `/forge.plan-refresh` — delivery sequence once Ready work exists
-8. `/forge.implement-ticket` — only Ready + `ai-ready`; refuses Refinement / `human-ready` / weak briefs
+8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; PR-ready → **In Review**; refuses Refinement / `human-ready` / weak briefs
+9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → **Done**
 
 **Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.
 
@@ -161,7 +162,7 @@ See [`agents/*.md`](agents/) — Architect, Engineer, Marketing Manager, Product
 
 ## Event commands
 
-See [`commands/forge.<event-id>.md`](commands/) — all slash commands use a `forge.` prefix (e.g. `/forge.help`, `/forge.init-project`, `/forge.backlog-grooming`, `/forge.refinement`, `/forge.implement-ticket`, `/forge.respond-to-review`, `/forge.validate-mr`, …). Full list: [`docs/inventory.json`](docs/inventory.json).
+See [`commands/forge.<event-id>.md`](commands/) — all slash commands use a `forge.` prefix (e.g. `/forge.help`, `/forge.init-project`, `/forge.backlog-grooming`, `/forge.refinement`, `/forge.implement-ticket`, `/forge.respond-to-review`, `/forge.validate-ticket`, …). Full list: [`docs/inventory.json`](docs/inventory.json).
 
 ## Skills
 

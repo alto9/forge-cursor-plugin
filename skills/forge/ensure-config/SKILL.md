@@ -21,9 +21,11 @@ Harness entry when `forge.json` is missing or incomplete (`/forge.init-project`,
    - `host`: github | gitlab
    - host identity: `github.owner` + `github.repo`, or `gitlab.projectId`
 4. Conversationally populate with the user: board/project ids, `statusIds`, `release.gates` as needed for this project type.
-5. For board sync, map `statusIds` including the grooming→refinement→ready path:
+5. For board sync, map `statusIds` including the grooming→refinement→ready→in_progress→in_review→done path:
    - `backlog`, `refinement`, `ready`, `in_progress`, `in_review`, `done` (names as keys in forge.json; values = host column/option ids)
    - `refinement` is required for `/forge.backlog-grooming` and `/forge.refinement` board moves
+   - `in_progress` / `in_review` are required for `/forge.implement-ticket` (claim after Ready gate; PR-ready → In Review)
+   - `done` is required for `/forge.validate-ticket` dual-approve board move
 6. Ensure readiness label names in forge.json (defaults if omitted):
    - `labels.aiReady`: `"ai-ready"`
    - `labels.humanReady`: `"human-ready"`
