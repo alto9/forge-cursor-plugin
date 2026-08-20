@@ -35,7 +35,7 @@ Use `forge.json` `statusIds` values (host column/option ids). Documented transit
 - `/forge.backlog-grooming`: create/update → `statusIds.refinement`
 - `/forge.refinement` promote: `statusIds.refinement` → `statusIds.ready`
 - `/forge.implement-ticket` after Ready + `ai-ready` gate: → `statusIds.in_progress` (parent Applies immediately, no HITL)
-- `/forge.implement-ticket` when PR/MR ready (HITL): → `statusIds.in_review`
+- `/forge.implement-ticket` when PR/MR ready **and CI succeeded** (or host has no CI) (HITL): → `statusIds.in_review`
 - `/forge.validate-ticket` dual approve: → `statusIds.done` (pass-back leaves `in_review`)
 - `/forge.respond-to-review`: stay on `statusIds.in_review` (do not bounce back to In Progress)
 

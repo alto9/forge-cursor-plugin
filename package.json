@@ -10,7 +10,8 @@
     "generate": "node scripts/generate-from-readme.mjs",
     "validate-memory": "node scripts/validate-memory.js",
     "resolve-paths": "node scripts/resolve-paths.js",
-    "memory-repo-git": "node scripts/memory-repo-git.js"
+    "memory-repo-git": "node scripts/memory-repo-git.js",
+    "course": "node scripts/serve-course.mjs"
   },
   "dependencies": {
     "node-html-markdown": "^2.0.0"

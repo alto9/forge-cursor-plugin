@@ -21,12 +21,12 @@ High-level design pass. **Does not** produce Ready tickets — that is the sibli
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
 - **Left alone** — in-scope docs/actions intentionally unchanged
 - **Refinement queue** — issue ids moved/kept in Refinement (candidates for `/forge.refinement`)
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 
@@ -40,6 +40,7 @@ Pause when:
     Moving items into board Refinement (statusIds.refinement)
     plan.md sequence changes from re-ordering
 Instructions:
+Bind to the **active submodule** only. Do not groom other configured projects in this run; the orchestrator invokes the command again per path.
 Read roadmap.md for focus; propose roadmap edits only if grooming exposes a clear conflict (otherwise leave for roadmap-review).
 Shape work at **high level**: Intention + Acceptance criteria via skills/product-owner/groom-ticket. Do not require full Scope/Constraints/Verification/Ready bodies here.
 **Tickets are actionable only** — never create epic/parent/umbrella issues. If a theme splits into **5 or more** related tickets, create/reuse a **host milestone** and assign those issues; below 5, leave ungrouped.

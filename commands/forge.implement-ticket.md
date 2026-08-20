@@ -21,11 +21,11 @@ description: >-
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 
@@ -37,7 +37,7 @@ Pause when:
     Approach / scope interpretation before substantial coding (if ambiguous vs spec)
     Opening or updating a PR/MR
     Pushing to remote / requesting review
-    Moving board In Progress → In Review (`statusIds.in_review`)
+    Moving board In Progress → In Review (`statusIds.in_review`) — only after CI has completed successfully (or the host has no CI)
     in-flight.md would change Active/Approach/Blockers/Review state materially
 Instructions:
 Take **one** board **Ready** item with label **`ai-ready`** (statusIds.ready — not Refinement; not `human-ready`). Before coding: load the issue body (vendor get); run the agent-ready-ticket checklist mentally. The issue body alone is the contract — no memory links required.
@@ -46,8 +46,9 @@ If the ticket is still in Refinement, missing readiness label, or fails the chec
 **If it passes:** parent Applies claim immediately — board `statusIds.in_progress` (vendor-issues-write); memory `in-flight.md` `# Active` + `backlog.md` `# In progress`. Do **not** HITL the claim. Then implement in the active submodule — code/tests are the deliverable. Don’t invent scope beyond the issue body.
 Optionally read brief/architecture memory as session context; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
 Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state during work.
-When implementation is ready for verification: propose opening/updating the PR/MR; board move to `statusIds.in_review`; remove the item from in-flight `# Active` and set `# Review state`; add to qa/queue.md Ready for QA (do not self-approve). Keep backlog.md under `# In progress` until merge (no `# In Review` H2). On orchestrator approve of that hand-off: Apply vendor/SCM first (PR + board `in_review`), then memory. Next human command: `/forge.validate-ticket`.
-Use vendor skills for branch/PR/MR and status moves (`vendor-issues-write`, `vendor-branches-write`, `vendor-pulls-write`); propose vendor actions in the hand-off before push/open/update (except the early In Progress claim).
+When implementation is ready for verification: propose opening/updating the PR/MR. After the PR/MR exists, **wait for CI** via `vendor-ci-status` on that head SHA — do **not** treat this event as complete while checks/pipelines are pending or running. If CI fails or is cancelled: fix, propose a push (HITL), and wait again. If the host has no CI for the PR/MR, skip the wait. Waiting on CI is polling, not a HITL pause.
+Only after CI completes successfully (or no CI): propose board move to `statusIds.in_review`; remove the item from in-flight `# Active` and set `# Review state`; add to qa/queue.md Ready for QA (do not self-approve). Keep backlog.md under `# In progress` until merge (no `# In Review` H2). On orchestrator approve of that hand-off: Apply vendor/SCM first (PR + board `in_review`), then memory. Next human command: `/forge.validate-ticket`.
+Use vendor skills for branch/PR/MR, CI status, and status moves (`vendor-issues-write`, `vendor-branches-write`, `vendor-pulls-write`, `vendor-ci-status`); propose vendor actions in the hand-off before push/open/update (except the early In Progress claim).
 Prefer smallest change that meets acceptance criteria; refactor only when required for the ticket.
 Docs:
 <super-repo>/.ai/memory/<submodule>/engineering/in-flight.md
@@ -65,5 +66,6 @@ Engineer:
     skills/engineer/refactor/SKILL.md
     skills/engineer/open-pr/SKILL.md
     skills/engineer/update-branch/SKILL.md
+    skills/vendor/vendor-ci-status/SKILL.md
 Project Manager:
     skills/project-manager/status-update/SKILL.md

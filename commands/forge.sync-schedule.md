@@ -22,11 +22,11 @@ Optional convenience. **Not** part of New project path, release gates, or role s
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — none
 - **Proposed vendor actions** — calendar create/update/delete list (`Forge: forge.<event-id>`)
-- **Decisions needed** — timezone, calendar id, slot times for events not already on the calendar; opt-in for On demand / Per release if requested
+- **Decisions needed** — timezone, calendar id, slot times for events not already on the calendar; opt-in for On demand / Per release if requested. When listing alternatives, mark exactly one **already in this apply-set**
 - **Left alone** — On demand / Per release / Per milestone / Per major bet (unless opted in); events already in sync
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 

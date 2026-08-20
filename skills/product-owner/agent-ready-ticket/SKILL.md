@@ -9,7 +9,7 @@ description: >-
 
 ## When to use
 
-During `/forge.refinement` before moving a board item from **Refinement** to **Ready**, and as a preflight in `/forge.implement-ticket`.
+During `/forge.refinement` before moving a board item from **Refinement** to **Ready**, and as a preflight in `/forge.implement-ticket`. Active submodule only — one project per invocation.
 
 ## Definition
 

@@ -19,11 +19,11 @@ description: >-
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 
@@ -38,7 +38,7 @@ Pause when:
 # Escalate to approve-before-vendor if creating remote issues/labels/board columns/milestones.
 Instructions:
 If resolve-paths fails because `.ai/memory` is missing from `.gitmodules`: **STOP** — tell the orchestrator to add the memory-repo submodule (`git submodule add -b main <url> .ai/memory`), commit the super-repo, then re-run. Do not invent a memory path or write under a non-submodule folder.
-Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”).
+Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”). Bind to that submodule only; remaining code submodules wait for their own `/forge.init-project` run.
 Parent runs ensure-config + init-memory (propose seed of missing template files only; never overwrite non-empty docs).
 After Apply, parent runs **commit-memory** so seeds land on memory-repo `origin/main`.
 PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known. Do not create epic issues; Icebox holds coarse outcomes until grooming splits them into actionable tickets.

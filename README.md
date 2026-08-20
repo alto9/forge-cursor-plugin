@@ -4,16 +4,18 @@ Solo SDLC harness for a **super-repo of git submodules** (GitHub and GitLab mixe
 
 ## Install locally
 
+**Forge Studio** (VS Code / Cursor extension, `alto9.forge-studio`) is the installer for teammates. After it is installed, it clones this repo to `~/.cursor/plugins/local/forge-cursor` on startup and fast-forwards that clone when `origin` moves. Command Palette → **Forge: Sync Cursor Plugin** does the same on demand; **Forge: Open Forge Course** serves this repo’s `course/` workshop and opens it in a browser tab. Reload the window when the extension says the files changed.
+
 **Add from folder** (Plugins UI) expects a marketplace manifest — this repo has [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json) listing the single `forge-cursor` plugin.
 
-Alternatively (dev loop without the marketplace UI):
+Dev loop without the extension (symlink this working tree):
 
 ```bash
 mkdir -p ~/.cursor/plugins/local
 ln -sfn "$(pwd)" ~/.cursor/plugins/local/forge-cursor
 ```
 
-Then **Developer: Reload Window**. Components load from `.cursor-plugin/plugin.json` + auto-discovered `agents/`, `commands/`, `skills/`, `rules/`, `hooks/`.
+Then **Developer: Reload Window**. Components load from `.cursor-plugin/plugin.json` + auto-discovered `agents/`, `commands/`, `skills/`, `rules/`, `hooks/`. A symlink that is not a git clone will not be overwritten by the extension; remove or replace it if you want the installer to own that path.
 
 Executable contracts live in:
 
@@ -81,7 +83,7 @@ Outputs: `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRepoRoot`, `m
 
 - Super-repo: `FORGE_SUPER_REPO`, else walk-up for `.gitmodules` (prefer a root that also has `.ai/memory/`).
 - Memory-repo: required `.gitmodules` entry with `path = .ai/memory` (excluded from the code-submodule list).
-- Code submodule: `--submodule <path>`, else cwd inside a code gitmodules path, else unique configured code submodule.
+- Code submodule: `--submodule <path>`, else cwd inside a code gitmodules path, else unique configured code submodule. One invocation binds to that one submodule — repeat the command (new `--submodule` or cwd) to run the same ritual on another configured project.
 - `memoryRepoRoot = superRepoRoot / .ai/memory`
 - `memoryRoot = memoryRepoRoot / submodulePath` (never under submodule code).
 
@@ -97,7 +99,7 @@ Board fields (`projectId` / `boardId` / `statusIds`) required only before board-
 
 `backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
 
-(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress` then PR-ready → `in_review`; `/forge.validate-ticket` dual approve → `done`.)
+(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress` then PR + CI green → `in_review`; `/forge.validate-ticket` dual approve → `done`.)
 
 Optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-ready`) — ensured on the host during init/refinement.
 
@@ -125,8 +127,8 @@ One concern per file; reference board issue id/URL.
 5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
 6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
 7. `/forge.plan-refresh` — delivery sequence once Ready work exists
-8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; PR-ready → **In Review**; refuses Refinement / `human-ready` / weak briefs
-9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → **Done**
+8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; refuses Refinement / `human-ready` / weak briefs
+9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve + human merge → delete source branch → **Done**
 
 **Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.
 
@@ -151,10 +153,26 @@ Subagents never HITL, never Apply, never mutate SCM unless executing parent-appr
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options. When options exist, mark exactly one **already in this apply-set** (the recommendation). Other options are steers only.
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **How to reply** — required footer (fixed copy; do not invent a second instruction paragraph)
 
-Orchestrator reply: approve all | approve subset | reject | redirect.
+One pause, one conversation, one Apply gate. Talk until the apply-set is right; Apply only on approve.
+
+| Reply | Effect |
+| --- | --- |
+| **approve all** | Apply exactly the memory + vendor list on screen. Last word. If Decisions needed has a recommended option, that option is already in this set; `approve all` accepts it. Do not use `approve all` to pick a different option. |
+| **approve subset** | Apply only the memory/vendor lines the user names from this set. Still an Apply; still this proposal, just smaller. |
+| **reject** | Apply nothing. End the event. |
+| **Anything else** | Listed option letter, a new idea, or a freeform steer. This is a **redirect**: reshape the proposal, HITL again. Never Apply a set the user has not seen. |
+
+**How to reply** footer when Decisions needed is empty:
+
+> Reply **approve all**, **approve subset** (name the lines), **reject**, or say what to change (reshape, pause again).
+
+**How to reply** footer when Decisions needed is non-empty:
+
+> **approve all** Applies this set (recommended option included). Name another letter or describe a different idea to reshape. **reject** ends with no Apply. Nothing is written until you approve.
 
 ## Agents
 
@@ -184,7 +202,14 @@ npm run generate          # from design dump / README inventory helper
 npm run validate-memory
 npm run resolve-paths
 npm run memory-repo-git   # sync | commit --memory-repo-root <path>
+npm run course            # local workshop site → http://127.0.0.1:4321/
 ```
+
+### Local course
+
+[`course/`](course/) is a zero-dependency site for three required workshops: **Agentic SDLC** (who / what / why / when), **Using Forge** (how the rituals run), then **Role playbooks** (events, skills, and common goals per role). Progress is stored in the browser. Role and command contracts in `agents/` and `commands/` remain the source of truth; the site is a teaching path over those files.
+
+From this checkout, `npm run course` serves it at `http://127.0.0.1:4321/`. Forge Studio does the same for the cloned plugin: Command Palette → **Forge: Open Forge Course**.
 
 ## Out of scope (this plugin)
 

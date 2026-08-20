@@ -24,7 +24,7 @@ Harness entry when `forge.json` is missing or incomplete (`/forge.init-project`,
 5. For board sync, map `statusIds` including the grooming→refinement→ready→in_progress→in_review→done path:
    - `backlog`, `refinement`, `ready`, `in_progress`, `in_review`, `done` (names as keys in forge.json; values = host column/option ids)
    - `refinement` is required for `/forge.backlog-grooming` and `/forge.refinement` board moves
-   - `in_progress` / `in_review` are required for `/forge.implement-ticket` (claim after Ready gate; PR-ready → In Review)
+   - `in_progress` / `in_review` are required for `/forge.implement-ticket` (claim after Ready gate; PR + CI green → In Review)
    - `done` is required for `/forge.validate-ticket` dual-approve board move
 6. Ensure readiness label names in forge.json (defaults if omitted):
    - `labels.aiReady`: `"ai-ready"`

@@ -3,7 +3,8 @@ name: implement-ticket
 description: >-
   Implement one ai-ready board ticket in the submodule. Stop if not Ready,
   not ai-ready, or the issue body fails the Ready gate. Claim In Progress
-  immediately after the gate; move to In Review when the PR/MR is ready.
+  immediately after the gate; wait for CI after the PR/MR exists; move to
+  In Review only when CI has succeeded (or the host has no CI).
 ---
 
 # implement-ticket
@@ -21,9 +22,10 @@ description: >-
    - Body must pass `skills/product-owner/agent-ready-ticket`. If Refinement or checklist fail → **stop**. Hand off to `/forge.refinement`; do not invent scope.
 3. **Claim (parent Applies immediately, no HITL):** After gate pass, parent Applies board → `statusIds.in_progress` via `vendor-issues-write`, then mirrors memory (`engineering/in-flight.md` `# Active`, `product/backlog.md` `# In progress`). If gate failed, do **not** claim.
 4. Optionally read architecture/memory for session context; never treat memory paths as ticket dependencies. Implement the smallest change that meets Acceptance criteria + Verification from the **issue body**.
-5. When ready for verification: propose PR/MR open/update, board → `statusIds.in_review`, in-flight remove from `# Active` + set `# Review state`, qa/queue.md → Ready for QA. Keep backlog under `# In progress` until merge. HITL gates this step; on approve, Apply vendor/SCM first then memory. Next command: `/forge.validate-ticket`.
-6. When event-spawned: propose-only for coding/PR/In Review hand-offs; do not Apply until parent Apply (except the parent’s early In Progress claim).
+5. When ready for verification: propose PR/MR open/update (HITL). After the PR/MR exists on the host, **wait for CI** via `vendor-ci-status` on that head SHA. Do **not** treat the event as complete while checks/pipelines are pending or running. If CI fails or is cancelled, fix the smallest change that addresses the failure, push, and wait again. If the host has no CI for the PR/MR, skip the wait.
+6. Only after CI completes successfully (or no CI): propose board → `statusIds.in_review`, in-flight remove from `# Active` + set `# Review state`, qa/queue.md → Ready for QA. Keep backlog under `# In progress` until merge. HITL gates this step; on approve, Apply vendor/SCM first then memory. Next command: `/forge.validate-ticket`.
+7. When event-spawned: propose-only for coding/PR/In Review hand-offs; do not Apply until parent Apply (except the parent’s early In Progress claim). Waiting on CI is parent/Engineer polling — not a HITL pause.
 
 ## Outputs / stop conditions
 
-Code/tests meeting acceptance with board In Progress → In Review, or a stop hand-off if not Ready + `ai-ready`.
+Code/tests meeting acceptance, PR/MR open, **CI terminal success** (or no CI on the host), and board In Progress → In Review — or a stop hand-off if not Ready + `ai-ready`. Pending or failed CI is **not** complete; stay In Progress and fix.

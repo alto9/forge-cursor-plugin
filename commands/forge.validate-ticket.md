@@ -20,11 +20,11 @@ description: >-
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list (must include the required PR/MR verdict comment)
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 
@@ -37,7 +37,7 @@ Pause when:
     qa/queue.md, qa/findings.md, or security/findings.md would change
     qa/test-plan.md scope/checks would change for this item
     security/checklist.md or threat-model.md would change
-    Vendor actions: PR/MR verdict comment, merge, board status moves
+    Vendor actions: PR/MR verdict comment, merge, delete source branch after merge, board status moves
 Instructions:
 Take one Ready for QA item (from Engineer) with an open PR/MR on board **In Review** (`statusIds.in_review`). Run QA and Security together — no silent OK from either domain.
 QA: verify against spec acceptance criteria and test-plan checks (acceptance, exploratory, repro as needed). Call approve or pass back; propose a one-line verdict for the parent PR/MR comment.
@@ -48,8 +48,8 @@ Keep qa/findings.md and security/findings.md separate — one concern per file; 
 - Then QA and Security verdict lines (from domain hand-offs)
 - On FAIL: short summary + pointers to Open/Blockers findings (no long diary)
 **Merge only if both approve.** If either passes back: do not merge; post FAIL comment; board stays `statusIds.in_review`; propose qa/queue.md → Passed back; write Open/Blockers in the relevant findings file(s); remove stale findings that no longer apply.
-On dual approve: post PASS comment → propose vendor merge of the PR/MR via `vendor-pulls-merge` (SCM SoT) → move board issue to `statusIds.done` via `vendor-issues-write`; then qa/queue.md → Approved; clear related Open findings in both QA and Security findings; remove from backlog.md `# In progress` and clear related in-flight Review state to match SCM; note security checklist gates that passed for this change only if durable.
-Vendor skills for this event: `vendor-pulls-review` (verdict comment), `vendor-pulls-merge` (dual approve only), `vendor-issues-write` (board → done).
+On dual approve: post PASS comment → propose vendor merge of the PR/MR via `vendor-pulls-merge` (SCM SoT) → **delete the PR/MR source branch** after a successful merge (same human merge approval; not a second HITL) via `vendor-branches-write` / GitLab `should_remove_source_branch` — never delete the default or a protected branch → move board issue to `statusIds.done` via `vendor-issues-write`; then qa/queue.md → Approved; clear related Open findings in both QA and Security findings; remove from backlog.md `# In progress` and clear related in-flight Review state to match SCM; note security checklist gates that passed for this change only if durable. If merge fails, do **not** delete the branch or move the board to Done.
+Vendor skills for this event: `vendor-pulls-review` (verdict comment), `vendor-pulls-merge` (dual approve only), `vendor-branches-write` (delete source branch after merge), `vendor-issues-write` (board → done).
 Propose qa/test-plan.md updates only when this item needs durable acceptance/regression checks; don’t build a novel per run.
 Propose security/threat-model.md updates only when assets/boundaries/threats actually changed; delete obsolete threats/mitigations.
 Read engineering/in-flight and product spec as inputs; don’t rewrite product/architecture docs here (escalate design-level issues to Architect/PO events).

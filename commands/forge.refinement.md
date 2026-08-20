@@ -22,12 +22,12 @@ Sibling to `/forge.backlog-grooming`. Grooming lands high-level Intention + Acce
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
 - **Left alone** — in-scope docs/actions intentionally unchanged
 - **Ready gate** — issue id | pass/fail | failing checklist items | proposed label (`ai-ready` | `human-ready`)
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 
@@ -42,6 +42,7 @@ Pause when:
     Memory spec projection created or materially edited
     Open product/tech decisions that block Ready
 Instructions:
+Bind to the **active submodule** only. Do not refine other configured projects in this run; the orchestrator invokes the command again per path.
 Work the board **Refinement** column (forge.json statusIds.refinement) — pull issue ids from board + backlog.md # Refinement.
 For each selected item: expand grooming brief into a full self-contained Ready body via skills/product-owner/agent-ready-ticket + requirements-writing. Issue body must stand alone — no links to memory paths.
 Architect: propose Constraints / interface facts **to inline** into the issue body (from architecture docs); call out design gaps (may spawn design-spike instead of Ready).

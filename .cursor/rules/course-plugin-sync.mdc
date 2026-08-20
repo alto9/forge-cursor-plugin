@@ -1,0 +1,47 @@
+---
+description: Keep course/ and plugin contracts in lockstep after every change
+alwaysApply: true
+---
+
+# Course ↔ plugin sync
+
+This repo is one product with two surfaces. `course/` is how we teach, and often how we design. `agents/`, `commands/`, `skills/`, and `rules/` are how the plugin runs. After every change, both sides must agree in the same response.
+
+## Either side can drive
+
+Editing the course is a valid way to change the plugin. Editing an agent, command, skill, or harness rule is a valid way to change the course. The first edit is the intent; update the other surface before you stop. A learner who finishes the course and an agent who runs the plugin must take the same action.
+
+## Pairing map
+
+Sessions in `course/content.js` name their plugin file in `source`:
+
+- Course 1 roles → `agents/<role>.md`
+- Course 2 rituals → `commands/forge.*.md` plus the skills those commands name
+- Course 3 playbooks → `agents/<role>.md` plus that role’s skills and the events they lead or attend
+- Operator session → `skills/forge/resolve-paths/SKILL.md`
+
+A session often restates a second command (grooming also teaches `/forge.refinement`). Patch every file that states the same fact, including `rules/forge-harness.mdc` and README restatements. If a board column or label changes, update `boardPath` and the visuals that render it.
+
+## What must match
+
+Facts: board columns, readiness labels (`ai-ready` / `human-ready`), who acts when, HITL/Apply rules, claim and column-move timing, merge rules, memory vs board.
+
+Voice may differ. The course teaches; the plugin contracts. The course analogy is a restaurant that never closes (kitchen, the line, the pass, the table, the icebox). Leave that premise out of agents, and leave HITL checklists out of slides.
+
+Course chrome (`styles.css`, progress in `app.js`) has no plugin twin. Plugin scripts, tests, and generate tooling have no course twin unless the course already names them.
+
+## What to do
+
+1. Name the fact that changed.
+2. Update the file you were asked to edit.
+3. Grep the other surface (and restatements) for that fact.
+4. Patch every hit so both sides describe the same behavior.
+5. A new public command, agent, or harness invariant needs a course home — a new session or a block on an existing one. An untaught public surface is drift.
+
+```
+# Course: implement claims In Progress only after the PR exists
+# Plugin still claims immediately after the Ready + ai-ready gate
+# The driving edit wins. Update commands/forge.implement-ticket.md,
+# skills/engineer/implement-ticket/SKILL.md, rules/forge-harness.mdc,
+# and any other session that states the timing — or revert the course.
+```

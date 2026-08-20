@@ -12,11 +12,11 @@ Observe-only harness orientation. Do not spawn role subagents unless the user as
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — yes/no or A/B
+- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **How to reply** — required footer; see README Hand-off shape
 
-Orchestrator reply gates Apply: approve all | approve subset | reject | redirect.
-
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
 
 ## Event contract
 
@@ -29,7 +29,7 @@ Pause when:
 Instructions:
 Answer “what is this harness and what should I run?” using skills/forge/help/SKILL.md.
 Do not spawn role subagents unless the user asks for a deep dive on one agent (then explain that agent only — still no writes).
-Resolve paths when possible; if submodule is ambiguous, list .gitmodules paths and how to pass --submodule.
+Resolve paths when possible; if submodule is ambiguous, list .gitmodules paths and how to pass --submodule. Suggested next is for the active submodule; several Forge projects means the same command again per path.
 Default output sections:
     Where you are          # superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot (or “unresolved” / missing memory-repo)
     How this works         # SoT, memory-repo on main vs code PRs, HITL, parent/subagent Apply rules (short)

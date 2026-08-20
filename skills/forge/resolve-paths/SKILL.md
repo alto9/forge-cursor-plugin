@@ -34,6 +34,7 @@ Start of every Forge event/command before reading memory or calling vendor.
 ## Outputs / stop conditions
 
 Outputs: `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRepoRoot`, `memoryRoot`.
+One invocation resolves **one** active submodule. Do not iterate remaining code submodules or remaining `forge.json` files. If the orchestrator wants the same event on every configured project, they invoke the command once per path (`--submodule` or cwd).
 Stop on ambiguity — never guess a submodule. Stop if memory-repo submodule is missing.
 
 ## Script

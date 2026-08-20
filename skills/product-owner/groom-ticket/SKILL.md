@@ -9,7 +9,7 @@ description: >-
 
 ## When to use
 
-`/forge.backlog-grooming` when creating or shaping tickets before low-level refinement.
+`/forge.backlog-grooming` when creating or shaping tickets before low-level refinement. Active submodule only — one project per invocation.
 
 ## Goal
 

@@ -1,0 +1,83 @@
+---
+description: Kill the six AI cadence tells in all prose (chat, README, skills, commands, comments)
+alwaysApply: true
+---
+
+# Prose cadence
+
+The fingerprint is staccato rhythm: short declarative sentences in contrasting pairs or rapid-fire lists. Fix the six patterns below. When merging, do not default to em-dashes — vary connectors (comma, colon, semicolon, parentheses, "rather than", a subordinate clause). One or two em-dashes per page is enough.
+
+## 1. False-contrast pairs
+
+Two short sentences, first negates, second asserts. Put the contrast inside one sentence.
+
+```
+# Bad
+This is not a packaging problem. It is a discovery problem.
+
+# Good
+The files can sit in the repo; the loader never scans `.cursor/`, so users never see them.
+```
+
+## 2. Sentence-fragment lists
+
+Three or more ultra-short declaratives in a row. Join them.
+
+```
+# Bad
+Memory drifts. The board wins. We update the projection.
+
+# Good
+Memory drifts, the board wins, and we update the projection.
+```
+
+## 3. Dramatic one-liner closers
+
+A punchy mic-drop at the end of a paragraph. Absorb it into the sentence before it.
+
+```
+# Bad
+If paths are ambiguous, the event stops.
+Fail closed.
+
+# Good
+If paths are ambiguous, the event stops rather than guessing.
+```
+
+## 4. Parallel structure overuse
+
+Back-to-back sentences with the same grammatical shape. Vary the second one.
+
+```
+# Bad
+Every Ready ticket needs an Outcome. Every Ready ticket needs AC.
+
+# Good
+Every Ready ticket needs an Outcome, and the AC have to be checkable without opening a second doc.
+```
+
+```
+# Bad
+What we are building and why is already the job. Here the events you lead write the brief, the roadmap, and the tickets, and the skills are how the Agent does that writing. Between rituals you ask it to read those pages with you.
+
+# Good
+You know by now that the job is 'what' we are building and 'why'. Your responsibilities are to participate in events to write the brief, the roadmap, and the tickets. The skills in the harness help the agent assist you to accomplish these tasks.
+```
+
+## 5. Dramatic pivots
+
+Throat-clearing that only signals a reversal: "But here's the thing," "The real question is," "The X nobody talks about." Cut it and state the point.
+
+## 6. Compressed negation tags
+
+A "not X" kicker at the end of a clause. Expand it.
+
+```
+# Bad
+Board state is the source of truth, not memory.
+
+# Good
+Board state is the source of truth; memory is a projection we correct when the two disagree.
+```
+
+Before sending prose, scan for "not" + period across two sentences, three sub-10-word sentences in a row, and a closer that exists only to land a punch.
