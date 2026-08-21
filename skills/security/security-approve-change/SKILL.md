@@ -17,7 +17,7 @@ Invoked by Forge event commands or the security agent for `security/security-app
 3. Current state only — remove stale items; leave files alone if unchanged.
 4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
 5. Include a one-line **Security verdict** for the parent `/forge.validate-ticket` PR/MR comment (e.g. `Security: approve — checklist gates for this change passed`). Parent composes the combined PASS/FAIL comment.
-6. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Decisions needed, Left alone). Do **not** Apply, HITL, or mutate SCM.
+6. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Questions, Left alone). Do **not** Apply, HITL, or mutate SCM.
 
 ## Outputs / stop conditions
 

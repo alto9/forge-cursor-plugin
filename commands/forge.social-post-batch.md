@@ -16,14 +16,20 @@ description: >-
 
 ### Hand-off shape (required)
 
+Two phases; see README Hand-off shape. Parent only; subagents propose-only.
+
+**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork; lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
+
+**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
+
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
+- **Questions** — `None`
 - **Left alone** — in-scope docs/actions intentionally unchanged
 - **How to reply** — required footer; see README Hand-off shape
 
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
 
 ## Event contract
 

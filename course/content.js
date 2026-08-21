@@ -894,7 +894,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Forge is a Cursor plugin, but the important picture is simpler: you are the parent of the ritual. A command calls the roles. They propose. They do not ship. You read a short hand-off — what they meant to do, which files, which remote actions, what needs a decision, what they left alone — and you talk until that apply-set is right. Only then do you approve.",
+              "Forge is a Cursor plugin, but the important picture is simpler: you are the parent of the ritual. A command calls the roles. They propose. They do not ship. When there is a fork, you answer Questions first — a picker when Cursor offers one, or the same list in chat when it does not. Each question is one decision; its letters are options to that decision, with (Recommended) on the first. After answers (or when there was nothing to ask), you read the apply-set — intent, files, remote actions, what they left alone — and you talk until that set is right. Only then do you approve.",
               "Ask the Agent any time: between rituals, mid-sentence, or when a page is half-written. /forge.help just looks and does not write, so start there when the map goes fuzzy.",
             ],
           },
@@ -902,16 +902,17 @@ export const courses = [
             type: "list",
             title: "How you reply at every pause",
             items: [
-              "approve all — Apply exactly the memory and remote actions on screen. Last word. If Decisions needed marks a recommended option as already in this apply-set, approve all accepts that recommendation.",
-              "approve subset — Apply only the lines you name from this set. Still an Apply; still this proposal, just smaller.",
+              "Questions phase — pick one option per named question (Recommended is the default if you want it), or say Other / describe a different idea. Nothing is written yet. Independent forks are separate questions, not one flat A/B/C list.",
+              "approve all — Apply exactly the memory and remote actions on the apply-set screen. Last word. Only valid when Questions is None.",
+              "approve subset — Apply only the lines you name from that set. Still an Apply; still this proposal, just smaller.",
               "reject — Apply nothing and end the event.",
-              "Anything else — a listed letter (B, C), a new idea, or a freeform steer. That is a redirect: the Agent reshapes and pauses again. Nothing is written until you approve a set you have seen.",
+              "Anything else on the apply-set — a new idea or freeform steer. That is a redirect: the Agent reshapes (and may ask Questions again). Nothing is written until you approve a set you have seen.",
             ],
           },
           {
             type: "prose",
             paragraphs: [
-              "Picture a grooming pass where the board is empty and the Agent recommends Hold. Option A is already baked into the apply-set (often memory-only, vendor none). approve all ships that Hold. If you want a Live maturity slice or polish instead, say B, C, or describe your own slice; the Agent comes back with a new hand-off. You do not approve a direction you have not seen as an apply-set.",
+              "Picture a grooming pass where the board is empty. The Agent asks one question — Hold, Live maturity slice, or polish — with Hold marked (Recommended). You pick Hold (or another letter). Then the apply-set appears with Questions: None, often memory-only and vendor none. approve all ships that Hold. If you change your mind after seeing the set, say what to change; the Agent comes back with a new hand-off. You do not approve a direction you have not seen as an apply-set.",
             ],
           },
           {
@@ -1165,7 +1166,7 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "You still judge",
-            body: "Lead or attend, the Agent still proposes. You still talk until the apply-set is right, then approve all or approve subset — or reject, or redirect with a letter or a new idea — the same way Course 2 taught you.",
+            body: "Lead or attend, the Agent still proposes. You still answer Questions when they appear, then talk until the apply-set is right, then approve all or approve subset — or reject, or redirect with a freeform steer — the same way Course 2 taught you.",
           },
           {
             type: "heading",

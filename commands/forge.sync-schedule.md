@@ -19,14 +19,20 @@ Optional convenience. **Not** part of New project path, release gates, or role s
 
 ### Hand-off shape (required)
 
+Two phases; see README Hand-off shape. Parent only; no role subagents.
+
+**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork (timezone, calendar id, slot times for events not already on the calendar; opt-in for On demand / Per release if requested); lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
+
+**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
+
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — none
 - **Proposed vendor actions** — calendar create/update/delete list (`Forge: forge.<event-id>`)
-- **Decisions needed** — timezone, calendar id, slot times for events not already on the calendar; opt-in for On demand / Per release if requested. When listing alternatives, mark exactly one **already in this apply-set**
+- **Questions** — `None`
 - **Left alone** — On demand / Per release / Per milestone / Per major bet (unless opted in); events already in sync
 - **How to reply** — required footer; see README Hand-off shape
 
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
+Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
 
 ## Event contract
 

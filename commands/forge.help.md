@@ -9,14 +9,15 @@ Observe-only harness orientation. Do not spawn role subagents unless the user as
 
 ### Hand-off shape (required)
 
-- **Intent** — 1–2 sentences
-- **Proposed memory edits** — per file: update / remove / create
-- **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — `None`, or listed options (exactly one marked **already in this apply-set** when options exist)
-- **Left alone** — in-scope docs/actions intentionally unchanged
-- **How to reply** — required footer; see README Hand-off shape
+Observe only — report shape below; **no Questions gate, no Apply**. See README Hand-off shape.
 
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else (letter, new idea, freeform) reshapes and pauses again. Never Apply a set the user has not seen.
+- **Intent** — 1–2 sentences
+- **Proposed memory edits** — none
+- **Proposed vendor actions** — none
+- **Questions** — `None`
+- **Left alone** — all (read-only)
+- **How to reply** — not required; this event does not Apply
+
 
 ## Event contract
 

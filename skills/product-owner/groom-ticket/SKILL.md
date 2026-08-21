@@ -48,7 +48,7 @@ Enough that a refinement pass can expand into a self-contained Ready ticket with
 3. When splitting into ≥5 related tickets, propose host milestone create/reuse + assign.
 4. Set board status to `statusIds.refinement` (forge.json). Never place newly groomed work in Ready. Do not apply `ai-ready` / `human-ready` here.
 5. Mirror ids under backlog.md `# Refinement`. Keep `# Ready` for post-refinement only.
-6. Leave lasting product decisions under HITL **Decisions needed**; park blocked items in Blocked.
+6. Leave lasting product decisions under HITL **Questions**; park blocked items in Blocked.
 
 ## Outputs / stop conditions
 

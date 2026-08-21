@@ -52,7 +52,7 @@ List skipped events under **Left alone**. Orchestrator may opt in to specific sk
 
 1. Confirm Google Calendar MCP tools are available (`list_calendars`). If not → stop with clear message.
 2. Do **not** run `resolve-paths`, `sync-memory`, or `resolve-config`. Do not ask for `--submodule` or `FORGE_SUPER_REPO`. Continue even if the workspace is not a Forge super-repo.
-3. Collect unique `event-id` + cadence from plugin `agents/*.md` Schedule sections (and optionally `commands/*.md` cadence lines for completeness). Dedupe by event-id; if cadences conflict, prefer the Lead agent's schedule or ask in Decisions needed.
+3. Collect unique `event-id` + cadence from plugin `agents/*.md` Schedule sections (and optionally `commands/*.md` cadence lines for completeness). Dedupe by event-id; if cadences conflict, prefer the Lead agent's schedule or ask in Questions.
 4. Filter by default include/skip (Weekly / Biweekly / Monthly in; On demand and per-release/milestone/bet out unless HITL opts in).
 5. Idempotency: `search_events` (or `list_events`) for summary `Forge: forge.<event-id>`.
    - Missing → propose `create_event` with a default slot (spread weeklies across mornings; biweeklies Tuesday; monthlies day 1). Put defaults in HITL — do not invent times silently on Apply.

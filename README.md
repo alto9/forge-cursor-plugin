@@ -150,29 +150,39 @@ Subagents never HITL, never Apply, never mutate SCM unless executing parent-appr
 
 ### Hand-off shape (every pause)
 
+Two phases, same event, parent only. Subagents stay propose-only and never HITL. One conversation, one Apply gate: talk until the apply-set is right; Apply only on approve of a set the user has seen. Skip Phase 1 when there are no forks. `observe` (`/forge.help`) reports only — no Questions gate, no Apply.
+
+**Phase 1 — Questions** (when forks exist). Nothing is written. Each item is one decision; its letters are options to that decision only. Independent forks are separate questions in the same form, not one flat A/B/C list. Exactly one option per question is labeled `(Recommended)` and listed first. Prefer the host structured-question tool (`AskQuestion`) when it is in the session; if missing (Auto, some models, CLI print/headless, cloud), print the same structure in chat. Do not switch to Plan mode to get the picker. After asking, **stop** — do not Apply or mutate SCM until the user answers. Do not put `approve all` inside the picker.
+
+Markdown fallback for Phase 1:
+
+- One heading (or numbered prompt) per question
+- Lettered options; `(Recommended)` on the first option
+- Footer: Pick one option per question (Recommended is the default if you want it). Name a letter, or describe a different idea. Nothing is written yet.
+
+A letter, Other, or freeform during Questions is a **redirect**: reshape and ask again.
+
+**Phase 2 — Apply-set** (after answers, or when Phase 1 was skipped):
+
 - **Intent** — 1–2 sentences
 - **Proposed memory edits** — per file: update / remove / create
 - **Proposed vendor actions** — none, or explicit list
-- **Decisions needed** — `None`, or listed options. When options exist, mark exactly one **already in this apply-set** (the recommendation). Other options are steers only.
+- **Questions** — `None` (path letters belong in Phase 1 only)
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- Event extras when the command defines them (`Refinement queue`, `Ready gate`, …)
 - **How to reply** — required footer (fixed copy; do not invent a second instruction paragraph)
-
-One pause, one conversation, one Apply gate. Talk until the apply-set is right; Apply only on approve.
 
 | Reply | Effect |
 | --- | --- |
-| **approve all** | Apply exactly the memory + vendor list on screen. Last word. If Decisions needed has a recommended option, that option is already in this set; `approve all` accepts it. Do not use `approve all` to pick a different option. |
-| **approve subset** | Apply only the memory/vendor lines the user names from this set. Still an Apply; still this proposal, just smaller. |
+| **Questions phase** | Pick an option (or Other / freeform). Not an Apply. |
+| **approve all** | Apply exactly the memory + vendor list on the **apply-set** screen. Last word. Only valid when Questions is `None`. |
+| **approve subset** | Apply only the memory/vendor lines the user names from that apply-set. Still an Apply; still this proposal, just smaller. |
 | **reject** | Apply nothing. End the event. |
-| **Anything else** | Listed option letter, a new idea, or a freeform steer. This is a **redirect**: reshape the proposal, HITL again. Never Apply a set the user has not seen. |
+| **Anything else on the apply-set** | Freeform steer or new idea. **Redirect**: reshape (may re-open Questions), pause again. Never Apply a set the user has not seen. |
 
-**How to reply** footer when Decisions needed is empty:
+**How to reply** footer on the apply-set:
 
-> Reply **approve all**, **approve subset** (name the lines), **reject**, or say what to change (reshape, pause again).
-
-**How to reply** footer when Decisions needed is non-empty:
-
-> **approve all** Applies this set (recommended option included). Name another letter or describe a different idea to reshape. **reject** ends with no Apply. Nothing is written until you approve.
+> Reply **approve all**, **approve subset** (name the lines), or **reject**. Say what to change to reshape and pause again. Nothing is written until you approve.
 
 ## Agents
 
