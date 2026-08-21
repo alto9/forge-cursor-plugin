@@ -42,16 +42,15 @@ Pause when:
     Replying to or resolving review threads
     Expanding scope beyond the review ask
     in-flight.md Review state would change
-    Clearing or returning items from qa/queue.md Passed back
 Instructions:
-Clear open PR/MR review feedback and/or QA pass-back findings for the active change — reply, fix, or explicitly defer with reason.
+Clear open PR/MR review feedback and/or QA/Security pass-back for the active change — reply, fix, or explicitly defer with reason. Pass-back context comes from the FAIL PR comment and review threads; board stays `statusIds.in_review`. Re-run `/forge.validate-ticket` when fixes are pushed — no queue move required.
 Don’t turn review response into unrelated refactors or new features; escalate scope fights to PO/Architect.
 Board status stays `statusIds.in_review` — do not move back to In Progress.
 Propose in-flight.md Review state / Blockers updates; clear Review state when merge-ready or when waiting on others.
-When fixing QA pass-backs, propose queue.md moves (Passed back → Ready for QA) and findings.md removals only for items actually fixed.
+When fixing pass-backs that still touch memory from older runs, propose findings.md removals only for items actually fixed.
 Propose vendor actions (push, reply, resolve threads, re-request review) in the hand-off before mutating the host.
 Leave product/architecture docs alone unless a review reveals a real contract/spec mismatch (then call it out; don’t silently rewrite).
-Next human command when Ready for QA again: `/forge.validate-ticket`.
+Next human command when ready to re-gate: `/forge.validate-ticket`.
 Docs:
 <super-repo>/.ai/memory/<submodule>/engineering/in-flight.md
 <super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md

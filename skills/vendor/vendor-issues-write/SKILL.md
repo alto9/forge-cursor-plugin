@@ -13,7 +13,7 @@ Invoked by Forge event commands or agents for `vendor/issues/write`.
 1. resolve-paths + resolve-config first.
 2. Prefer MCP tools for host in forge.json (github | gitlab).
 3. Never invent ticket ids; board/SCM is source of truth.
-4. Propose vendor actions in HITL hand-off before mutating unless parent Apply already approved them.
+4. Propose vendor actions in HITL hand-off before mutating unless parent Apply already approved them, or the parent event is auto-apply (`/forge.implement-ticket`, `/forge.validate-ticket`).
 
 ## MCP mapping
 
@@ -34,9 +34,9 @@ Use `forge.json` `statusIds` values (host column/option ids). Documented transit
 
 - `/forge.backlog-grooming`: create/update → `statusIds.refinement`
 - `/forge.refinement` promote: `statusIds.refinement` → `statusIds.ready`
-- `/forge.implement-ticket` after Ready + `ai-ready` gate: → `statusIds.in_progress` (parent Applies immediately, no HITL)
-- `/forge.implement-ticket` when PR/MR ready **and CI succeeded** (or host has no CI) (HITL): → `statusIds.in_review`
-- `/forge.validate-ticket` dual approve: → `statusIds.done` (pass-back leaves `in_review`)
+- `/forge.implement-ticket` after Ready + `ai-ready` gate: → `statusIds.in_progress` (auto-Apply, no HITL, no memory)
+- `/forge.implement-ticket` when PR/MR ready **and CI succeeded** (or host has no CI): → `statusIds.in_review` (auto-Apply, no HITL, no memory)
+- `/forge.validate-ticket` dual approve: → `statusIds.done` (auto-Apply merge then board; pass-back leaves `in_review`)
 - `/forge.respond-to-review`: stay on `statusIds.in_review` (do not bounce back to In Progress)
 
 ## Milestones

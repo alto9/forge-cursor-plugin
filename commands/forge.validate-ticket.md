@@ -2,76 +2,46 @@
 name: forge.validate-ticket
 description: >-
   On demand; lead Quality Assurance. Combined QA + Security ticket gate
-  (open PR/MR). Forge event command.
+  (open PR/MR). Auto-applies SCM only — no HITL, no memory. Dual approve
+  auto-merges.
 ---
 
 # forge.validate-ticket
 ## Parent execution model
 
-1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
-3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.** Exception: Security vetoes merge — do not propose vendor merge unless both QA and Security approve.
-4. HITL pause using the Mode / Pause when / hand-off shape below.
-5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
-
-
-### Hand-off shape (required)
-
-Two phases; see README Hand-off shape. Parent only; subagents propose-only.
-
-**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork; lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
-
-**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
-
-- **Intent** — 1–2 sentences
-- **Proposed memory edits** — per file: update / remove / create
-- **Proposed vendor actions** — none, or explicit list (must include the required PR/MR verdict comment)
-- **Questions** — `None`
-- **Left alone** — in-scope docs/actions intentionally unchanged
-- **How to reply** — required footer; see README Hand-off shape
-
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
+1. Run skills `resolve-paths` → `resolve-config` (fail closed on path ambiguity). **Skip** `sync-memory`. Memory-repo sync failure is not a stop for this event.
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, submoduleRoot, skills to use, and relevant Instructions. Do **not** pass memoryRoot or docs in scope. Subagents must not write memory, must not HITL, and must not mutate vendor/SCM unless the parent asks them to execute an already-decided Apply step.
+3. Merge subagent proposals. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM is the source of truth** — no memory projection. Exception: Security vetoes merge — do not merge unless both QA and Security approve.
+4. **Auto-Apply** vendor/SCM actions immediately — no Questions phase, no apply-set, no orchestrator approve.
+5. **No memory Apply** — skip `validate-memory` and `commit-memory`.
 
 ## Event contract
 
 Cadence: On demand
 Lead: Quality Assurance
 HITL:
-Mode: approve-before-vendor
+Mode: auto-apply
 Pause when:
-    Always — dual approve (merge) or either-domain pass-back is a required orchestrator-visible call
-    qa/queue.md, qa/findings.md, or security/findings.md would change
-    qa/test-plan.md scope/checks would change for this item
-    security/checklist.md or threat-model.md would change
-    Vendor actions: PR/MR verdict comment, merge, delete source branch after merge, board status moves
+    Never — this command auto-Applies all vendor/SCM actions after QA + Security verdicts
 Instructions:
-Take one Ready for QA item (from Engineer) with an open PR/MR on board **In Review** (`statusIds.in_review`). Run QA and Security together — no silent OK from either domain.
-QA: verify against spec acceptance criteria and test-plan checks (acceptance, exploratory, repro as needed). Call approve or pass back; propose a one-line verdict for the parent PR/MR comment.
-Security: review the same PR/MR against checklist + threat-model (secret-scan, harden-config as needed). Call approve or pass back; propose a one-line verdict for the parent PR/MR comment.
-Keep qa/findings.md and security/findings.md separate — one concern per file; reference the board issue id/URL in both.
+Take one board item on **In Review** (`statusIds.in_review`) with an open PR/MR (vendor get). Run QA and Security together — no silent OK from either domain.
+QA: verify against the issue body’s acceptance criteria (acceptance, exploratory, repro as needed). Build an ephemeral check list from the issue AC — do not read or write `qa/test-plan.md`. Call approve or pass back; return a one-line verdict for the parent PR/MR comment.
+Security: review the same PR/MR (secret-scan, harden-config as needed). Call approve or pass back; return a one-line verdict for the parent PR/MR comment. Do not read or write security memory docs for this event.
 **Required PR/MR comment (both outcomes):** Parent composes and Applies **one** combined comment via `vendor-pulls-review` before any merge. Shape:
 - First line: `Forge validate-ticket: PASS` or `Forge validate-ticket: FAIL`
 - Then QA and Security verdict lines (from domain hand-offs)
-- On FAIL: short summary + pointers to Open/Blockers findings (no long diary)
-**Merge only if both approve.** If either passes back: do not merge; post FAIL comment; board stays `statusIds.in_review`; propose qa/queue.md → Passed back; write Open/Blockers in the relevant findings file(s); remove stale findings that no longer apply.
-On dual approve: post PASS comment → propose vendor merge of the PR/MR via `vendor-pulls-merge` (SCM SoT) → **delete the PR/MR source branch** after a successful merge (same human merge approval; not a second HITL) via `vendor-branches-write` / GitLab `should_remove_source_branch` — never delete the default or a protected branch → move board issue to `statusIds.done` via `vendor-issues-write`; then qa/queue.md → Approved; clear related Open findings in both QA and Security findings; remove from backlog.md `# In progress` and clear related in-flight Review state to match SCM; note security checklist gates that passed for this change only if durable. If merge fails, do **not** delete the branch or move the board to Done.
+- On FAIL: short summary of why (no long diary; SCM comment is the audit trail)
+**Merge only if both approve.** If either passes back: do not merge; post FAIL comment; board stays `statusIds.in_review`. Do not write memory.
+On dual approve (auto-Apply sequence):
+1. Post PASS comment via `vendor-pulls-review`
+2. Merge the PR/MR via `vendor-pulls-merge`
+3. Delete the PR/MR source branch via `vendor-branches-write` / GitLab `should_remove_source_branch` — never delete the default or a protected branch
+4. Move board issue to `statusIds.done` via `vendor-issues-write`
+If merge fails, do **not** delete the branch or move the board to Done.
 Vendor skills for this event: `vendor-pulls-review` (verdict comment), `vendor-pulls-merge` (dual approve only), `vendor-branches-write` (delete source branch after merge), `vendor-issues-write` (board → done).
-Propose qa/test-plan.md updates only when this item needs durable acceptance/regression checks; don’t build a novel per run.
-Propose security/threat-model.md updates only when assets/boundaries/threats actually changed; delete obsolete threats/mitigations.
-Read engineering/in-flight and product spec as inputs; don’t rewrite product/architecture docs here (escalate design-level issues to Architect/PO events).
-No separate merge event — dual approve via this command is the ticket merge gate. Use `/forge.security-review` for non-MR surfaces (config, dependency bump). Use `/forge.regression-pass` for release-level QA.
+No separate merge event — dual approve via this command is the ticket merge gate (auto-merge). Use `/forge.security-review` for non-MR surfaces (config, dependency bump). Use `/forge.regression-pass` for release-level QA. Use `/forge.respond-to-review` when fixing a FAIL pass-back.
 Docs:
-<super-repo>/.ai/memory/<submodule>/qa/queue.md
-<super-repo>/.ai/memory/<submodule>/qa/findings.md
-<super-repo>/.ai/memory/<submodule>/qa/test-plan.md
-<super-repo>/.ai/memory/<submodule>/security/findings.md
-<super-repo>/.ai/memory/<submodule>/security/checklist.md
-<super-repo>/.ai/memory/<submodule>/security/threat-model.md
-<super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/engineering/in-flight.md
-<super-repo>/.ai/memory/<submodule>/architecture/constraints.md
-<super-repo>/.ai/memory/<submodule>/project/status.md
+# None — SCM (issue body, PR/MR, board, verdict comment) is SoT; no memory reads or writes
 Agents:
 Quality Assurance:
     skills/quality-assurance/build-test-plan/SKILL.md
@@ -86,5 +56,3 @@ Security:
     skills/security/harden-config/SKILL.md
     skills/security/security-pass-back/SKILL.md
     skills/security/security-approve-change/SKILL.md
-Engineer:
-    skills/engineer/respond-to-review/SKILL.md

@@ -10,6 +10,8 @@ Spawned as a **propose-only** subagent by event commands. Do not Apply memory wr
 
 Owns security posture for the submodule: threats, open security findings, and whether a change is safe to ship. Approves from a security lens or passes work back with clear issues. Can answer at any time: top threats, open findings, and what’s blocking a security OK.
 
+`/forge.validate-ticket` is **SCM-only** (auto-Apply; no memory). Threat-model, findings, and checklist docs remain for other events (`security-review`, dependency-audit, etc.). Dual approve auto-merges; either domain can veto.
+
 Docs:
     # memory file <- harness template (structure + validation target)
     <super-repo>/.ai/memory/<submodule>/security/threat-model.md
@@ -61,4 +63,4 @@ Schedule:
     Monthly: forge.dependency-audit
     Per release: forge.security-release-gate
     # Also participates in launch-readiness-check
-    # validate-ticket is the PR/MR gate (with QA); security-review covers non-MR surfaces
+    # validate-ticket is the PR/MR gate with QA (SCM-only auto-merge on dual approve); security-review covers non-MR surfaces

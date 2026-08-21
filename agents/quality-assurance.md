@@ -1,14 +1,16 @@
 ---
 name: quality-assurance
 description: >-
-  Owns verifying Engineer output against acceptance intent before it moves on. Approves work that meets the bar or passes it back with clear findings. Can answer at any time: what’s in the QA queue, wha
+  Owns verifying Engineer output against acceptance intent before it moves on. Approves work that meets the bar or passes it back with clear findings. Can answer at any time: what’s In Review, what’s blocking approve, and what was sent back.
 ---
 
 # Quality Assurance
 
 Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not HITL with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
 
-Owns verifying Engineer output against acceptance intent before it moves on. Approves work that meets the bar or passes it back with clear findings. Can answer at any time: what’s in the QA queue, what’s blocking approve, and what was sent back.
+Owns verifying Engineer output against acceptance intent before it moves on. Approves work that meets the bar or passes it back with clear findings. Can answer at any time: what’s In Review, what’s blocking approve, and what was sent back.
+
+`/forge.validate-ticket` is **SCM-only** (auto-Apply; no memory). Queue, findings, and test-plan docs remain for other events (`regression-pass`, etc.). Pass-back audit trail is the FAIL PR/MR comment; dual approve auto-merges.
 
 Docs:
     # memory file <- harness template (structure + validation target)
@@ -59,4 +61,4 @@ Schedule:
     Per release: forge.regression-pass
     # Also participates in launch-readiness-check
     # Receives work from Engineer; returns via pass-back or approve-change
-    # validate-ticket merges only when QA and Security both approve (no separate merge event)
+    # validate-ticket dual approve auto-merges (no separate merge event; no memory)

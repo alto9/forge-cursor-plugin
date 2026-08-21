@@ -1,7 +1,8 @@
 ---
 name: qa-approve-change
 description: >-
-  quality-assurance procedure: approve change. Propose-only when spawned from event commands; touch qa/ docs via templates.
+  quality-assurance procedure: approve change. When spawned from
+  validate-ticket, return a verdict only — no memory edits.
 ---
 
 # qa-approve-change
@@ -12,12 +13,11 @@ Invoked by Forge event commands or the quality-assurance agent for `quality-assu
 
 ## Steps
 
-1. Read in-scope memory under `memoryRoot/qa/` (and related event Docs). Match templates in `skills/quality-assurance/templates/`.
-2. Propose updates with required H2s only; empty sections OK; no extra H2s.
-3. Current state only — remove stale items; leave files alone if unchanged.
-4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
-5. Include a one-line **QA verdict** for the parent `/forge.validate-ticket` PR/MR comment (e.g. `QA: approve — acceptance checks passed`). Parent composes the combined PASS/FAIL comment.
-6. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Questions, Left alone). Do **not** Apply, HITL, or mutate SCM.
+1. Verify the change against the issue body’s acceptance criteria and any ephemeral checks from this run. Do **not** read or write `qa/` memory for `/forge.validate-ticket`.
+2. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM is SoT.**
+3. Include a one-line **QA verdict** for the parent `/forge.validate-ticket` PR/MR comment (e.g. `QA: approve — acceptance checks passed`). Parent composes the combined PASS/FAIL comment and auto-Applies.
+4. When event-spawned from validate-ticket: return Intent + QA verdict + Proposed vendor actions (none — parent posts the comment). Do **not** propose memory edits. Do **not** Apply, HITL, or mutate SCM.
+5. For other events that still use memory (e.g. regression-pass): propose template-shaped `qa/` updates as those event Docs require.
 
 ## Outputs / stop conditions
 

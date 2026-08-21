@@ -1,7 +1,8 @@
 ---
 name: security-approve-change
 description: >-
-  security procedure: approve change. Propose-only when spawned from event commands; touch security/ docs via templates.
+  security procedure: approve change. When spawned from validate-ticket,
+  return a verdict only — no memory edits.
 ---
 
 # security-approve-change
@@ -12,12 +13,11 @@ Invoked by Forge event commands or the security agent for `security/security-app
 
 ## Steps
 
-1. Read in-scope memory under `memoryRoot/security/` (and related event Docs). Match templates in `skills/security/templates/`.
-2. Propose updates with required H2s only; empty sections OK; no extra H2s.
-3. Current state only — remove stale items; leave files alone if unchanged.
-4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
-5. Include a one-line **Security verdict** for the parent `/forge.validate-ticket` PR/MR comment (e.g. `Security: approve — checklist gates for this change passed`). Parent composes the combined PASS/FAIL comment.
-6. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Questions, Left alone). Do **not** Apply, HITL, or mutate SCM.
+1. Verify the PR/MR against security expectations for this change (secrets, authn/z, config hardening as needed). Do **not** read or write `security/` memory for `/forge.validate-ticket`.
+2. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM is SoT.**
+3. Include a one-line **Security verdict** for the parent `/forge.validate-ticket` PR/MR comment (e.g. `Security: approve — checklist gates for this change passed`). Parent composes the combined PASS/FAIL comment and auto-Applies.
+4. When event-spawned from validate-ticket: return Intent + Security verdict + Proposed vendor actions (none — parent posts the comment / merge). Do **not** propose memory edits. Do **not** Apply, HITL, or mutate SCM.
+5. For other events that still use memory (e.g. security-review): propose template-shaped `security/` updates as those event Docs require.
 
 ## Outputs / stop conditions
 

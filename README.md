@@ -79,6 +79,8 @@ The super-repo gitlink SHA is a **hint only**. Fresh clones and every event run 
 
 Every command starts with [`resolve-paths`](skills/forge/resolve-paths/SKILL.md) → [`sync-memory`](skills/forge/sync-memory/SKILL.md) → [`resolve-config`](skills/forge/resolve-config/SKILL.md). Ambiguity or sync failure is a hard stop.
 
+Exceptions: `/forge.sync-schedule` skips path/memory entirely. `/forge.implement-ticket` and `/forge.validate-ticket` run `resolve-paths` → `resolve-config` only (skip sync-memory / memory Apply / commit-memory); path ambiguity is still a hard stop, memory-repo sync failure is not.
+
 Outputs: `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRepoRoot`, `memoryRoot`.
 
 - Super-repo: `FORGE_SUPER_REPO`, else walk-up for `.gitmodules` (prefer a root that also has `.ai/memory/`).
@@ -99,7 +101,7 @@ Board fields (`projectId` / `boardId` / `statusIds`) required only before board-
 
 `backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
 
-(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress` then PR + CI green → `in_review`; `/forge.validate-ticket` dual approve → `done`.)
+(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress` then PR + CI green → `in_review`; `/forge.validate-ticket` dual approve → auto-merge → `done`.)
 
 Optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-ready`) — ensured on the host during init/refinement.
 
@@ -127,14 +129,14 @@ One concern per file; reference board issue id/URL.
 5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
 6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
 7. `/forge.plan-refresh` — delivery sequence once Ready work exists
-8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; refuses Refinement / `human-ready` / weak briefs
-9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve + human merge → delete source branch → **Done**
+8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready` / weak briefs
+9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no HITL, no memory)
 
 **Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.
 
 ## Execution model
 
-Each event is a **human-callable command** (not an automation). Parent owns the ritual:
+Each event is a **human-callable command** (not a cron/automation). Parent owns the ritual:
 
 1. `resolve-paths` → `sync-memory` → `resolve-config` (fail closed)
 2. Spawn listed Agents as **propose-only** subagents with the event brief
@@ -144,9 +146,21 @@ Each event is a **human-callable command** (not an automation). Parent owns the 
 
 Subagents never HITL, never Apply, never mutate SCM unless executing parent-approved Apply steps.
 
+### Automation exceptions
+
+`/forge.implement-ticket` and `/forge.validate-ticket` are **invocation-automated**: still human-triggered slash commands, but zero hand-off inside.
+
+- Bootstrap: `resolve-paths` → `resolve-config` only (skip `sync-memory`)
+- No Questions phase, no apply-set, no orchestrator approve
+- Auto-Apply vendor/SCM only; skip `validate-memory` and `commit-memory`
+- Implement: claim → code → PR → CI wait → board In Review
+- Validate: QA + Security verdicts → PASS/FAIL PR comment → on dual approve auto-merge, delete source branch, board Done; on pass-back FAIL comment only (board stays In Review)
+
+Board, PR/MR, and comments are the audit trail for these two commands.
+
 ### HITL modes
 
-`observe` | `propose` | `approve-before-write` | `approve-before-vendor`
+`observe` | `propose` | `approve-before-write` | `approve-before-vendor` | `auto-apply` (implement-ticket / validate-ticket only)
 
 ### Hand-off shape (every pause)
 
@@ -223,7 +237,7 @@ From this checkout, `npm run course` serves it at `http://127.0.0.1:4321/`. Forg
 
 ## Out of scope (this plugin)
 
-- Automations / cron auto-start of HITL events
+- Cron / scheduled auto-start of slash commands (implement and validate are invocation-automated once you run them; they do not start themselves)
 - Real MCP auth setup in consumer repos
 - Populating a real super-repo’s memory beyond templates + skills
 - Actor/role registry (which human/machine owns which Forge role) — future; shared memory-repo is the prerequisite

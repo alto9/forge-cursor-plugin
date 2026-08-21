@@ -689,13 +689,13 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "Ask the Agent anytime",
-            body: "The Agent can open the ticket, the pull request, and the in-flight page with you whenever you want to say what is in progress and what is left to clear. How to use those asks, and which events and skills to pair with them, is Course 3.",
+            body: "The Agent can open the ticket and the pull request with you whenever you want to say what is in progress and what is left to clear. How to use those asks, and which events and skills to pair with them, is Course 3.",
           },
           {
             type: "desk",
             title: "Documents this role keeps current",
             items: [
-              { name: "In flight", file: "engineering/in-flight.md", note: "Active work, blockers, and where review stands; finished work comes off this page." },
+              { name: "In flight", file: "engineering/in-flight.md", note: "Optional projection for other rituals; implement-ticket uses the board and PR only." },
             ],
           },
           {
@@ -726,13 +726,13 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "Ask the Agent anytime",
-            body: "The Agent can open the queue, findings, and test plan with you whenever you want to say what is waiting, what is blocking approve, and what was sent back. How to use those asks, and which events and skills to pair with them, is Course 3.",
+            body: "The Agent can open the In Review board column and the PR with you whenever you want to say what is waiting, what is blocking approve, and what was sent back. How to use those asks, and which events and skills to pair with them, is Course 3.",
           },
           {
             type: "desk",
             title: "Documents this role keeps current",
             items: [
-              { name: "QA queue", file: "qa/queue.md", note: "What is waiting, what is in hand, what came back." },
+              { name: "QA queue", file: "qa/queue.md", note: "Optional projection for release-wide rituals; validate-ticket uses the board and PR comment only." },
               { name: "Findings", file: "qa/findings.md", note: "Open problems only; when it is fixed, delete it." },
               { name: "Test plan", file: "qa/test-plan.md", note: "How we intended to check this, and what we skipped." },
             ],
@@ -751,7 +751,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Security decides whether a change is safe to put in front of people. They review at the same In Review gate as QA; both have to approve before a human merges.",
+              "Security decides whether a change is safe to put in front of people. They review at the same In Review gate as QA; both have to approve before the change merges.",
               "They also look when there is no pull request: a monthly check of what we depend on, a review of a station that never got a ticket, and a last look before a plate goes to the table.",
               "Once a month they also check the lockfile and the real package manifests.",
             ],
@@ -862,7 +862,7 @@ export const courses = [
               ["Refinement → Ready", "Product Owner", "The issue is a contract with exactly one readiness label."],
               ["Plan / shape", "PM and Architect", "The order is possible, and the kitchen can still run service."],
               ["In Progress", "Engineer", "The ticket was Ready, a PR exists, and the checks are honest."],
-              ["In Review", "QA and Security", "Both approve, a human merges, and a pass-back stays In Review."],
+              ["In Review", "QA and Security", "Both approve, the command auto-merges, and a pass-back stays In Review."],
               ["Release", "Release Manager", "We can name the version and the undo."],
               ["Told the world", "Marketing", "The words match what actually shipped."],
             ],
@@ -917,12 +917,13 @@ export const courses = [
           },
           {
             type: "list",
-            title: "The four ways a ritual can pause",
+            title: "The ways a ritual can pause",
             items: [
               "observe — just telling you (help).",
               "propose — a draft; nothing moves unless you say so.",
               "approve-before-write — pause before memory changes.",
               "approve-before-vendor — pause before GitHub, GitLab, or the calendar.",
+              "auto-apply — implement-ticket and validate-ticket: no pause; SCM only.",
             ],
           },
           {
@@ -945,7 +946,7 @@ export const courses = [
             paragraphs: [
               "The rituals you type live in a Cursor plugin at ~/.cursor/plugins/local/forge-cursor. Forge Studio (the VS Code / Cursor extension) clones that repo on first launch and fast-forwards it when origin moves; Command Palette → Forge: Sync Cursor Plugin does the same on demand. Command Palette → Forge: Open Forge Course serves this workshop from that clone and opens a browser tab. Reload the window after the files change.",
               "The code lives in a git submodule, with the usual branches and pull requests. The agents’ notes live in a second submodule at .ai/memory, on main only — no feature branches, no PRs on that repo. Memory is a projection of the board, not a second product.",
-              "Every real ritual starts the same way: find the paths, pull memory’s main, read forge.json. If that fails, stop. Guessing the submodule is how you write someone else’s project.",
+              "Every real ritual starts the same way: find the paths, pull memory’s main, read forge.json. If that fails, stop. Guessing the submodule is how you write someone else’s project. Two exceptions skip the memory pull: /forge.implement-ticket and /forge.validate-ticket run on the board and the PR only.",
               "A super-repo can hold several code submodules. Each one set up for Forge has its own forge.json and its own board under .ai/memory/<that path>/. The command binds to the one it resolved; remaining configured projects wait for their own invocation.",
               "Standing up: add the memory submodule, run /forge.init-project, approve the first brief and the empty pages, let it push main. Icebox is fine. Refining tickets on day one is not.",
             ],
@@ -1012,7 +1013,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "/forge.implement-ticket will not start unless the card is Ready and marked for an agent. It claims In Progress right away. It waits for CI after the PR exists. It only moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. /forge.respond-to-review is the conversation until the change is merge-ready. Neither command merges. Merge comes later, after QA and Security.",
+              "/forge.implement-ticket will not start unless the card is Ready and marked for an agent. It claims In Progress right away, opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no hand-off and no memory write; the board and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
               "Read the diff against the issue, not against your hope. Extra scope is not a gift. Tests should be able to fail the acceptance criteria. New packages you do not recognize are a question, not a flourish.",
             ],
           },
@@ -1034,7 +1035,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "/forge.validate-ticket is the acceptance and safety gate. QA leads; Security reviews beside them. They each write. A PASS or FAIL goes on the PR in words someone else could read next week. If both approve and you agree, a human merges, the branch is deleted, and the card is Done. If anyone fails it, it stays In Review.",
+              "/forge.validate-ticket is the acceptance and safety gate. QA leads; Security reviews beside them. A PASS or FAIL goes on the PR in words someone else could read next week. If both approve, the command merges, deletes the branch, and moves the card to Done — no second approval, no memory queue. If anyone fails it, the FAIL comment is the trail and the card stays In Review.",
               "If you cannot explain the change, you do not approve it. “Looks fine” is not a review.",
             ],
           },
@@ -1178,7 +1179,7 @@ export const courses = [
             rows: [
               ["Lead", "The command names your role as Lead. You own the hand-off shape. On a conflict between spawned roles, you win unless the command says otherwise."],
               ["Attend", "Another role leads, and you still propose from your pages and skills without rewriting their contract."],
-              ["Required peer", "Same room, same pause: QA and Security on /forge.validate-ticket. Either domain can fail the change."],
+              ["Required peer", "Same room: QA and Security on /forge.validate-ticket. Either domain can fail the change; dual approve auto-merges."],
             ],
           },
           {
@@ -1378,7 +1379,7 @@ export const courses = [
               ["/forge.backlog-grooming", "Product Owner", "Sequence and couplings when grooming changes what can start."],
               ["/forge.roadmap-review", "Product Owner", "Whether the current list can actually be sequenced. A cut goes back to them."],
               ["/forge.stakeholder-sync", "Product Owner", "Delivery truth: in flight, stuck, next."],
-              ["/forge.implement-ticket", "Engineer", "Status: a card just went In Progress. Rewrite what is in flight so the page matches the board."],
+              ["/forge.implement-ticket", "Engineer", "Status only if you still keep an in-flight page for other rituals; implement itself writes board and PR only."],
               ["/forge.launch-readiness-check", "Product Owner", "Status and handoffs for the ship call."],
               ["/forge.outcomes-retro", "Product Owner", "Risks and milestones the release closed."],
             ],
@@ -1601,7 +1602,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Implementing a Ready ticket marked for an agent, opening a pull request, and keeping the branch current is already the job. You lead two events, and you attend when refinement, a spike, validation, or a release needs an implementation fact. Code, the ticket, and the pull request are the source of truth; the in-flight page stays short.",
+              "Implementing a Ready ticket marked for an agent, opening a pull request, and keeping the branch current is already the job. You lead two events, and you attend when refinement, a spike, or a release needs an implementation fact. Code, the ticket, and the pull request are the source of truth; implement-ticket does not keep an in-flight diary.",
             ],
           },
           {
@@ -1612,8 +1613,8 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["On demand", "/forge.implement-ticket", "Ready + ai-ready only: claim In Progress right away, wait for CI after the PR exists, and move to In Review when checks are green, or when the host has no checks, which you say out loud. Merge waits for QA and Security."],
-              ["On demand", "/forge.respond-to-review", "The conversation until the change is merge-ready; merge still waits for QA and Security."],
+              ["On demand", "/forge.implement-ticket", "Ready + ai-ready only: claim In Progress right away, open the PR, wait for CI, and move to In Review when checks are green, or when the host has no checks, which you say out loud. No hand-off, no memory. Merge waits for validate-ticket."],
+              ["On demand", "/forge.respond-to-review", "The conversation until the change is ready to re-gate; merge still waits for validate-ticket."],
             ],
           },
           {
@@ -1626,11 +1627,16 @@ export const courses = [
             rows: [
               ["/forge.refinement", "Product Owner", "Whether the contract is actually buildable. Open questions keep the card in Refinement."],
               ["/forge.design-spike", "Architect", "Implementation constraints: how we would call mail, what the spike must prove in code."],
-              ["/forge.validate-ticket", "Quality Assurance", "The PR and the in-flight page as inputs. You do not rewrite the verdict."],
               ["/forge.security-review", "Security", "A non-PR surface (config, a dependency bump) that still needs a code fact."],
               ["/forge.dependency-audit", "Security", "If a finding should become a ticket, you wait for that ticket; the audit leaves versions alone until then."],
               ["/forge.cut-release", "Release Manager", "A version bump or changelog commit in the submodule, when that is the publish step."],
             ],
+          },
+          {
+            type: "callout",
+            tone: "note",
+            title: "Validate is a different room",
+            body: "You do not attend /forge.validate-ticket. When QA or Security fail the PR, you run /forge.respond-to-review from the FAIL comment, then they re-run validate.",
           },
           {
             type: "heading",
@@ -1658,7 +1664,7 @@ export const courses = [
             type: "list",
             items: [
               "Read this Ready issue. Is anything still ambiguous before I run implement-ticket?",
-              "What is in flight, and does the PR agree?",
+              "What is In Progress on the board, and does the PR agree?",
               "The first review comment is in. Walk it through respond-to-review without adding scope.",
               "These acceptance criteria: which tests would fail them if they were wrong?",
               "Main moved. Update the branch and say what you will leave alone.",
@@ -1695,7 +1701,7 @@ export const courses = [
               "   Claims In Progress, builds the path on the card, and writes tests that can fail the AC.",
               "   Opens the PR, waits for CI, and moves to In Review when green.",
               "2. QA or Security leaves a comment.",
-              "   /forge.respond-to-review until merge-ready. Merge still waits for validate-ticket.",
+              "   /forge.respond-to-review until ready to re-gate. Merge still waits for validate-ticket.",
               "3. Extra “while we’re here” scope is a product decision.",
               "   You stop and send it back rather than inventing a second ticket in the PR.",
             ],
@@ -1730,7 +1736,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "The tasting question is already yours: did we cook what we said we would? You lead the ticket gate and the release-wide pass; Security sits in the same room, and both have to approve before a human merges.",
+              "The tasting question is already yours: did we cook what we said we would? You lead the ticket gate and the release-wide pass; Security sits in the same room, and both have to approve before the command merges.",
             ],
           },
           {
@@ -1741,7 +1747,7 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["On demand", "/forge.validate-ticket", "One In Review PR: walk the acceptance criteria, then approve or pass back in words someone else could read next week. The card stays In Review on a fail; dual approve is the merge gate."],
+              ["On demand", "/forge.validate-ticket", "One In Review PR: walk the acceptance criteria, then approve or pass back in a PR comment someone else could read next week. The card stays In Review on a fail; dual approve auto-merges and moves the card to Done."],
               ["Per release", "/forge.regression-pass", "Re-check the wider product before a plate goes to the table. Pass, fail, or ship-with-known-issues."],
             ],
           },
@@ -1765,12 +1771,12 @@ export const courses = [
             type: "table",
             headers: ["Skill", "Reach for it when"],
             rows: [
-              ["build-test-plan", "This change needs durable acceptance and regression checks."],
+              ["build-test-plan", "For validate-ticket, build checks from the issue AC for this run only. Durable test-plan memory is for release-wide rituals."],
               ["verify-acceptance", "Walk the claims on the ticket. The criteria are the claims; this is how you check them."],
               ["exploratory-test", "A little off the happy path, on purpose."],
               ["reproduce-bug", "A report has to become a path you can fail again."],
-              ["qa-pass-back", "The change does not match the ticket: write the finding, and the card stays In Review."],
-              ["qa-approve-change", "The claims hold, and you still wait for Security before anyone merges."],
+              ["qa-pass-back", "The change does not match the ticket: write the FAIL verdict on the PR, and the card stays In Review."],
+              ["qa-approve-change", "The claims hold, and you still wait for Security before the command merges."],
               ["regression-check", "The wider product, usually before a release."],
             ],
           },
@@ -1781,9 +1787,9 @@ export const courses = [
           {
             type: "list",
             items: [
-              "What is in the QA queue, and what is blocking approve?",
+              "What is waiting on the board In Review, and what is blocking approve?",
               "Walk this PR against the acceptance criteria. Write PASS or FAIL as if I will not be there to interpret it.",
-              "This finding: can we reproduce it, and is it a product call or a blocker?",
+              "This FAIL comment: can we reproduce it, and is it a product call or a blocker?",
               "Before we cut, what would a regression-pass actually run?",
             ],
           },
@@ -1814,7 +1820,7 @@ export const courses = [
               "3. If an AC fails: qa-pass-back, and the card stays In Review.",
               "   Engineer runs /forge.respond-to-review.",
               "4. If the claims hold: qa-approve-change, and wait for Security.",
-              "   Dual approve → a human merges; you never merge from this role alone.",
+              "   Dual approve → the command merges, deletes the branch, and moves the card to Done.",
             ],
           },
           {
@@ -1871,7 +1877,7 @@ export const courses = [
             type: "table",
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
-              ["/forge.validate-ticket", "Quality Assurance (required peer)", "The same PR, against the checklist and the threat model. Either domain can fail the change."],
+              ["/forge.validate-ticket", "Quality Assurance (required peer)", "The same PR, against safety expectations for this change. Either domain can fail; dual approve auto-merges."],
               ["/forge.launch-readiness-check", "Product Owner", "Open blockers weigh against go. Edit security pages only for release-gate truth."],
               ["/forge.prepare-release", "Release Manager", "Whether the version is blocked on a security finding."],
             ],
@@ -1895,8 +1901,8 @@ export const courses = [
               ["harden-config", "Defaults, authn/z, or environment shape look loose."],
               ["threat-model", "Assets, trust boundaries, or mitigations changed."],
               ["dependency-audit", "The lockfile and the real manifests need a monthly read."],
-              ["security-pass-back", "The change is not safe: write the finding, and the card stays In Review."],
-              ["security-approve-change", "The safety claims hold, and you still wait for QA before anyone merges a PR."],
+              ["security-pass-back", "The change is not safe: write the FAIL verdict on the PR, and the card stays In Review."],
+              ["security-approve-change", "The safety claims hold, and you still wait for QA before the command merges a PR."],
             ],
           },
           {

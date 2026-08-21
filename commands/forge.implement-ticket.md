@@ -1,68 +1,39 @@
 ---
 name: forge.implement-ticket
 description: >-
-  On demand; lead Engineer. Forge event command.
+  On demand; lead Engineer. Forge event command. Auto-applies SCM only — no HITL, no memory.
 ---
 
 # forge.implement-ticket
 ## Parent execution model
 
-1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
-3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
-4. HITL pause using the Mode / Pause when / hand-off shape below.
-5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
-
-**Exception — claim In Progress:** After the Ready + `ai-ready` gate passes, the parent **Applies immediately** (before substantial coding, without waiting for the implementation HITL): board → `statusIds.in_progress` via `vendor-issues-write`, then mirror memory (`engineering/in-flight.md` `# Active`, `product/backlog.md` `# In progress`). Command invocation + gate pass **is** the claim authorization. If the gate fails, do **not** claim.
-
-
-### Hand-off shape (required)
-
-Two phases; see README Hand-off shape. Parent only; subagents propose-only.
-
-**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork; lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
-
-**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
-
-- **Intent** — 1–2 sentences
-- **Proposed memory edits** — per file: update / remove / create
-- **Proposed vendor actions** — none, or explicit list
-- **Questions** — `None`
-- **Left alone** — in-scope docs/actions intentionally unchanged
-- **How to reply** — required footer; see README Hand-off shape
-
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
+1. Run skills `resolve-paths` → `resolve-config` (fail closed on path ambiguity). **Skip** `sync-memory`. Memory-repo sync failure is not a stop for this event.
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, submoduleRoot, skills to use, and relevant Instructions. Do **not** pass memoryRoot or docs in scope. Subagents must not write memory, must not HITL, and must not mutate vendor/SCM unless the parent asks them to execute an already-decided Apply step.
+3. Merge subagent proposals. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM is the source of truth** — no memory projection.
+4. **Auto-Apply** vendor/SCM actions immediately — no Questions phase, no apply-set, no orchestrator approve.
+5. **No memory Apply** — skip `validate-memory` and `commit-memory`.
 
 ## Event contract
 
 Cadence: On demand
 Lead: Engineer
 HITL:
-Mode: approve-before-vendor
+Mode: auto-apply
 Pause when:
-    Approach / scope interpretation before substantial coding (if ambiguous vs spec)
-    Opening or updating a PR/MR
-    Pushing to remote / requesting review
-    Moving board In Progress → In Review (`statusIds.in_review`) — only after CI has completed successfully (or the host has no CI)
-    in-flight.md would change Active/Approach/Blockers/Review state materially
+    Never — this command auto-Applies all vendor/SCM actions
 Instructions:
-Take **one** board **Ready** item with label **`ai-ready`** (statusIds.ready — not Refinement; not `human-ready`). Before coding: load the issue body (vendor get); run the agent-ready-ticket checklist mentally. The issue body alone is the contract — no memory links required.
-If the ticket is `human-ready`: **stop**. Do not implement; hand off that a human must execute.
-If the ticket is still in Refinement, missing readiness label, or fails the checklist: **stop**. Do not implement. Hand-off → `/forge.refinement` (or demote Ready → Refinement if it drifted).
-**If it passes:** parent Applies claim immediately — board `statusIds.in_progress` (vendor-issues-write); memory `in-flight.md` `# Active` + `backlog.md` `# In progress`. Do **not** HITL the claim. Then implement in the active submodule — code/tests are the deliverable. Don’t invent scope beyond the issue body.
-Optionally read brief/architecture memory as session context; don’t change product/architecture docs here (escalate conflicts to PO/Architect events).
-Propose in-flight.md updates for Active/Approach/Open questions/Blockers/Review state during work.
-When implementation is ready for verification: propose opening/updating the PR/MR. After the PR/MR exists, **wait for CI** via `vendor-ci-status` on that head SHA — do **not** treat this event as complete while checks/pipelines are pending or running. If CI fails or is cancelled: fix, propose a push (HITL), and wait again. If the host has no CI for the PR/MR, skip the wait. Waiting on CI is polling, not a HITL pause.
-Only after CI completes successfully (or no CI): propose board move to `statusIds.in_review`; remove the item from in-flight `# Active` and set `# Review state`; add to qa/queue.md Ready for QA (do not self-approve). Keep backlog.md under `# In progress` until merge (no `# In Review` H2). On orchestrator approve of that hand-off: Apply vendor/SCM first (PR + board `in_review`), then memory. Next human command: `/forge.validate-ticket`.
-Use vendor skills for branch/PR/MR, CI status, and status moves (`vendor-issues-write`, `vendor-branches-write`, `vendor-pulls-write`, `vendor-ci-status`); propose vendor actions in the hand-off before push/open/update (except the early In Progress claim).
+Take **one** board **Ready** item with label **`ai-ready`** (statusIds.ready — not Refinement; not `human-ready`). Before coding: load the issue body (vendor get); run the agent-ready-ticket checklist mentally. The issue body alone is the contract.
+If the ticket is `human-ready`: **stop**. Do not implement; report that a human must execute.
+If the ticket is still in Refinement, missing readiness label, or fails the checklist: **stop**. Do not implement. Hand off → `/forge.refinement` (or demote Ready → Refinement if it drifted).
+If the issue body is ambiguous vs the checklist (unclear scope, uncheckable AC, open questions remaining): **fail closed** — stop and hand off to `/forge.refinement`. Do not invent scope or pause for Questions.
+**If it passes:** parent Applies claim immediately — board `statusIds.in_progress` via `vendor-issues-write`. Command invocation + gate pass **is** the claim authorization. If the gate fails, do **not** claim. Do **not** write memory.
+Then implement in the active submodule — code/tests are the deliverable. Don’t invent scope beyond the issue body.
+When implementation is ready for verification: open/update the PR/MR via vendor skills (auto-Apply). After the PR/MR exists, **wait for CI** via `vendor-ci-status` on that head SHA — do **not** treat this event as complete while checks/pipelines are pending or running. If CI fails or is cancelled: fix, push (auto-Apply), and wait again. If the host has no CI for the PR/MR, skip the wait. Waiting on CI is polling, not a HITL pause.
+Only after CI completes successfully (or no CI): move board to `statusIds.in_review` via `vendor-issues-write` (auto-Apply). Do not self-approve. Next command: `/forge.validate-ticket`.
+Use vendor skills for branch/PR/MR, CI status, and status moves (`vendor-issues-write`, `vendor-branches-write`, `vendor-pulls-write`, `vendor-ci-status`).
 Prefer smallest change that meets acceptance criteria; refactor only when required for the ticket.
 Docs:
-<super-repo>/.ai/memory/<submodule>/engineering/in-flight.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/architecture/constraints.md
-<super-repo>/.ai/memory/<submodule>/architecture/interfaces.md
-<super-repo>/.ai/memory/<submodule>/project/status.md
-<super-repo>/.ai/memory/<submodule>/qa/queue.md
+# None — SCM (issue body, PR/MR, board) is SoT; no memory reads or writes
 Agents:
 Engineer:
     skills/engineer/implement-ticket/SKILL.md
@@ -73,5 +44,3 @@ Engineer:
     skills/engineer/open-pr/SKILL.md
     skills/engineer/update-branch/SKILL.md
     skills/vendor/vendor-ci-status/SKILL.md
-Project Manager:
-    skills/project-manager/status-update/SKILL.md
