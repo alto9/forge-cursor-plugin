@@ -1,7 +1,7 @@
 ---
 name: sync-schedule-calendar
 description: >-
-  Optionally sync Forge event cadences to Google Calendar as reminders (MCP).
+  Optionally sync Forge event cadences to Google Calendar as meetings (MCP).
   Not wired into other events; never auto-starts harness commands.
 ---
 
@@ -14,8 +14,8 @@ Skip if Calendar MCP is unavailable — report that and stop (do not invent CLI 
 
 ## Scope (optional, not plumbing)
 
-- **Does:** create/update recurring calendar reminders titled `Forge: forge.<event-id>` so rituals are hard to forget. One reminder set for **all** Forge projects — not per submodule.
-- **Does not:** run `resolve-paths` / `sync-memory` / `resolve-config`; read or write memory or `forge.json`; auto-run event commands; mutate board/SCM; require calendar for any other Forge flow.
+- **Does:** create/update recurring calendar meetings titled `Forge: forge.<event-id>` so rituals block time and include a Google Meet link. One meeting set for **all** Forge projects — not per submodule.
+- **Does not:** run `resolve-paths` / `sync-memory` / `resolve-config`; read or write memory or `forge.json`; auto-run event commands; mutate board/SCM; require calendar for any other Forge flow; invite extra attendees.
 - Not listed on role agents or release gates. Safe to ignore forever.
 
 ## Inputs
@@ -27,7 +27,8 @@ Skip if Calendar MCP is unavailable — report that and stop (do not invent CLI 
 ```
 calendarId: primary
 durationMinutes: 30
-availability: AVAILABILITY_FREE
+availability: AVAILABILITY_BUSY
+addGoogleMeetUrl: true
 includeCadences: Weekly, Biweekly, Monthly
 ```
 
@@ -36,7 +37,8 @@ includeCadences: Weekly, Biweekly, Monthly
 - `dayOfMonth`: optional for Monthly (default `1`)
 - Biweekly → `RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=…`
 - Monthly → `RRULE:FREQ=MONTHLY;BYMONTHDAY=…` (or `BYDAY=1MO` if the slot says so)
-- Ignore any per-project `forge.json` `calendar` block — reminders are not project-linked.
+- Ignore any per-project `forge.json` `calendar` block — meetings are not project-linked.
+- Google Meet requires a Google account with Meet enabled. If Meet creation fails, report the MCP error and stop that write.
 
 ## Default include / skip
 
@@ -46,7 +48,7 @@ includeCadences: Weekly, Biweekly, Monthly
 | On demand | Skip |
 | Per release, Per milestone, Per major bet | Skip |
 
-List skipped events under **Left alone**. Orchestrator may opt in to specific skipped ids in HITL (still reminders only — no auto-run).
+List skipped events under **Left alone**. Orchestrator may opt in to specific skipped ids in HITL (still meetings only — no auto-run).
 
 ## Steps
 
@@ -56,7 +58,7 @@ List skipped events under **Left alone**. Orchestrator may opt in to specific sk
 4. Filter by default include/skip (Weekly / Biweekly / Monthly in; On demand and per-release/milestone/bet out unless HITL opts in).
 5. Idempotency: `search_events` (or `list_events`) for summary `Forge: forge.<event-id>`.
    - Missing → propose `create_event` with a default slot (spread weeklies across mornings; biweeklies Tuesday; monthlies day 1). Put defaults in HITL — do not invent times silently on Apply.
-   - Exists → keep its time/RRULE; propose `update_event` only if description (or orchestrator-requested time) drifted.
+   - Exists → keep its time/RRULE; propose `update_event` when any of: description drifted, orchestrator-requested time change, `availability` is still `FREE` / not `BUSY`, or the event has no Google Meet conference data.
 6. Event payload:
    - `summary`: `Forge: forge.<event-id>` (keep this exact string — idempotency key)
    - `description`: human goal first (catalog below), then how to run it across all Forge projects. Shape:
@@ -64,18 +66,20 @@ List skipped events under **Left alone**. Orchestrator may opt in to specific sk
      ```
      <Ritual name> — <dictionary-style goal. What this time is for, in plain language.>
 
-     When this reminder fires, run /forge.<event-id> in Cursor for each Forge project you manage. This reminder is not tied to one repo. The calendar does not start the harness.
+     When this meeting starts, run /forge.<event-id> in Cursor for each Forge project you manage. This meeting is not tied to one repo. The calendar does not start the harness.
      ```
 
      Never add a project or submodule line.
    - Use the catalog verbatim. If an event-id is missing, write one sentence in the same voice from the command’s purpose — never use the slash command as the description.
    - `startTime` / `endTime` from existing event or HITL-approved slot + `durationMinutes`
-   - `timeZone`, `recurrenceData` (`RRULE:...`), `availability` (prefer FREE so it doesn't block the day)
+   - `timeZone`, `recurrenceData` (`RRULE:...`), `availability: AVAILABILITY_BUSY` (explicit busy block)
+   - `addGoogleMeetUrl: true` on create; on update set `true` when Meet is missing
+   - No extra attendees (organizer only)
    - `calendarId` from HITL or primary
 7. HITL: Mode `approve-before-vendor` (calendar writes). Proposed vendor actions = calendar create/update/delete list. Proposed memory edits = none.
-8. On approve: Apply calendar ops via MCP only.
+8. On approve: Apply calendar ops via MCP only. If Meet creation fails, report the MCP error and stop that write.
 
-## Reminder descriptions
+## Meeting descriptions
 
 Plain-language goal of the ritual — not the harness steps. Lead with the industry name a human would look up.
 
@@ -116,7 +120,7 @@ Example body for `forge.backlog-grooming`:
 ```
 Backlog grooming — A regular review of the planned work to clarify each item's intent, drop what no longer matters, and decide what is worth shaping next. This is not the pass that makes tickets ready to build.
 
-When this reminder fires, run /forge.backlog-grooming in Cursor for each Forge project you manage. This reminder is not tied to one repo. The calendar does not start the harness.
+When this meeting starts, run /forge.backlog-grooming in Cursor for each Forge project you manage. This meeting is not tied to one repo. The calendar does not start the harness.
 ```
 
 ## MCP mapping
@@ -124,13 +128,14 @@ When this reminder fires, run /forge.backlog-grooming in Cursor for each Forge p
 ```
 list_calendars
 search_events / list_events
-create_event   (recurrenceData, timeZone, availability)
-update_event
-delete_event   (only if orchestrator asks to remove Forge reminders)
+create_event   (recurrenceData, timeZone, availability AVAILABILITY_BUSY, addGoogleMeetUrl true)
+update_event   (availability BUSY when still FREE; addGoogleMeetUrl true when Meet missing)
+delete_event   (only if orchestrator asks to remove Forge meetings)
 ```
 
 ## Outputs / stop conditions
 
 - Hand-off with create/update/skip tables.
 - Stop if Calendar MCP is missing. Do not stop for path, submodule, or memory-repo issues.
+- If Meet creation fails (account without Meet, MCP error), report and stop that write.
 - Never start a Forge event from a calendar trigger.

@@ -1,11 +1,11 @@
 ---
 name: forge.sync-schedule
 description: >-
-  On demand; lead (harness). Optional Google Calendar sync for Forge ritual reminders. Not required by any other event.
+  On demand; lead (harness). Optional Google Calendar sync for Forge ritual meetings. Not required by any other event.
 ---
 
 # forge.sync-schedule
-Optional convenience. **Not** part of New project path, release gates, or role schedules. Calendar reminders are harness-wide (all Forge projects), never project-linked, and never auto-start harness commands.
+Optional convenience. **Not** part of New project path, release gates, or role schedules. Calendar meetings are harness-wide (all Forge projects), never project-linked, and never auto-start harness commands.
 
 ## Parent execution model
 
@@ -44,12 +44,13 @@ Pause when:
     Always before create/update/delete on Google Calendar
     When proposing first-time timezone / calendar id / slot times
 Instructions:
-Skip resolve-paths / sync-memory / resolve-config. Reminders are harness-wide — one set for every Forge project, not one repo.
-Build the reminder set from plugin agents/*.md Schedule sections (unique event ids).
+Skip resolve-paths / sync-memory / resolve-config. Meetings are harness-wide — one set for every Forge project, not one repo.
+Build the meeting set from plugin agents/*.md Schedule sections (unique event ids).
 Default include: Weekly, Biweekly, Monthly. Default skip: On demand, Per release, Per milestone, Per major bet.
 Propose sensible default slots when no matching calendar event exists; require orchestrator OK on times. On re-run, keep existing event times unless the orchestrator asks to change them.
 Idempotent upsert by event summary "Forge: forge.<event-id>".
-Reminders only — description leads with the human ritual name and a dictionary-style goal (skill catalog); then says the human runs /<event-id> across all Forge projects. Calendar does not start the harness.
+Create/update as busy meetings (AVAILABILITY_BUSY) with addGoogleMeetUrl true; no extra attendees. On re-run, upgrade FREE → BUSY and add Meet when missing.
+Meetings only — description leads with the human ritual name and a dictionary-style goal (skill catalog); then says the human runs /<event-id> across all Forge projects. Calendar does not start the harness.
 Docs:
 # None — no memory or forge.json
 Agents:

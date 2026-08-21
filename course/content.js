@@ -1095,7 +1095,7 @@ export const courses = [
             paragraphs: [
               "Most hard stops are the same three: you are not in the super-repo, you did not say which submodule, or memory was never added as a submodule. Pull memory’s main at the start of a ritual; push main only after you Apply.",
               "The command picks a project this way: you passed --submodule, or your folder is already inside one code submodule, or there is only one code submodule to choose. Anything else stops and lists the paths rather than guessing or looping the rest.",
-              "Calendar reminders are optional, harness-wide, and they never start the work for you. One reminder covers every Forge project you manage; when it fires, run that command once per project.",
+              "Calendar meetings are optional, harness-wide, and they never start the work for you. One meeting set covers every Forge project you manage; when the slot starts, run that command once per project.",
               "When the map blurs, /forge.help. When you are about to Apply, tell the story in Course 1 words first — who, what, why, when — and only then press the button.",
             ],
           },
