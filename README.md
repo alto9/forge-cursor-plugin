@@ -109,6 +109,8 @@ Optional `release.gates[]`: ordered event ids for **this** submodule (no harness
 
 See [`ensure-config`](skills/forge/ensure-config/SKILL.md), [`init-memory`](skills/forge/init-memory/SKILL.md), [`validate-memory`](skills/forge/validate-memory/SKILL.md), [`sync-memory`](skills/forge/sync-memory/SKILL.md), [`commit-memory`](skills/forge/commit-memory/SKILL.md).
 
+**Product brief (`product/brief.md`):** YAML frontmatter is source of truth (`doc: product.brief`, `schema_version: 1`, core fields); body is expansion-only. Most other memory docs still use required H2 headings. `validate-memory` emits readiness **warnings** for weak briefs (empty `product` / `problem` / `current_focus`); warnings do not block Apply and no event command gates on brief strength. Schema docs: [docs/memory-schemas.md](docs/memory-schemas.md).
+
 ## Risk & findings ownership
 
 One concern per file; reference board issue id/URL.
@@ -129,7 +131,7 @@ One concern per file; reference board issue id/URL.
 5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
 6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
 7. `/forge.plan-refresh` — delivery sequence once Ready work exists
-8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready` / weak briefs
+8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready`. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
 9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no HITL, no memory)
 
 **Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.

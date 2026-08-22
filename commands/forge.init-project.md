@@ -47,7 +47,7 @@ If resolve-paths fails because `.ai/memory` is missing from `.gitmodules`: **STO
 Launch harness memory for the active submodule from a project idea (greenfield or “start managing this repo”). Bind to that submodule only; remaining code submodules wait for their own `/forge.init-project` run.
 Parent runs ensure-config + init-memory (propose seed of missing template files only; never overwrite non-empty docs).
 After Apply, parent runs **commit-memory** so seeds land on memory-repo `origin/main`.
-PO: propose first-pass brief.md, roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known. Do not create epic issues; Icebox holds coarse outcomes until grooming splits them into actionable tickets.
+PO: propose first-pass brief.md (v2 frontmatter: `product`, `problem`, `audience`, `goals`, `non_goals`, `success_metrics`, `current_focus` — fields may be empty; empty body OK), roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known. Do not create epic issues; Icebox holds coarse outcomes until grooming splits them into actionable tickets.
 Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
 PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice (memory projection; host milestones come later when ≥5 related tickets exist).
 Do not deep-refine tickets here — next: `/forge.backlog-grooming` (→ Refinement) then `/forge.refinement` (→ Ready + `ai-ready`/`human-ready`).

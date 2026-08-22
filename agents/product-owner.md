@@ -33,19 +33,21 @@ Docs:
 
 Templates:
     # Harness-owned. Project docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
+    # Most docs: required H2 headings present, no extra H2s; empty sections OK.
+    # product/brief.md: YAML frontmatter schema (doc: product.brief, schema_version: 1);
+    #   body is expansion-only; empty body OK at init.
     # Current state only — no decision history baked into these files.
     # If a file doesn't need to change, leave it alone.
 
     skills/product-owner/templates/brief.md
-        # Product
-        # Problem
-        # Who it's for
-        # Goals
-        # Non-goals
-        # Success metrics
-        # Current focus
+        Frontmatter (source of truth):
+          doc, schema_version, updated, product, problem, audience[],
+          goals[], non_goals[], success_metrics[{metric,target}], current_focus
+        Body: expansion only (context, rationale, links). Soft max ~6000 chars (warning).
+        Doc boundaries:
+          success_metrics → product/metrics.md (brief = intent/targets; metrics = current read)
+          audience → product/personas.md (brief = short segments; personas = detail)
+          current_focus, goals → product/roadmap.md (brief = why; roadmap = horizons; roadmap wins on priority)
 
     skills/product-owner/templates/roadmap.md
         # Themes

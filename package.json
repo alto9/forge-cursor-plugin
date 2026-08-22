@@ -2,7 +2,9 @@
   "name": "forge-cursor-plugin",
   "version": "1.0.0",
   "type": "module",
-  "engines": { "node": ">=22.0.0" },
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "description": "Forge harness: agents, event commands, skills, and super-repo memory for structured solo SDLC across GitHub/GitLab submodules",
   "scripts": {
     "test": "vitest run",
@@ -14,7 +16,8 @@
     "course": "node scripts/serve-course.mjs"
   },
   "dependencies": {
-    "node-html-markdown": "^2.0.0"
+    "node-html-markdown": "^2.0.0",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "vitest": "^2.0.0"

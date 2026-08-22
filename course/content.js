@@ -173,7 +173,7 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "Current state only",
-            body: "The brief and the roadmap describe what is true now; they are not a diary of how you argued. When the focus changes, you change the page rather than appending a history of feelings.",
+            body: "The brief’s frontmatter is the source of truth for the shared product story; the body only expands with context and links. The brief and the roadmap describe what is true now; they are not a diary of how you argued. When the focus changes, you change the page rather than appending a history of feelings.",
           },
           {
             type: "heading",
@@ -339,7 +339,7 @@ export const courses = [
             type: "desk",
             title: "When you write this work down, it lives here",
             items: [
-              { name: "Product brief", file: "product/brief.md", note: "The shared product story: problem, who it is for, goals, non-goals, current focus." },
+              { name: "Product brief", file: "product/brief.md", note: "Frontmatter holds the shared product story (product, problem, audience, goals, non-goals, success metrics, current focus); the body expands with context and links only." },
               { name: "Roadmap", file: "product/roadmap.md", note: "Themes, what we are doing now, what is next, what can wait, and what we are not planning." },
               { name: "Backlog notes", file: "product/backlog.md", note: "A working copy of the board columns; the tickets themselves still live on the board." },
               { name: "Metrics", file: "product/metrics.md", note: "The numbers you claimed, and the current read." },

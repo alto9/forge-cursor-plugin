@@ -1,17 +1,25 @@
 #!/usr/bin/env node
 /**
- * Validate forge.json and memory markdown against plugin templates.
+ * Validate forge.json and memory markdown against plugin templates / schemas.
  *
  * Usage:
  *   node scripts/validate-memory.js --memory-root <path> [--file <relpath>]...
  *   node scripts/validate-memory.js --forge-json <path> --submodule-path <path>
  *   node scripts/validate-memory.js --check-doc <docpath> --template <templatepath>
  *
- * Exit 0 if valid; 1 if errors. Prints JSON { ok, errors[] }.
+ * Exit 0 if valid (no errors); 1 if errors. Warnings never fail exit.
+ * Prints JSON { ok, errors[], warnings[] }.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  SCHEMA_DOC_MAP,
+  isSchemaDoc,
+  validateSchemaDoc,
+  parseProductBrief,
+  validateProductBrief,
+} from "./memory/schema-registry.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pluginRoot = path.resolve(__dirname, "..");
@@ -69,7 +77,7 @@ export function validateForgeJson(obj, submodulePath, { requireBoard = false } =
   return errors;
 }
 
-/** Map memory-relative doc path -> template path under plugin */
+/** Map memory-relative doc path -> template path under plugin (seeding + heading docs) */
 export const DOC_TEMPLATE_MAP = {
   "product/brief.md": "skills/product-owner/templates/brief.md",
   "product/roadmap.md": "skills/product-owner/templates/roadmap.md",
@@ -113,8 +121,13 @@ export function templateForMemoryDoc(relPath) {
   return null;
 }
 
+/**
+ * Validate memory root. Returns { errors, warnings }.
+ * Schema docs (e.g. product/brief.md) use frontmatter schemas; others use heading templates.
+ */
 export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBoard } = {}) {
   const errors = [];
+  const warnings = [];
   const forgePath = path.join(memoryRoot, "forge.json");
   if (fs.existsSync(forgePath)) {
     let obj;
@@ -122,7 +135,7 @@ export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBo
       obj = JSON.parse(fs.readFileSync(forgePath, "utf8"));
     } catch (e) {
       errors.push(`forge.json parse error: ${e.message}`);
-      return errors;
+      return { errors, warnings };
     }
     errors.push(
       ...validateForgeJson(obj, submodulePath || obj.path, { requireBoard })
@@ -143,6 +156,19 @@ export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBo
       errors.push(`Missing file: ${rel}`);
       continue;
     }
+    const content = fs.readFileSync(abs, "utf8");
+
+    if (isSchemaDoc(rel)) {
+      const result = validateSchemaDoc(rel, content);
+      for (const e of result.errors) {
+        errors.push(e.startsWith(`${rel}:`) ? e : `${rel}: ${e}`);
+      }
+      for (const w of result.warnings) {
+        warnings.push(w.startsWith(`${rel}:`) ? w : `${rel}: ${w}`);
+      }
+      continue;
+    }
+
     const tmplRel = templateForMemoryDoc(rel);
     if (!tmplRel) continue;
     const tmplAbs = path.join(pluginRoot, tmplRel);
@@ -151,12 +177,12 @@ export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBo
       continue;
     }
     const docErrs = validateDocAgainstTemplate(
-      fs.readFileSync(abs, "utf8"),
+      content,
       fs.readFileSync(tmplAbs, "utf8")
     );
     for (const e of docErrs) errors.push(`${rel}: ${e}`);
   }
-  return errors;
+  return { errors, warnings };
 }
 
 function parseArgs(argv) {
@@ -177,6 +203,7 @@ function parseArgs(argv) {
 function main() {
   const args = parseArgs(process.argv);
   let errors = [];
+  let warnings = [];
 
   if (args.checkDoc && args.template) {
     errors = validateDocAgainstTemplate(
@@ -189,11 +216,13 @@ function main() {
       requireBoard: args.requireBoard,
     });
   } else if (args.memoryRoot) {
-    errors = validateMemoryRoot(args.memoryRoot, {
+    const result = validateMemoryRoot(args.memoryRoot, {
       files: args.files.length ? args.files : undefined,
       submodulePath: args.submodulePath,
       requireBoard: args.requireBoard,
     });
+    errors = result.errors;
+    warnings = result.warnings;
   } else {
     console.error(
       "Usage: validate-memory.js --memory-root DIR | --forge-json FILE | --check-doc FILE --template FILE"
@@ -201,10 +230,18 @@ function main() {
     process.exit(2);
   }
 
-  const result = { ok: errors.length === 0, errors };
+  const result = { ok: errors.length === 0, errors, warnings };
   console.log(JSON.stringify(result, null, 2));
   process.exit(errors.length ? 1 : 0);
 }
+
+export {
+  SCHEMA_DOC_MAP,
+  isSchemaDoc,
+  validateSchemaDoc,
+  parseProductBrief,
+  validateProductBrief,
+};
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
