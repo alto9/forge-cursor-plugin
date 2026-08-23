@@ -19,7 +19,31 @@ import {
   validateSchemaDoc,
   parseProductBrief,
   validateProductBrief,
+  validateProductRoadmap,
+  validateProductBacklog,
+  validateProductMetrics,
+  validateProductInsights,
+  validateProductCompetitive,
+  validateProductPersonas,
+  validateProductExperiments,
+  validateProductSpec,
 } from "./memory/schema-registry.js";
+
+export {
+  SCHEMA_DOC_MAP,
+  isSchemaDoc,
+  validateSchemaDoc,
+  parseProductBrief,
+  validateProductBrief,
+  validateProductRoadmap,
+  validateProductBacklog,
+  validateProductMetrics,
+  validateProductInsights,
+  validateProductCompetitive,
+  validateProductPersonas,
+  validateProductExperiments,
+  validateProductSpec,
+};
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pluginRoot = path.resolve(__dirname, "..");
@@ -123,7 +147,7 @@ export function templateForMemoryDoc(relPath) {
 
 /**
  * Validate memory root. Returns { errors, warnings }.
- * Schema docs (e.g. product/brief.md) use frontmatter schemas; others use heading templates.
+ * Schema docs (all `product/*` memory files) use frontmatter schemas; other roles use heading templates.
  */
 export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBoard } = {}) {
   const errors = [];
@@ -234,14 +258,6 @@ function main() {
   console.log(JSON.stringify(result, null, 2));
   process.exit(errors.length ? 1 : 0);
 }
-
-export {
-  SCHEMA_DOC_MAP,
-  isSchemaDoc,
-  validateSchemaDoc,
-  parseProductBrief,
-  validateProductBrief,
-};
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();

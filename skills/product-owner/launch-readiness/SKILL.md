@@ -13,7 +13,7 @@ Invoked by Forge event commands or the product-owner agent for `product-owner/la
 ## Steps
 
 1. Read in-scope memory under `memoryRoot/product/` (and related event Docs). Match templates in `skills/product-owner/templates/`.
-2. Propose updates with required H2s only; empty sections OK; no extra H2s.
+2. Propose updates to product docs via YAML frontmatter schemas (`doc: product.*`, schema_version 1); body is expansion-only; bump `updated` when frontmatter changes; empty fields OK.
 3. Current state only — remove stale items; leave files alone if unchanged.
 4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
 5. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Questions, Left alone). Do **not** Apply, HITL, or mutate SCM.

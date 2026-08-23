@@ -111,15 +111,16 @@ current_focus: ""
 ---
 `;
 
-  const validRoadmap = `# Themes
-
-# Now
-
-# Next
-
-# Later
-
-# Not planning
+  const validRoadmap = `---
+doc: product.roadmap
+schema_version: 1
+updated: 2026-08-21
+themes: []
+now: []
+next: []
+later: []
+not_planning: []
+---
 `;
 
   const invalidBrief = `# Product

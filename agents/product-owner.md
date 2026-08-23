@@ -33,75 +33,45 @@ Docs:
 
 Templates:
     # Harness-owned. Project docs must follow the matching template.
-    # Most docs: required H2 headings present, no extra H2s; empty sections OK.
-    # product/brief.md: YAML frontmatter schema (doc: product.brief, schema_version: 1);
-    #   body is expansion-only; empty body OK at init.
+    # All product/* docs: YAML frontmatter schema (doc: product.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
     # Current state only — no decision history baked into these files.
     # If a file doesn't need to change, leave it alone.
 
     skills/product-owner/templates/brief.md
-        Frontmatter (source of truth):
-          doc, schema_version, updated, product, problem, audience[],
+        Frontmatter: doc, schema_version, updated, product, problem, audience[],
           goals[], non_goals[], success_metrics[{metric,target}], current_focus
-        Body: expansion only (context, rationale, links). Soft max ~6000 chars (warning).
         Doc boundaries:
           success_metrics → product/metrics.md (brief = intent/targets; metrics = current read)
           audience → product/personas.md (brief = short segments; personas = detail)
           current_focus, goals → product/roadmap.md (brief = why; roadmap = horizons; roadmap wins on priority)
 
     skills/product-owner/templates/roadmap.md
-        # Themes
-        # Now
-        # Next
-        # Later
-        # Not planning
+        Frontmatter: themes[], now[], next[], later[], not_planning[]
 
     skills/product-owner/templates/backlog.md
-        # In progress
-        # Ready
-        # Refinement
-        # Blocked
-        # Icebox
+        Frontmatter: in_progress[], ready[], refinement[], blocked[], icebox[]
+        Board/SCM wins — strings are issue id/title projections only.
 
     skills/product-owner/templates/metrics.md
-        # Primary metrics
-        # Supporting metrics
-        # Targets
-        # Current read
+        Frontmatter: primary[], supporting[], targets[{metric,target}], current_read
 
     skills/product-owner/templates/insights.md
-        # Themes
-        # Open questions
-        # Evidence
-        # Implications
+        Frontmatter: themes[], open_questions[], evidence[], implications[]
 
     skills/product-owner/templates/competitive.md
-        # Alternatives
-        # Where we win
-        # Where we lose
-        # Watch list
-        # Implications
+        Frontmatter: alternatives[], where_we_win[], where_we_lose[], watch_list[], implications[]
 
     skills/product-owner/templates/personas.md
-        # Primary
-        # Jobs to be done
-        # Not for
+        Frontmatter: primary[], jobs_to_be_done[], not_for[]
 
     skills/product-owner/templates/experiments.md
-        # Active
-        # Proposed
-        # Concluded
+        Frontmatter: active[], proposed[], concluded[]
 
     skills/product-owner/templates/spec.md
-        # Problem
-        # Users
-        # Requirements
-        # Acceptance criteria
-        # Out of scope
-        # Constraints
-        # Verification
-        # Open questions
-        # Success metrics
+        Frontmatter: feature, problem, users[], requirements[], acceptance_criteria[],
+          out_of_scope[], constraints[], verification, open_questions[], success_metrics[{metric,target}]
+        Optional under product/specs/<feature>.md; Ready ticket body remains the contract.
 
 Skills:
     skills/product-owner/discovery/SKILL.md

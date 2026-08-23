@@ -173,7 +173,7 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "Current state only",
-            body: "The brief’s frontmatter is the source of truth for the shared product story; the body only expands with context and links. The brief and the roadmap describe what is true now; they are not a diary of how you argued. When the focus changes, you change the page rather than appending a history of feelings.",
+            body: "Product pages use frontmatter as the source of truth; the body only expands with context and links. The brief and the roadmap describe what is true now; they are not a diary of how you argued. When the focus changes, you change the page rather than appending a history of feelings.",
           },
           {
             type: "heading",
@@ -340,12 +340,12 @@ export const courses = [
             title: "When you write this work down, it lives here",
             items: [
               { name: "Product brief", file: "product/brief.md", note: "Frontmatter holds the shared product story (product, problem, audience, goals, non-goals, success metrics, current focus); the body expands with context and links only." },
-              { name: "Roadmap", file: "product/roadmap.md", note: "Themes, what we are doing now, what is next, what can wait, and what we are not planning." },
-              { name: "Backlog notes", file: "product/backlog.md", note: "A working copy of the board columns; the tickets themselves still live on the board." },
-              { name: "Metrics", file: "product/metrics.md", note: "The numbers you claimed, and the current read." },
-              { name: "Insights", file: "product/insights.md", note: "What you are hearing, and what it implies for the backlog." },
-              { name: "Personas / competitive / experiments", file: "product/…", note: "Who it is for, alternatives, bets you are running. Use them when you have something true to say." },
-              { name: "Feature note (optional)", file: "product/specs/<feature>.md", note: "Background for a larger change; the Ready ticket is still the contract." },
+              { name: "Roadmap", file: "product/roadmap.md", note: "Frontmatter horizons: themes, now, next, later, not planning." },
+              { name: "Backlog notes", file: "product/backlog.md", note: "Frontmatter projection of board columns; the tickets themselves still live on the board." },
+              { name: "Metrics", file: "product/metrics.md", note: "Frontmatter: primary/supporting names, targets, and the current read." },
+              { name: "Insights", file: "product/insights.md", note: "Frontmatter: themes, open questions, evidence, implications." },
+              { name: "Personas / competitive / experiments", file: "product/…", note: "Same frontmatter pattern. Who it is for, alternatives, bets you are running." },
+              { name: "Feature note (optional)", file: "product/specs/<feature>.md", note: "Frontmatter feature note; the Ready ticket is still the contract." },
             ],
           },
           {
