@@ -20,7 +20,7 @@ Invoked by Forge event commands or the project-manager agent for `project-manage
 ## Steps
 
 1. Prefer listing host milestones + assigned issues (vendor MCP) when available; then read `memoryRoot/project/` docs.
-2. Propose memory updates with required H2s only; empty sections OK; no extra H2s. Reference host milestone title/URL and board issue ids — never invent parallel ticket numbers.
+2. Propose updates via YAML frontmatter schemas (role template `doc` + schema_version 1); body is expansion-only; bump `updated` when frontmatter changes; empty fields OK. Reference host milestone title/URL and board issue ids — never invent parallel ticket numbers.
 3. Current state only — remove stale items; leave files alone if unchanged.
 4. When host milestone create/close/reopen is needed, list explicit **Proposed vendor actions** (do not invent epic issues).
 5. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Questions, Left alone). Do **not** Apply, HITL, or mutate SCM.

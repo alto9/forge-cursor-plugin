@@ -23,35 +23,22 @@ Docs:
 
 Templates:
     # Harness-owned. Project docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
+    # All project/* docs: YAML frontmatter schema (doc: project.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
     # Current state only — no decision history baked into these files.
     # If a file doesn't need to change, leave it alone.
 
     skills/project-manager/templates/plan.md
-        # Objective
-        # In scope
-        # Sequence
-        # Dependencies
-        # Handoffs
+        Frontmatter: objective, in_scope[], sequence[], dependencies[], handoffs[]
 
     skills/project-manager/templates/status.md
-        # Summary
-        # In flight
-        # Blockers
-        # Next up
-        # Asks
+        Frontmatter: summary, in_flight[], blockers[], next_up[], asks[]
 
     skills/project-manager/templates/risks.md
-        # Risks
-        # Issues
-        # Dependencies
-        # Assumptions
+        Frontmatter: risks[], issues[], dependencies[], assumptions[]
 
     skills/project-manager/templates/milestones.md
-        # Active
-        # Upcoming
-        # Slipped
+        Frontmatter: active[], upcoming[], slipped[]
 
 Skills:
     skills/project-manager/work-planning/SKILL.md

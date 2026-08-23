@@ -105,7 +105,7 @@ function renderBlock(block, session) {
           `<tr><td><code class="mono">${esc(d.file)}</code></td><td>${esc(d.h2s)}</td></tr>`,
       )
       .join("");
-    return `<h3>Docs they keep current</h3><p class="stat">Memory path: <code>.ai/memory/&lt;submodule&gt;/</code> — required H2s only; empty sections are fine.</p><table><thead><tr><th>File</th><th>Headings</th></tr></thead><tbody>${rows}</tbody></table>`;
+    return `<h3>Docs they keep current</h3><p class="stat">Memory path: <code>.ai/memory/&lt;submodule&gt;/</code> — YAML frontmatter (<code>doc</code> + <code>schema_version: 1</code>); body is expansion-only; empty fields OK at init.</p><table><thead><tr><th>File</th><th>Core fields</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
   if (block.type === "desk") {
     const cards = block.items

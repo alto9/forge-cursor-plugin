@@ -310,7 +310,7 @@ for (const [readmePath, mapped] of skillMap) {
     description =
       roleSkillMeta[parts[parts.length - 1]] ||
       `${kind} skill: ${mapped.leaf}.`;
-    steps = `1. Read only in-scope memory docs for this skill/event.\n2. Propose updates matching role templates (required H2s only).\n3. Current state only — remove stale items; leave files alone if unchanged.\n4. When event-spawned: return a hand-off blob; do not Apply.\n`;
+    steps = `1. Read only in-scope memory docs for this skill/event.\n2. Propose updates via YAML frontmatter schemas (role template \`doc\` + schema_version 1); body is expansion-only; bump \`updated\` when frontmatter changes.\n3. Current state only — remove stale items; leave files alone if unchanged.\n4. When event-spawned: return a hand-off blob; do not Apply.\n`;
   }
 
   // Richer forge skill bodies

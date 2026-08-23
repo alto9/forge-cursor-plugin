@@ -56,4 +56,4 @@ Launching or repairing `memoryRoot` for a submodule (`init-project`, or gap-fill
 | marketing/calendar.md | skills/marketing-manager/templates/calendar.md |
 | marketing/social-queue.md | skills/marketing-manager/templates/social-queue.md |
 
-Same map is encoded in `scripts/validate-memory.js` (`DOC_TEMPLATE_MAP`). All `product/*` paths (and `product/specs/*.md`) are seeded from templates and validated via frontmatter schemas (`SCHEMA_DOC_MAP` / `schemaEntryForPath`), not heading match.
+Same map is encoded in `scripts/validate-memory.js` (`DOC_TEMPLATE_MAP`). All seeded memory paths are validated via frontmatter schemas (`SCHEMA_DOC_MAP` / `schemaEntryForPath`), not heading match.

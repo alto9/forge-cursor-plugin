@@ -1,5 +1,5 @@
 /**
- * Shared helpers for product.* frontmatter schemas.
+ * Shared helpers for memory doc frontmatter schemas.
  */
 import { parseFrontmatter } from "./parse-frontmatter.js";
 

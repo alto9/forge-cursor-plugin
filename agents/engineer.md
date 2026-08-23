@@ -20,17 +20,13 @@ Docs:
 
 Templates:
     # Harness-owned. Engineering docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
-    # Current state only — delete finished work from Active; no done archive.
+    # YAML frontmatter schema (doc: engineering.in_flight, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
+    # Current state only — delete finished work from active[]; no done archive.
     # If a file doesn't need to change, leave it alone.
 
     skills/engineer/templates/in-flight.md
-        # Active
-        # Approach
-        # Open questions
-        # Blockers
-        # Review state
+        Frontmatter: active[], approach, open_questions[], blockers[], review_state
 
 Skills:
     skills/engineer/implement-ticket/SKILL.md

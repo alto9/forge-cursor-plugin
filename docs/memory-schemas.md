@@ -1,6 +1,6 @@
 # Memory schemas
 
-Pluggable frontmatter schemas for Forge memory docs. Heading-template validation remains the default for unmigrated (non-product) files.
+Pluggable frontmatter schemas for Forge memory docs. All seeded memory files use schema validation; heading-template validation remains only for legacy unmigrated files outside `DOC_TEMPLATE_MAP`.
 
 ## How it works
 
@@ -8,7 +8,7 @@ Pluggable frontmatter schemas for Forge memory docs. Heading-template validation
 2. If `schemaEntryForPath(relPath)` resolves ([`scripts/memory/schema-registry.js`](../scripts/memory/schema-registry.js)), run the schema validator.
 3. Otherwise, match required `#` headings against the role template (`DOC_TEMPLATE_MAP`).
 
-**Product docs** (all schema-backed today):
+**All seeded memory docs** (schema-backed):
 
 | Path | `doc` id |
 |------|----------|
@@ -21,10 +21,34 @@ Pluggable frontmatter schemas for Forge memory docs. Heading-template validation
 | `product/personas.md` | `product.personas` |
 | `product/experiments.md` | `product.experiments` |
 | `product/specs/<feature>.md` | `product.spec` |
+| `architecture/overview.md` | `architecture.overview` |
+| `architecture/constraints.md` | `architecture.constraints` |
+| `architecture/interfaces.md` | `architecture.interfaces` |
+| `architecture/decisions.md` | `architecture.decisions` |
+| `architecture/risks.md` | `architecture.risks` |
+| `engineering/in-flight.md` | `engineering.in_flight` |
+| `project/plan.md` | `project.plan` |
+| `project/status.md` | `project.status` |
+| `project/risks.md` | `project.risks` |
+| `project/milestones.md` | `project.milestones` |
+| `qa/queue.md` | `qa.queue` |
+| `qa/findings.md` | `qa.findings` |
+| `qa/test-plan.md` | `qa.test_plan` |
+| `security/threat-model.md` | `security.threat_model` |
+| `security/findings.md` | `security.findings` |
+| `security/checklist.md` | `security.checklist` |
+| `release/checklist.md` | `release.checklist` |
+| `release/notes.md` | `release.notes` |
+| `release/status.md` | `release.status` |
+| `marketing/positioning.md` | `marketing.positioning` |
+| `marketing/messaging.md` | `marketing.messaging` |
+| `marketing/voice.md` | `marketing.voice` |
+| `marketing/calendar.md` | `marketing.calendar` |
+| `marketing/social-queue.md` | `marketing.social_queue` |
 
 Shared helpers: [`scripts/memory/schema-common.js`](../scripts/memory/schema-common.js) (`createProductDocSchema`).
 
-CLI JSON: `{ ok, errors[], warnings[] }`. Exit 1 only when `errors` is non-empty. Warnings (weak brief, body soft-max) never block Apply.
+CLI JSON: `{ ok, errors[], warnings[] }`. Exit 1 only when `errors` is non-empty. Warnings (weak brief, body soft-max, legacy headings) never block Apply.
 
 ## Register a new schema
 
@@ -42,7 +66,7 @@ Reference: [`product-brief-v1.js`](../scripts/memory/schemas/product-brief-v1.js
 | Kind | Blocks Apply | Examples |
 |------|--------------|----------|
 | **Error** | Yes | Missing frontmatter, wrong `doc` / `schema_version`, bad types, forbidden body sections |
-| **Warning** | No | Weak brief (empty `product` / `problem` / `current_focus`), no goals (not strong), body over soft max |
+| **Warning** | No | Weak brief (empty `product` / `problem` / `current_focus`), no goals (not strong), body over soft max, legacy `#` headings in body |
 
 Readiness warnings are advisory only. No event command gates on brief strength.
 

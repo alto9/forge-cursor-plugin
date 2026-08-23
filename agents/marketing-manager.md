@@ -26,44 +26,25 @@ Docs:
 
 Templates:
     # Harness-owned. Marketing docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
-    # Current state only — no posted-content graveyard in social-queue.md.
+    # All marketing/* docs: YAML frontmatter schema (doc: marketing.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
+    # Current state only.
     # If a file doesn't need to change, leave it alone.
 
     skills/marketing-manager/templates/positioning.md
-        # Audience
-        # Problem
-        # Promise
-        # Differentiator
-        # Proof
-        # Non-positioning
+        Frontmatter: audience, problem, promise, differentiator, proof[], non_positioning[]
 
     skills/marketing-manager/templates/messaging.md
-        # One-liner
-        # Elevator
-        # Pillars
-        # CTAs
-        # Words we use
-        # Words we avoid
+        Frontmatter: one_liner, elevator, pillars[], ctas[], words_we_use[], words_we_avoid[]
 
     skills/marketing-manager/templates/voice.md
-        # Tone
-        # Style rules
-        # Examples
-        # Anti-patterns
+        Frontmatter: tone, style_rules[], examples[], anti_patterns[]
 
     skills/marketing-manager/templates/calendar.md
-        # Themes
-        # This period
-        # Upcoming hooks
-        # Channels
+        Frontmatter: themes[], this_period[], upcoming_hooks[], channels[]
 
     skills/marketing-manager/templates/social-queue.md
-        # Ready to post
-        # Needs revision
-        # Holding
-        # Channels / formats
+        Frontmatter: ready_to_post[], needs_revision[], holding[], channels_formats[]
 
 Skills:
     skills/marketing-manager/positioning/SKILL.md

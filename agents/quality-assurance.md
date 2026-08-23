@@ -24,28 +24,19 @@ Docs:
 
 Templates:
     # Harness-owned. QA docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
-    # Current state only — delete cleared findings and finished queue items; no pass/fail history log.
+    # All qa/* docs: YAML frontmatter schema (doc: qa.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
+    # Current state only — pass-back audit trail is the FAIL PR/MR comment.
     # If a file doesn't need to change, leave it alone.
 
     skills/quality-assurance/templates/queue.md
-        # Ready for QA
-        # In verification
-        # Passed back
-        # Approved
+        Frontmatter: ready_for_qa[], in_verification[], passed_back[], approved[]
 
     skills/quality-assurance/templates/findings.md
-        # Open
-        # Needs product call
-        # Blockers
+        Frontmatter: open[], needs_product_call[], blockers[]
 
     skills/quality-assurance/templates/test-plan.md
-        # Scope
-        # Acceptance checks
-        # Regression focus
-        # Out of scope
-        # Environments
+        Frontmatter: scope, acceptance_checks[], regression_focus[], out_of_scope[], environments[]
 
 Skills:
     skills/quality-assurance/build-test-plan/SKILL.md

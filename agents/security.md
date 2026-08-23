@@ -23,30 +23,19 @@ Docs:
 
 Templates:
     # Harness-owned. Security docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
-    # Current state only — delete cleared findings; no vulnerability history archive in findings.md.
+    # All security/* docs: YAML frontmatter schema (doc: security.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
+    # Current state only.
     # If a file doesn't need to change, leave it alone.
 
     skills/security/templates/threat-model.md
-        # Assets
-        # Trust boundaries
-        # Threats
-        # Mitigations
-        # Open questions
+        Frontmatter: assets[], trust_boundaries[], threats[], mitigations[], open_questions[]
 
     skills/security/templates/findings.md
-        # Open
-        # Needs product call
-        # Blockers
+        Frontmatter: open[], needs_product_call[], blockers[]
 
     skills/security/templates/checklist.md
-        # Secrets
-        # Dependencies
-        # Authn / authz
-        # Data handling
-        # Config / defaults
-        # Release gates
+        Frontmatter: secrets[], dependencies[], authn_authz[], data_handling[], config_defaults[], release_gates[]
 
 Skills:
     skills/security/threat-model/SKILL.md

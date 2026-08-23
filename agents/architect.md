@@ -25,41 +25,25 @@ Docs:
 
 Templates:
     # Harness-owned. Architecture docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
-    # Current state only — no decision history baked into overview/constraints/interfaces/risks.
-    # decisions.md is the exception: append or supersede ADRs; do not rewrite history silently.
+    # All architecture/* docs: YAML frontmatter schema (doc: architecture.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
+    # Current state only — decisions.md holds active/superseded ADRs; no silent history rewrites elsewhere.
     # If a file doesn't need to change, leave it alone.
 
     skills/architect/templates/overview.md
-        # System
-        # Context
-        # Major components
-        # Data flow
-        # Deployment shape
-        # Current focus
+        Frontmatter: system, context, major_components[], data_flow, deployment_shape, current_focus
 
     skills/architect/templates/constraints.md
-        # Hard constraints
-        # Soft constraints
-        # Out of bounds
-        # Assumptions
+        Frontmatter: hard_constraints[], soft_constraints[], out_of_bounds[], assumptions[]
 
     skills/architect/templates/interfaces.md
-        # External interfaces
-        # Internal boundaries
-        # Contracts in flight
-        # Ownership
+        Frontmatter: external_interfaces[], internal_boundaries[], contracts_in_flight[], ownership[]
 
     skills/architect/templates/decisions.md
-        # Active decisions
-        # Superseded
+        Frontmatter: active_decisions[], superseded[]
 
     skills/architect/templates/risks.md
-        # Structural risks
-        # Coupling hotspots
-        # Migration hazards
-        # Watch list
+        Frontmatter: structural_risks[], coupling_hotspots[], migration_hazards[], watch_list[]
 
 Skills:
     skills/architect/system-design/SKILL.md

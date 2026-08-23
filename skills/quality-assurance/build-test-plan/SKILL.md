@@ -15,7 +15,7 @@ Invoked by Forge event commands or the quality-assurance agent for `quality-assu
 ## Steps
 
 1. For `/forge.validate-ticket`: build an **ephemeral** check list from the issue body’s Acceptance criteria and Verification. Do **not** read or write `qa/test-plan.md`. Return the plan in the hand-off for this run only.
-2. For other events that own durable test-plan memory: read in-scope memory under `memoryRoot/qa/`; propose updates with required H2s only; empty sections OK; no extra H2s; current state only.
+2. For other events that own durable test-plan memory: read in-scope memory under `memoryRoot/qa/`; propose updates via YAML frontmatter schemas (role template `doc` + schema_version 1); body is expansion-only; bump `updated` when frontmatter changes; empty fields OK.
 3. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM is SoT.**
 4. When event-spawned: return a hand-off blob. For validate-ticket, Proposed memory edits are none. Do **not** Apply, HITL, or mutate SCM.
 

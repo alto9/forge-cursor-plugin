@@ -21,30 +21,19 @@ Docs:
 
 Templates:
     # Harness-owned. Release docs must follow the matching template.
-    # Validation: required H2 headings present, no extra H2s.
-    # Empty sections are valid. Do not invent sections.
-    # Current release only — clear shipped checklist items after cut; don’t keep release history in these files.
+    # All release/* docs: YAML frontmatter schema (doc: release.*, schema_version: 1);
+    #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
+    # Current state only.
     # If a file doesn't need to change, leave it alone.
 
     skills/release-manager/templates/checklist.md
-        # Version target
-        # Pre-ship
-        # Gates
-        # Publish steps
-        # Rollback
+        Frontmatter: version_target, pre_ship[], gates[], publish_steps[], rollback[]
 
     skills/release-manager/templates/notes.md
-        # Summary
-        # Changes
-        # Breaking
-        # Upgrade notes
-        # Known issues
+        Frontmatter: summary, changes[], breaking[], upgrade_notes[], known_issues[]
 
     skills/release-manager/templates/status.md
-        # Current release
-        # Blockers
-        # Ready
-        # Shipped
+        Frontmatter: current_release, blockers[], ready[], shipped[]
 
 Skills:
     skills/release-manager/version-plan/SKILL.md

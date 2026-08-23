@@ -1,7 +1,15 @@
-# Ready for QA
+---
+doc: qa.queue
+schema_version: 1
+updated: 1970-01-01
+ready_for_qa: []
+in_verification: []
+passed_back: []
+approved: []
+---
 
-# In verification
-
-# Passed back
-
-# Approved
+<!--
+Authoring (not validated):
+- Frontmatter is source of truth; body is expansion-only.
+- Bump updated when any frontmatter field changes. Empty body OK at init.
+-->

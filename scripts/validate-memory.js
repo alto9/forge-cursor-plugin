@@ -147,7 +147,7 @@ export function templateForMemoryDoc(relPath) {
 
 /**
  * Validate memory root. Returns { errors, warnings }.
- * Schema docs (all `product/*` memory files) use frontmatter schemas; other roles use heading templates.
+ * Schema docs (all seeded memory files) use frontmatter schemas; legacy paths use heading templates.
  */
 export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBoard } = {}) {
   const errors = [];
