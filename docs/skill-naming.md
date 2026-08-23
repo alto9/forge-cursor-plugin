@@ -15,6 +15,7 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/architect/tech-selection/SKILL.md | skills/architect/tech-selection/ | tech-selection |
 | skills/architect/technical-risk/SKILL.md | skills/architect/technical-risk/ | technical-risk |
 | skills/architect/tradeoff-analysis/SKILL.md | skills/architect/tradeoff-analysis/ | tradeoff-analysis |
+| skills/architect/write-tech-spec/SKILL.md | skills/architect/write-tech-spec/ | write-tech-spec |
 | skills/engineer/debug/SKILL.md | skills/engineer/debug/ | debug |
 | skills/engineer/fix-bug/SKILL.md | skills/engineer/fix-bug/ | fix-bug |
 | skills/engineer/implement-ticket/SKILL.md | skills/engineer/implement-ticket/ | implement-ticket |
@@ -81,12 +82,14 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/security/secret-scan/SKILL.md | skills/security/secret-scan/ | secret-scan |
 | skills/security/security-review/SKILL.md | skills/security/security-review/ | security-review |
 | skills/security/threat-model/SKILL.md | skills/security/threat-model/ | threat-model |
+| skills/security/security-write-tech-spec/SKILL.md | skills/security/security-write-tech-spec/ | security-write-tech-spec |
 | skills/vendor/branches/list/SKILL.md | skills/vendor/vendor-branches-list/ | vendor-branches-list |
 | skills/vendor/branches/write/SKILL.md | skills/vendor/vendor-branches-write/ | vendor-branches-write |
 | skills/vendor/ci/run/SKILL.md | skills/vendor/vendor-ci-run/ | vendor-ci-run |
 | skills/vendor/ci/status/SKILL.md | skills/vendor/vendor-ci-status/ | vendor-ci-status |
 | skills/vendor/commits/list/SKILL.md | skills/vendor/vendor-commits-list/ | vendor-commits-list |
 | skills/vendor/issues/comment/SKILL.md | skills/vendor/vendor-issues-comment/ | vendor-issues-comment |
+| skills/vendor/issues/comments-list/SKILL.md | skills/vendor/vendor-issues-comments-list/ | vendor-issues-comments-list |
 | skills/vendor/issues/get/SKILL.md | skills/vendor/vendor-issues-get/ | vendor-issues-get |
 | skills/vendor/issues/list/SKILL.md | skills/vendor/vendor-issues-list/ | vendor-issues-list |
 | skills/vendor/issues/write/SKILL.md | skills/vendor/vendor-issues-write/ | vendor-issues-write |

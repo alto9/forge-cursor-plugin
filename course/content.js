@@ -227,9 +227,9 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Refinement is on demand, after grooming. You write the contract into the ticket itself so a builder does not need you in the room. Every fact they need lives on that card: what changes, what must not change, the edge cases (the odd paths that would change the work), and how to check it.",
+              "Refinement is on demand, after grooming. You write the product contract into the ticket itself so a builder does not need you in the room. Every product fact they need lives on that card: what changes, what must not change, the edge cases (the odd paths that would change the work), and how to check it.",
               "Grooming wrote Intention (why this matters and how we will know), and Ready restates that as Outcome, the concrete result the builder is contracted to produce.",
-              "Ready means the ticket body is enough that the builder does not have to ask what you meant. A longer background note can exist (a feature write-up, a competitive scan), and it still does not replace the ticket.",
+              "Ready means the ticket body is enough that the builder does not have to ask what you meant for the product outcome. When the card is marked for an agent, Architect and Security also write a technical specification as an issue comment (the same document shape as a Spec Kit plan, without installing Spec Kit). A human-ready card needs no tech spec; the body alone is the contract. A longer background note can exist (a feature write-up, a competitive scan), and it still does not replace the ticket.",
             ],
           },
           {
@@ -284,7 +284,7 @@ export const courses = [
             type: "prose",
             paragraphs: [
               "When a ticket is Ready, you also put exactly one mark on the card: an agent can execute this, or a person has to. Work in the codebase (change the product, add tests, update docs in the repo) can be marked for an agent. Work that leaves the repo stays with a person: a vendor console, credentials, a payment-provider dashboard, a conversation with legal. That still needs a complete ticket, and a person has to do the steps.",
-              "Both kinds of work can sit in Ready, and only the agent-marked cards go to an Engineer agent later. If you are unsure, mark it for a human, because ambiguity is how an agent invents a second product in the margins.",
+              "Both kinds of work can sit in Ready, and only the agent-marked cards go to an Engineer agent later. Agent-marked cards also need the tech spec comment before they leave Refinement. Human-ready cards may omit it. If you are unsure, mark it for a human, because ambiguity is how an agent invents a second product in the margins.",
             ],
           },
           {
@@ -695,7 +695,7 @@ export const courses = [
             type: "desk",
             title: "Documents this role keeps current",
             items: [
-              { name: "In flight", file: "engineering/in-flight.md", note: "Optional projection for other rituals; implement-ticket uses the board and PR only." },
+              { name: "In flight", file: "engineering/in-flight.md", note: "Optional projection for other rituals; implement-ticket uses the board, the tech spec comment, and the PR only." },
             ],
           },
           {
@@ -946,7 +946,7 @@ export const courses = [
             paragraphs: [
               "The rituals you type live in a Cursor plugin at ~/.cursor/plugins/local/forge-cursor. Forge Studio (the VS Code / Cursor extension) clones that repo on first launch and fast-forwards it when origin moves; Command Palette → Forge: Sync Cursor Plugin does the same on demand. Command Palette → Forge: Open Forge Course serves this workshop from that clone and opens a browser tab. Reload the window after the files change.",
               "The code lives in a git submodule, with the usual branches and pull requests. The agents’ notes live in a second submodule at .ai/memory, on main only — no feature branches, no PRs on that repo. Memory is a projection of the board, not a second product.",
-              "Every real ritual starts the same way: find the paths, pull memory’s main, read forge.json. If that fails, stop. Guessing the submodule is how you write someone else’s project. Two exceptions skip the memory pull: /forge.implement-ticket and /forge.validate-ticket run on the board and the PR only.",
+              "Every real ritual starts the same way: find the paths, pull memory’s main, read forge.json. If that fails, stop. Guessing the submodule is how you write someone else’s project. Two exceptions skip the memory pull: /forge.implement-ticket and /forge.validate-ticket run on the board and the PR only (implement also reads the tech spec comment on the issue).",
               "A super-repo can hold several code submodules. Each one set up for Forge has its own forge.json and its own board under .ai/memory/<that path>/. The command binds to the one it resolved; remaining configured projects wait for their own invocation.",
               "Standing up: add the memory submodule, run /forge.init-project, approve the first brief and the empty pages, let it push main. Icebox is fine. Refining tickets on day one is not.",
             ],
@@ -975,16 +975,16 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "You already know this story. Here it is as two commands. Once a week, /forge.backlog-grooming takes a wish and makes the outcome and the test of success visible, then parks the card on Refinement. When you are actually ready to let go, /forge.refinement writes the full contract into the issue and moves it to Ready with one label: for an agent, or still for a human.",
+              "You already know this story. Here it is as two commands. Once a week, /forge.backlog-grooming takes a wish and makes the outcome and the test of success visible, then parks the card on Refinement. When you are actually ready to let go, /forge.refinement writes the product contract into the issue and moves it to Ready with one label: for an agent, or still for a human. Agent-bound cards also get a tech spec comment from Architect and Security before promotion; human-ready cards do not need one.",
               "Each command grooms or refines the project it resolved — the folder you are standing in, or the submodule you named. Three configured projects means three grooming runs, then three refinement runs, each with its own hand-off.",
-              "Judge the hand-off the same way Course 2 taught you: talk until the apply-set is right, then approve. If a groom is secretly an epic, redirect and reshape. If Open questions is not None, it is not Ready. The board is the truth; memory just points at the issue.",
+              "Judge the hand-off the same way Course 2 taught you: talk until the apply-set is right, then approve. If a groom is secretly an epic, redirect and reshape. If Open questions is not None, it is not Ready. For ai-ready, the tech spec row on the Ready gate must pass too. The board is the truth; memory just points at the issue.",
             ],
           },
           {
             type: "callout",
             tone: "note",
             title: "Try it",
-            body: "Groom one outcome. Refine it to Ready and ai-ready. Read the issue as if the builder cannot ask you follow-up questions.",
+            body: "Groom one outcome. Refine it to Ready and ai-ready, including the tech spec comment. Read the issue and the comment as if the builder cannot ask you follow-up questions.",
           },
         ],
       },
@@ -1013,8 +1013,8 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "/forge.implement-ticket will not start unless the card is Ready and marked for an agent. It claims In Progress right away, opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no hand-off and no memory write; the board and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
-              "Read the diff against the issue, not against your hope. Extra scope is not a gift. Tests should be able to fail the acceptance criteria. New packages you do not recognize are a question, not a flourish.",
+              "/forge.implement-ticket will not start unless the card is Ready, marked for an agent, and has a complete tech spec comment on the issue. It loads the issue body and that comment, claims In Progress right away, opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no hand-off and no memory write; the board, the tech spec comment, and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
+              "Read the diff against the issue and the tech spec, not against your hope. Extra scope is not a gift. Tests should be able to fail the acceptance criteria. New packages you do not recognize are a question, not a flourish.",
             ],
           },
           {
@@ -1219,7 +1219,7 @@ export const courses = [
             rows: [
               ["On demand", "/forge.init-project", "First brief and a first-pass roadmap. Icebox is fine on day one; refining tickets into Ready is work for later."],
               ["Weekly", "/forge.backlog-grooming", "Turn a wish into Intention and acceptance criteria. Land the card in Refinement."],
-              ["On demand", "/forge.refinement", "Write the full Ready contract into the issue. One label: ai-ready or human-ready."],
+              ["On demand", "/forge.refinement", "Write the product Ready contract into the issue. One label: ai-ready or human-ready. ai-ready also needs a tech spec comment."],
               ["Weekly", "/forge.feedback-triage", "Promote a comment toward a ticket or Now, park it in the icebox, or drop it."],
               ["Weekly", "/forge.stakeholder-sync", "Say what is still true and what changed. Get decisions out of hallway chat."],
               ["Every other week", "/forge.metrics-review", "Read the numbers you claimed would move, and say so when they did not."],
@@ -1254,8 +1254,8 @@ export const courses = [
               ["problem-framing", "The brief is fog: problem, who it is for, what success looks like."],
               ["outcome-definition", "You need Intention or Outcome in one concrete result."],
               ["groom-ticket", "Weekly grooming: Intention + acceptance, then stop at Refinement."],
-              ["requirements-writing", "Refinement: expand the brief into a self-contained Ready body."],
-              ["agent-ready-ticket", "The Ready gate: full contract, Open questions is None, one readiness label."],
+              ["requirements-writing", "Refinement: expand the brief into a Ready product body."],
+              ["agent-ready-ticket", "Ready gate: body checklist; tech spec comment required only when ai-ready; Open questions is None; one readiness label."],
               ["scope-control", "Someone is about to add a second product in the margins."],
               ["prioritization", "Now is too long, or two cards both want to be first."],
               ["roadmapping", "Themes, Now, Next, Later, Not planning need a rewrite."],
@@ -1296,7 +1296,7 @@ export const courses = [
             rows: [
               ["A new project has a story", "/forge.init-project", "problem-framing, roadmapping, outcome-definition"],
               ["A wish becomes a groomed card", "/forge.backlog-grooming", "groom-ticket, outcome-definition, scope-control"],
-              ["That card is a contract a builder can finish", "/forge.refinement", "requirements-writing, agent-ready-ticket"],
+              ["That card is a contract a builder can finish", "/forge.refinement", "requirements-writing, agent-ready-ticket (ai-ready: Architect + Security tech spec)"],
               ["The current bets are honest", "/forge.roadmap-review", "roadmapping, prioritization"],
               ["User noise becomes a decision", "/forge.feedback-triage", "feedback-synthesis"],
               ["We can tell a true launch story", "/forge.launch-readiness-check", "launch-readiness, scope-control"],
@@ -1316,6 +1316,7 @@ export const courses = [
               "3. /forge.refinement + agent-ready-ticket",
               "   Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions: None.",
               "   Label: ai-ready (the work stays in the repo).",
+              "   Architect + Security post the tech spec comment before promote.",
               "4. After ship: /forge.outcomes-retro",
               "   Did support tickets about “I forgot my password” actually drop?",
             ],
@@ -1379,7 +1380,7 @@ export const courses = [
               ["/forge.backlog-grooming", "Product Owner", "Sequence and couplings when grooming changes what can start."],
               ["/forge.roadmap-review", "Product Owner", "Whether the current list can actually be sequenced. A cut goes back to them."],
               ["/forge.stakeholder-sync", "Product Owner", "Delivery truth: in flight, stuck, next."],
-              ["/forge.implement-ticket", "Engineer", "Status only if you still keep an in-flight page for other rituals; implement itself writes board and PR only."],
+              ["/forge.implement-ticket", "Engineer", "Status only if you still keep an in-flight page for other rituals; implement itself writes board and PR only, and reads the tech spec comment."],
               ["/forge.launch-readiness-check", "Product Owner", "Status and handoffs for the ship call."],
               ["/forge.outcomes-retro", "Product Owner", "Risks and milestones the release closed."],
             ],
@@ -1500,7 +1501,7 @@ export const courses = [
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
               ["/forge.init-project", "Product Owner", "A thin overview and constraints sketch. Leave decisions empty unless something is already locked."],
-              ["/forge.refinement", "Product Owner", "Constraints and interface facts to write into the issue. Call a spike if Ready would be a guess."],
+              ["/forge.refinement", "Product Owner", "For ai-ready: tech spec comment sections (structure, interfaces, constitution gate). Call a spike if Ready would be a guess. For human-ready: product-level constraints in the issue body only."],
               ["/forge.roadmap-review", "Product Owner", "Which Now/Next items violate a constraint or need a spike before the team commits."],
               ["/forge.plan-refresh", "Project Manager", "When the order is forced by the line: you cannot ship B before the interface A creates."],
               ["/forge.launch-readiness-check", "Product Owner", "Structural go or no-go. Unresolved structural risk should weigh against go."],
@@ -1514,6 +1515,7 @@ export const courses = [
             type: "table",
             headers: ["Skill", "Reach for it when"],
             rows: [
+              ["write-tech-spec", "ai-ready refinement: Architect sections of the tech spec comment."],
               ["system-design", "The overview is stale: parts, data, where it lives."],
               ["constraint-mapping", "Hard no, soft no, out of bounds need to be said on the page or the ticket."],
               ["interface-contracts", "What talks to what, and who owns the seam."],
@@ -1551,6 +1553,7 @@ export const courses = [
               ["The map matches the kitchen", "/forge.architecture-review", "system-design, constraint-mapping, review-design"],
               ["A decision is locked (or superseded)", "/forge.architecture-review", "architecture-decision"],
               ["The feature ticket would be a guess", "/forge.design-spike", "spike-framing, tradeoff-analysis, tech-selection"],
+              ["A Ready card needs the tech spec (ai-ready)", "/forge.refinement (attend)", "write-tech-spec, constraint-mapping, interface-contracts"],
               ["A Ready card needs the constraint on the issue", "/forge.refinement (attend)", "constraint-mapping, interface-contracts"],
               ["The sequence is forced by an interface", "/forge.plan-refresh (attend)", "change-impact"],
             ],
@@ -1602,7 +1605,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Implementing a Ready ticket marked for an agent, opening a pull request, and keeping the branch current is already the job. You lead two events, and you attend when refinement, a spike, or a release needs an implementation fact. Code, the ticket, and the pull request are the source of truth; implement-ticket does not keep an in-flight diary.",
+              "Implementing a Ready ticket marked for an agent, opening a pull request, and keeping the branch current is already the job. You lead two events, and you attend when refinement, a spike, or a release needs an implementation fact. Code, the ticket body, the tech spec comment, and the pull request are the source of truth; implement-ticket does not keep an in-flight diary.",
             ],
           },
           {
@@ -1613,7 +1616,7 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["On demand", "/forge.implement-ticket", "Ready + ai-ready only: claim In Progress right away, open the PR, wait for CI, and move to In Review when checks are green, or when the host has no checks, which you say out loud. No hand-off, no memory. Merge waits for validate-ticket."],
+              ["On demand", "/forge.implement-ticket", "Ready + ai-ready + tech spec comment only: claim In Progress right away, open the PR, wait for CI, and move to In Review when checks are green, or when the host has no checks, which you say out loud. No hand-off, no memory. Merge waits for validate-ticket."],
               ["On demand", "/forge.respond-to-review", "The conversation until the change is ready to re-gate; merge still waits for validate-ticket."],
             ],
           },
@@ -1625,7 +1628,7 @@ export const courses = [
             type: "table",
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
-              ["/forge.refinement", "Product Owner", "Whether the contract is actually buildable. Open questions keep the card in Refinement."],
+              ["/forge.refinement", "Product Owner", "Whether the contract is actually buildable, and for ai-ready whether the tech spec is complete. Open questions keep the card in Refinement."],
               ["/forge.design-spike", "Architect", "Implementation constraints: how we would call mail, what the spike must prove in code."],
               ["/forge.security-review", "Security", "A non-PR surface (config, a dependency bump) that still needs a code fact."],
               ["/forge.dependency-audit", "Security", "If a finding should become a ticket, you wait for that ticket; the audit leaves versions alone until then."],
@@ -1646,7 +1649,7 @@ export const courses = [
             type: "table",
             headers: ["Skill", "Reach for it when"],
             rows: [
-              ["implement-ticket", "The card is Ready and ai-ready. Build what is on the card."],
+              ["implement-ticket", "The card is Ready and ai-ready with a tech spec comment. Build from the body and the comment."],
               ["write-tests", "The acceptance criteria need a test that can fail them."],
               ["open-pr", "The change exists and needs a pull request."],
               ["update-branch", "Main moved, or review asked for a refresh."],
@@ -1663,7 +1666,7 @@ export const courses = [
           {
             type: "list",
             items: [
-              "Read this Ready issue. Is anything still ambiguous before I run implement-ticket?",
+              "Read this Ready issue and its tech spec comment. Is anything still ambiguous before I run implement-ticket?",
               "What is In Progress on the board, and does the PR agree?",
               "The first review comment is in. Walk it through respond-to-review without adding scope.",
               "These acceptance criteria: which tests would fail them if they were wrong?",
@@ -1674,7 +1677,7 @@ export const courses = [
             type: "callout",
             tone: "rule",
             title: "Start only from Ready + ai-ready",
-            body: "A card in Refinement is still being specified; starting from it is how you build a guess. human-ready means a person should build it. A brief that still has open questions is a request to talk, and the Agent should leave the code alone.",
+            body: "A card in Refinement is still being specified; starting from it is how you build a guess. human-ready means a person should build it. Missing tech spec on an ai-ready card is the same stop. A brief that still has open questions is a request to talk, and the Agent should leave the code alone.",
           },
           {
             type: "heading",
@@ -1877,6 +1880,7 @@ export const courses = [
             type: "table",
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
+              ["/forge.refinement", "Product Owner", "For ai-ready tickets: Security sections of the tech spec comment (context, requirements, verification)."],
               ["/forge.validate-ticket", "Quality Assurance (required peer)", "The same PR, against safety expectations for this change. Either domain can fail; dual approve auto-merges."],
               ["/forge.launch-readiness-check", "Product Owner", "Open blockers weigh against go. Edit security pages only for release-gate truth."],
               ["/forge.prepare-release", "Release Manager", "Whether the version is blocked on a security finding."],
@@ -1896,6 +1900,7 @@ export const courses = [
             type: "table",
             headers: ["Skill", "Reach for it when"],
             rows: [
+              ["security-write-tech-spec", "ai-ready refinement: Security sections of the tech spec comment."],
               ["security-review", "A change (PR or not) needs a safety read."],
               ["secret-scan", "Credentials, tokens, or keys might have landed in the tree."],
               ["harden-config", "Defaults, authn/z, or environment shape look loose."],
@@ -1928,6 +1933,7 @@ export const courses = [
             headers: ["You want", "Run", "Load"],
             rows: [
               ["This PR is safe to merge (with QA)", "/forge.validate-ticket", "security-review, secret-scan, then security-approve-change or security-pass-back"],
+              ["An ai-ready card needs security in the tech spec", "/forge.refinement (attend)", "security-write-tech-spec"],
               ["A change with no PR gets a verdict", "/forge.security-review", "security-review, harden-config"],
               ["The lockfile is what we run", "/forge.dependency-audit", "dependency-audit"],
               ["This version can leave the pass", "/forge.security-release-gate", "security-review, threat-model"],

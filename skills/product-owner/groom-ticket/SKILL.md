@@ -33,7 +33,7 @@ Board issue body should include:
 … optional context, open product questions …
 ```
 
-Enough that a refinement pass can expand into a self-contained Ready ticket without re-discovering the problem. Notes may hold open questions; do **not** use Notes for durable “see memory file X” pointers that would survive into Ready.
+Enough that a refinement pass can expand into a Ready ticket without re-discovering the problem. Notes may hold open questions; do **not** use Notes for durable “see memory file X” pointers that would survive into Ready.
 
 ## Host milestones (grouping)
 

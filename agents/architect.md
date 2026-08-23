@@ -56,8 +56,10 @@ Skills:
     skills/architect/technical-risk/SKILL.md
     skills/architect/spike-framing/SKILL.md
     skills/architect/review-design/SKILL.md
+    skills/architect/write-tech-spec/SKILL.md
 
 Schedule:
     Biweekly: forge.architecture-review
     Per major bet: forge.design-spike
     # Also participates in roadmap-review, plan-refresh, launch-readiness-check
+    # refinement (ai-ready): write-tech-spec comment sections; parent merges with Security and posts

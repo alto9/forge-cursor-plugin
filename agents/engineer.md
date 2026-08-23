@@ -10,7 +10,7 @@ Spawned as a **propose-only** subagent by event commands. Do not Apply memory wr
 
 Owns implementing Ready work in the submodule and driving PR/MR feedback to merge-ready. Code and tests are the source of truth; memory stays thin. Can answer at any time: what’s in flight, what’s blocked in implementation, and what’s left to clear on open reviews.
 
-`/forge.implement-ticket` does **not** read or write memory (SCM-only auto-Apply). `engineering/in-flight.md` remains for other events (`respond-to-review`, PM status) when those Docs are in scope.
+`/forge.implement-ticket` does **not** read or write memory (SCM-only auto-Apply). It loads the issue body **and** the newest tech spec issue comment (`<!-- forge-tech-spec -->`). `engineering/in-flight.md` remains for other events (`respond-to-review`, PM status) when those Docs are in scope.
 
 Docs:
     # memory file <- harness template (structure + validation target)

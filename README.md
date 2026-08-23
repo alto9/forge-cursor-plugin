@@ -49,7 +49,7 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 
 If memory disagrees with SCM, update or discard memory drift. When grooming/init writes tickets: write to the board first (HITL), then refresh memory to match. Memory backlog/queue files should reference board issue ids/URLs — never invent a parallel ticket numbering system.
 
-**Tickets are actionable only** — never create epic/umbrella issues. Group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `/forge.implement-ticket` takes only `ai-ready`.
+**Tickets are actionable only** — never create epic/umbrella issues. Group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `ai-ready` also has a tech spec issue comment. `/forge.implement-ticket` takes only `ai-ready` (body + tech spec).
 
 ## Memory layout
 
@@ -129,12 +129,12 @@ One concern per file; reference board issue id/URL.
 3. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch + `commit-memory`
 4. `/forge.roadmap-review` — shape Now/Next/Later
 5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
-6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (self-contained issue body; optional memory specs as projection only)
+6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (product contract in issue body for all tickets; **`ai-ready` only** — Architect + Security tech spec comment with `<!-- forge-tech-spec -->`; `human-ready` body-only is OK; optional memory specs as projection only)
 7. `/forge.plan-refresh` — delivery sequence once Ready work exists
-8. `/forge.implement-ticket` — only Ready + `ai-ready`; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready`. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
+8. `/forge.implement-ticket` — only Ready + `ai-ready`; requires issue body + complete tech spec comment; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready` / missing tech spec. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
 9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no HITL, no memory)
 
-**Two-step tickets:** grooming = product intent; refinement = full implementation contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`.
+**Two-step tickets:** grooming = product intent; refinement = product contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`. For `ai-ready`, Architect + Security also post a tech spec comment (speckit plan-document format); `/forge.implement-ticket` reads body + that comment.
 
 ## Execution model
 
