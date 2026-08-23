@@ -111,10 +111,10 @@ export const courses = [
             ],
           },
           {
-            title: "Next: the eight roles",
+            title: "Next: the nine roles",
             visual: "cycle-steps",
             body: [
-              "You have the words, and the rest of this course is who stands at which station: Product Owner, Project Manager, Architect, Engineer, QA, Security, Release, Marketing, and when they step in.",
+              "You have the words, and the rest of this course is who stands at which station: Product Owner, Project Manager, Architect, Designer, Engineer, QA, Security, Release, Marketing, and when they step in.",
               "How this team runs the loop in software is Course 2, after you can tell the story of a ticket out loud.",
             ],
           },
@@ -229,7 +229,7 @@ export const courses = [
             paragraphs: [
               "Refinement is on demand, after grooming. You write the product contract into the ticket itself so a builder does not need you in the room. Every product fact they need lives on that card: what changes, what must not change, the edge cases (the odd paths that would change the work), and how to check it.",
               "Grooming wrote Intention (why this matters and how we will know), and Ready restates that as Outcome, the concrete result the builder is contracted to produce.",
-              "Ready means the ticket body is enough that the builder does not have to ask what you meant for the product outcome. When the card is marked for an agent, Architect and Security also write a technical specification as an issue comment (the same document shape as a Spec Kit plan, without installing Spec Kit). A human-ready card needs no tech spec; the body alone is the contract. A longer background note can exist (a feature write-up, a competitive scan), and it still does not replace the ticket.",
+              "Ready means the ticket body is enough that the builder does not have to ask what you meant for the product outcome. When the card is marked for an agent, Architect and Security also write a technical specification as an issue comment (the same document shape as a Spec Kit plan, without installing Spec Kit). A human-ready card needs no tech spec; the body alone is the contract. When the work is user-facing, Designer also puts Figma refs, states, and accessibility checks into that same body, and the Ready gate includes a design row. A longer background note can exist (a feature write-up, a competitive scan), and it still does not replace the ticket.",
             ],
           },
           {
@@ -840,6 +840,40 @@ export const courses = [
         ],
       },
       {
+        id: "designer",
+        title: "Designer",
+        duration: "35–45 min",
+        role: "designer",
+        source: "agents/designer.md",
+        here: "Refinement",
+        blocks: [
+          {
+            type: "prose",
+            paragraphs: [
+              "The Designer owns product-surface design: which Figma theme belongs to this app, whether tokens and screens are inventoried, and whether a Ready ticket has enough design context to build without guessing the UI.",
+              "They keep a thin markdown projection under design/, and they use the Figma MCP to audit and to enrich user-facing tickets during refinement. Architect still owns technical system design; Designer owns the visual and interaction surface.",
+            ],
+          },
+          {
+            type: "callout",
+            tone: "note",
+            title: "Ask the Agent anytime",
+            body: "The Agent can open themes, tokens, screens, components, and principles with you whenever you want to say which Figma file applies, what is missing from the inventory, or whether a ticket is ready to build. How to use those asks, and which events and skills to pair with them, is Course 3.",
+          },
+          {
+            type: "desk",
+            title: "Documents this role keeps current",
+            items: [
+              { name: "Themes", file: "design/themes.md", note: "App to Figma file binding." },
+              { name: "Tokens", file: "design/tokens.md", note: "Color, type, spacing, and gaps from Figma." },
+              { name: "Screens", file: "design/screens.md", note: "Frames, node ids, states, responsive notes." },
+              { name: "Components", file: "design/components.md", note: "Design-system inventory and variants." },
+              { name: "Principles", file: "design/principles.md", note: "UX and accessibility rules we keep." },
+            ],
+          },
+        ],
+      },
+      {
         id: "tabletop",
         title: "One ticket, one release",
         duration: "50–60 min",
@@ -859,7 +893,7 @@ export const courses = [
             headers: ["When the card is here", "Who leans in", "What has to be true"],
             rows: [
               ["Grooming", "Product Owner", "We know the outcome and how we will know."],
-              ["Refinement → Ready", "Product Owner", "The issue is a contract with exactly one readiness label."],
+              ["Refinement → Ready", "Product Owner (+ Designer when user-facing)", "The issue is a contract with exactly one readiness label; user-facing work has design pass or N/A."],
               ["Plan / shape", "PM and Architect", "The order is possible, and the kitchen can still run service."],
               ["In Progress", "Engineer", "The ticket was Ready, a PR exists, and the checks are honest."],
               ["In Review", "QA and Security", "Both approve, the command auto-merges, and a pass-back stays In Review."],
@@ -975,16 +1009,16 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "You already know this story. Here it is as two commands. Once a week, /forge.backlog-grooming takes a wish and makes the outcome and the test of success visible, then parks the card on Refinement. When you are actually ready to let go, /forge.refinement writes the product contract into the issue and moves it to Ready with one label: for an agent, or still for a human. Agent-bound cards also get a tech spec comment from Architect and Security before promotion; human-ready cards do not need one.",
+              "You already know this story. Here it is as two commands. Once a week, /forge.backlog-grooming takes a wish and makes the outcome and the test of success visible, then parks the card on Refinement. When you are actually ready to let go, /forge.refinement writes the product contract into the issue and moves it to Ready with one label: for an agent, or still for a human. Agent-bound cards also get a tech spec comment from Architect and Security before promotion; human-ready cards do not need one. When the work is user-facing, Designer also attends: Figma refs, states, and accessibility checks land in the issue body, and the Ready gate includes a design row (pass, fail, or N/A).",
               "Each command grooms or refines the project it resolved — the folder you are standing in, or the submodule you named. Three configured projects means three grooming runs, then three refinement runs, each with its own hand-off.",
-              "Judge the hand-off the same way Course 2 taught you: talk until the apply-set is right, then approve. If a groom is secretly an epic, redirect and reshape. If Open questions is not None, it is not Ready. For ai-ready, the tech spec row on the Ready gate must pass too. The board is the truth; memory just points at the issue.",
+              "Judge the hand-off the same way Course 2 taught you: talk until the apply-set is right, then approve. If a groom is secretly an epic, redirect and reshape. If Open questions is not None, it is not Ready. For ai-ready, the tech spec row on the Ready gate must pass too. For user-facing work, the design row must pass or be N/A. The board is the truth; memory just points at the issue.",
             ],
           },
           {
             type: "callout",
             tone: "note",
             title: "Try it",
-            body: "Groom one outcome. Refine it to Ready and ai-ready, including the tech spec comment. Read the issue and the comment as if the builder cannot ask you follow-up questions.",
+            body: "Groom one outcome. Refine it to Ready and ai-ready, including the tech spec comment. If it is user-facing, check that Figma refs and states are in the body and the design gate passes. Read the issue and the comment as if the builder cannot ask you follow-up questions.",
           },
         ],
       },
@@ -1127,7 +1161,7 @@ export const courses = [
             type: "prose",
             paragraphs: [
               "Course 1 told you who stands at which station. After that, Using Forge taught you that a ritual proposes, you talk until the apply-set is right, then you Apply. This course is the book on the station: which events you run, which skills the Agent loads, and what to ask between rituals.",
-              "The pages that follow are the same eight roles you already know, written as a kit rather than a job description, with three kinds of tool for the same work.",
+              "The pages that follow are the same nine roles you already know, written as a kit rather than a job description, with three kinds of tool for the same work.",
             ],
           },
           {
@@ -1219,7 +1253,7 @@ export const courses = [
             rows: [
               ["On demand", "/forge.init-project", "First brief and a first-pass roadmap. Icebox is fine on day one; refining tickets into Ready is work for later."],
               ["Weekly", "/forge.backlog-grooming", "Turn a wish into Intention and acceptance criteria. Land the card in Refinement."],
-              ["On demand", "/forge.refinement", "Write the product Ready contract into the issue. One label: ai-ready or human-ready. ai-ready also needs a tech spec comment."],
+              ["On demand", "/forge.refinement", "Write the product Ready contract into the issue. One label: ai-ready or human-ready. ai-ready also needs a tech spec comment. User-facing work also needs Designer inline Figma context and a design Ready gate."],
               ["Weekly", "/forge.feedback-triage", "Promote a comment toward a ticket or Now, park it in the icebox, or drop it."],
               ["Weekly", "/forge.stakeholder-sync", "Say what is still true and what changed. Get decisions out of hallway chat."],
               ["Every other week", "/forge.metrics-review", "Read the numbers you claimed would move, and say so when they did not."],
@@ -1255,7 +1289,7 @@ export const courses = [
               ["outcome-definition", "You need Intention or Outcome in one concrete result."],
               ["groom-ticket", "Weekly grooming: Intention + acceptance, then stop at Refinement."],
               ["requirements-writing", "Refinement: expand the brief into a Ready product body."],
-              ["agent-ready-ticket", "Ready gate: body checklist; tech spec comment required only when ai-ready; Open questions is None; one readiness label."],
+              ["agent-ready-ticket", "Ready gate: body checklist; tech spec comment required only when ai-ready; design pass/fail/N/A for user-facing; Open questions is None; one readiness label."],
               ["scope-control", "Someone is about to add a second product in the margins."],
               ["prioritization", "Now is too long, or two cards both want to be first."],
               ["roadmapping", "Themes, Now, Next, Later, Not planning need a rewrite."],
@@ -1296,7 +1330,7 @@ export const courses = [
             rows: [
               ["A new project has a story", "/forge.init-project", "problem-framing, roadmapping, outcome-definition"],
               ["A wish becomes a groomed card", "/forge.backlog-grooming", "groom-ticket, outcome-definition, scope-control"],
-              ["That card is a contract a builder can finish", "/forge.refinement", "requirements-writing, agent-ready-ticket (ai-ready: Architect + Security tech spec)"],
+              ["That card is a contract a builder can finish", "/forge.refinement", "requirements-writing, agent-ready-ticket (ai-ready: Architect + Security tech spec; user-facing: Designer)"],
               ["The current bets are honest", "/forge.roadmap-review", "roadmapping, prioritization"],
               ["User noise becomes a decision", "/forge.feedback-triage", "feedback-synthesis"],
               ["We can tell a true launch story", "/forge.launch-readiness-check", "launch-readiness, scope-control"],
@@ -1317,6 +1351,7 @@ export const courses = [
               "   Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions: None.",
               "   Label: ai-ready (the work stays in the repo).",
               "   Architect + Security post the tech spec comment before promote.",
+              "   Designer inlines Figma refs and states for the reset screens; design gate passes.",
               "4. After ship: /forge.outcomes-retro",
               "   Did support tickets about “I forgot my password” actually drop?",
             ],
@@ -1501,10 +1536,11 @@ export const courses = [
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
               ["/forge.init-project", "Product Owner", "A thin overview and constraints sketch. Leave decisions empty unless something is already locked."],
-              ["/forge.refinement", "Product Owner", "For ai-ready: tech spec comment sections (structure, interfaces, constitution gate). Call a spike if Ready would be a guess. For human-ready: product-level constraints in the issue body only."],
+              ["/forge.refinement", "Product Owner", "For ai-ready: tech spec comment sections (structure, interfaces, constitution gate). Call a spike if Ready would be a guess. For human-ready: product-level constraints in the issue body only. UX frames and states belong to Designer, not this seat."],
               ["/forge.roadmap-review", "Product Owner", "Which Now/Next items violate a constraint or need a spike before the team commits."],
               ["/forge.plan-refresh", "Project Manager", "When the order is forced by the line: you cannot ship B before the interface A creates."],
               ["/forge.launch-readiness-check", "Product Owner", "Structural go or no-go. Unresolved structural risk should weigh against go."],
+              ["/forge.design-system-audit", "Designer", "Optional: structural constraints that affect tokens or shared components, only when the kitchen layout moved."],
             ],
           },
           {
@@ -1525,7 +1561,7 @@ export const courses = [
               ["tradeoff-analysis", "Two shapes could work; the spike has to pick with eyes open."],
               ["tech-selection", "A vendor or a library is on the table."],
               ["architecture-decision", "Lock it in decisions.md, or supersede the old one. This file may keep history."],
-              ["review-design", "A ship call or a proposed layout needs a yes, a no, or a spike."],
+              ["review-design", "A ship call or a proposed layout needs a yes, a no, or a spike. This is system layout, not Figma UX (Designer owns that)."],
             ],
           },
           {
@@ -1552,7 +1588,7 @@ export const courses = [
             rows: [
               ["The map matches the kitchen", "/forge.architecture-review", "system-design, constraint-mapping, review-design"],
               ["A decision is locked (or superseded)", "/forge.architecture-review", "architecture-decision"],
-              ["The feature ticket would be a guess", "/forge.design-spike", "spike-framing, tradeoff-analysis, tech-selection"],
+              ["The feature ticket would be a guess", "/forge.design-spike", "spike-framing, tradeoff-analysis, tech-selection (structural; UX flows → Designer attends)"],
               ["A Ready card needs the tech spec (ai-ready)", "/forge.refinement (attend)", "write-tech-spec, constraint-mapping, interface-contracts"],
               ["A Ready card needs the constraint on the issue", "/forge.refinement (attend)", "constraint-mapping, interface-contracts"],
               ["The sequence is forced by an interface", "/forge.plan-refresh (attend)", "change-impact"],
@@ -1568,10 +1604,11 @@ export const courses = [
               "2. /forge.design-spike + spike-framing",
               "   Question: can the existing sender send from this environment?",
               "   Done: one path that delivers a message, or a no with why.",
-              "   Refuse: designing the reset screens in the spike.",
+              "   Refuse: designing the reset screens in the spike (that is Designer’s lane).",
               "3. Engineer attends if the constraint is “how we call it from code.”",
               "4. Product Owner attends with scope-control: spike first, then #18.",
-              "5. If the vendor stays, lock it with architecture-decision.",
+              "5. Designer attends when the unknown is flows or frames rather than mail.",
+              "6. If the vendor stays, lock it with architecture-decision.",
               "   If it cannot, that is a product cut; you leave the second vendor off the page until product says otherwise.",
             ],
           },
@@ -1628,7 +1665,7 @@ export const courses = [
             type: "table",
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
-              ["/forge.refinement", "Product Owner", "Whether the contract is actually buildable, and for ai-ready whether the tech spec is complete. Open questions keep the card in Refinement."],
+              ["/forge.refinement", "Product Owner", "Whether the contract is actually buildable, and for ai-ready whether the tech spec is complete. For user-facing work, whether Figma refs and states are in the body. Open questions keep the card in Refinement."],
               ["/forge.design-spike", "Architect", "Implementation constraints: how we would call mail, what the spike must prove in code."],
               ["/forge.security-review", "Security", "A non-PR surface (config, a dependency bump) that still needs a code fact."],
               ["/forge.dependency-audit", "Security", "If a finding should become a ticket, you wait for that ticket; the audit leaves versions alone until then."],
@@ -1649,7 +1686,7 @@ export const courses = [
             type: "table",
             headers: ["Skill", "Reach for it when"],
             rows: [
-              ["implement-ticket", "The card is Ready and ai-ready with a tech spec comment. Build from the body and the comment."],
+              ["implement-ticket", "The card is Ready and ai-ready with a tech spec comment. Build from the body (including any Figma refs) and the comment."],
               ["write-tests", "The acceptance criteria need a test that can fail them."],
               ["open-pr", "The change exists and needs a pull request."],
               ["update-branch", "Main moved, or review asked for a refresh."],
@@ -2209,6 +2246,124 @@ export const courses = [
         ],
       },
       {
+        id: "playbook-designer",
+        title: "Designer",
+        duration: "35–45 min",
+        role: "designer",
+        source: "agents/designer.md",
+        here: "Refinement",
+        blocks: [
+          {
+            type: "prose",
+            paragraphs: [
+              "A Figma theme per app and a Ready ticket that names frames and states is the work you already know. You lead the monthly design-system audit, and you attend when refinement, discovery, launch, or a UX spike needs product-surface design. Architect still owns structural spikes and tech specs; you own the visual and interaction surface.",
+            ],
+          },
+          {
+            type: "heading",
+            text: "Events you lead",
+          },
+          {
+            type: "table",
+            headers: ["Cadence", "Command", "What you are doing"],
+            rows: [
+              ["Monthly", "/forge.design-system-audit", "Bind or verify the Figma theme, then refresh tokens, screens, and components from MCP. Flag gaps; do not invent values when MCP is down."],
+            ],
+          },
+          {
+            type: "heading",
+            text: "Events you attend",
+          },
+          {
+            type: "table",
+            headers: ["Command", "Who leads", "What you bring"],
+            rows: [
+              ["/forge.init-project", "Product Owner", "Seed design docs; bind a Figma theme URL when the team has one."],
+              ["/forge.refinement", "Product Owner", "User-facing tickets: inline Figma refs, states, a11y AC; design Ready gate pass/fail/N/A."],
+              ["/forge.discovery", "Product Owner", "Persona UX implications into principles when who you design for moved."],
+              ["/forge.design-spike", "Architect", "UX flow exploration: screens and principles. Architect remains Lead for structural unknowns."],
+              ["/forge.launch-readiness-check", "Product Owner", "UX go/no-go: theme bound and screen coverage matches what is shipping."],
+              ["/forge.feedback-triage", "Product Owner", "Usability signal versus product noise; principles only when a durable rule changed."],
+            ],
+          },
+          {
+            type: "heading",
+            text: "Skills you can load",
+          },
+          {
+            type: "table",
+            headers: ["Skill", "Reach for it when"],
+            rows: [
+              ["figma-mcp", "Any Figma read or audit; load before other designer Figma work."],
+              ["theme-bind", "This app needs a Figma URL, or the binding looks stale."],
+              ["token-audit", "Variables from Figma into design/tokens.md."],
+              ["screen-inventory", "Frames and states into design/screens.md."],
+              ["component-audit", "Design-system components and orphans."],
+              ["design-principles", "A11y and interaction rules that must stay current."],
+              ["refinement-design-check", "Refinement: enrich the issue body; propose the design Ready gate."],
+            ],
+          },
+          {
+            type: "heading",
+            text: "Anytime asks",
+          },
+          {
+            type: "list",
+            items: [
+              "Which Figma theme is bound to this app, and is MCP able to open it?",
+              "Audit tokens against the bound file. What is in gaps?",
+              "This Refinement card is user-facing. What Figma nodes and states belong in Scope and AC?",
+              "Password reset just landed in Refinement. Walk refinement-design-check and say pass or fail.",
+            ],
+          },
+          {
+            type: "heading",
+            text: "Common goals",
+          },
+          {
+            type: "table",
+            headers: ["You want", "Run", "Load"],
+            rows: [
+              ["The theme is bound", "/forge.init-project (attend) or /forge.design-system-audit", "theme-bind, figma-mcp"],
+              ["Inventory matches Figma", "/forge.design-system-audit", "token-audit, screen-inventory, component-audit"],
+              ["A Ready card has design context", "/forge.refinement (attend)", "refinement-design-check, figma-mcp"],
+              ["Flows are unclear before Ready", "/forge.design-spike (attend)", "screen-inventory, design-principles"],
+              ["Ship has UX coverage", "/forge.launch-readiness-check (attend)", "theme-bind, screen-inventory"],
+            ],
+          },
+          {
+            type: "example",
+            title: "Example: design for password reset",
+            lines: [
+              "The card is in Refinement and labeled ai-ready.",
+              "",
+              "1. theme-bind confirms the app’s Figma file.",
+              "2. refinement-design-check + figma-mcp",
+              "   Scope gets the reset frames and node ids.",
+              "   AC gets empty, error, and success states plus a11y checks.",
+              "3. Design gate: pass. Architect and Security still own the tech spec comment.",
+              "4. Monthly, /forge.design-system-audit refreshes tokens and screens so the next ticket starts warmer.",
+            ],
+          },
+          {
+            type: "heading",
+            text: "Practice",
+          },
+          {
+            type: "prose",
+            paragraphs: [
+              "Name the event you lead, the skill you load when a Ready gate needs a design row, and how you would tell a structural design-spike apart from a UX flow spike.",
+            ],
+          },
+          {
+            type: "callout",
+            tone: "note",
+            title: "You can work this station when",
+            body: "You can name the audit you lead, why Figma wins over stale memory, and which skill you would load to enrich a user-facing Ready body without inventing a second design-spec comment.",
+          },
+        ],
+      },
+      {
         id: "playbook-pick",
         title: "Pick a station",
         duration: "15–25 min",
@@ -2228,6 +2383,7 @@ export const courses = [
             rows: [
               ["The story is still fog", "/forge.init-project or /forge.backlog-grooming"],
               ["A groomed card needs a contract", "/forge.refinement"],
+              ["The design theme or tokens look stale", "/forge.design-system-audit"],
               ["Ready work has no order", "/forge.plan-refresh"],
               ["The kitchen layout might move", "/forge.architecture-review or /forge.design-spike"],
               ["A card is Ready and ai-ready", "/forge.implement-ticket"],

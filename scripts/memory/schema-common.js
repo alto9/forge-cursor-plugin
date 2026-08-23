@@ -86,6 +86,23 @@ export function warnBodySoftMax(narrative, warnings) {
 }
 
 /**
+ * @param {unknown} arr
+ * @param {string} field
+ * @param {string[]} errors
+ */
+export function validateObjectArray(arr, field, errors) {
+  if (!Array.isArray(arr)) {
+    errors.push(`${field} must be an array`);
+    return;
+  }
+  arr.forEach((item, i) => {
+    if (item == null || typeof item !== "object" || Array.isArray(item)) {
+      errors.push(`${field}[${i}] must be an object`);
+    }
+  });
+}
+
+/**
  * Build a product.* frontmatter schema validator.
  *
  * @param {{
@@ -93,6 +110,7 @@ export function warnBodySoftMax(narrative, warnings) {
  *   defaultPath: string,
  *   stringFields?: string[],
  *   stringArrayFields?: string[],
+ *   objectArrayFields?: string[],
  *   metricTargetFields?: string[],
  *   legacyHeadings?: string[],
  *   extraValidate?: (data: object, errors: string[], warnings: string[]) => void,
@@ -104,6 +122,7 @@ export function createProductDocSchema(opts) {
     defaultPath,
     stringFields = [],
     stringArrayFields = [],
+    objectArrayFields = [],
     metricTargetFields = [],
     legacyHeadings = [],
     extraValidate,
@@ -112,6 +131,7 @@ export function createProductDocSchema(opts) {
   const coreKeys = [
     ...stringFields,
     ...stringArrayFields,
+    ...objectArrayFields,
     ...metricTargetFields,
   ];
 
@@ -147,6 +167,9 @@ export function createProductDocSchema(opts) {
       if (!isStringArray(data[key])) {
         errors.push(`${key} must be an array of strings`);
       }
+    }
+    for (const key of objectArrayFields) {
+      validateObjectArray(data[key], key, errors);
     }
     for (const key of metricTargetFields) {
       validateMetricTargetArray(data[key], key, errors);

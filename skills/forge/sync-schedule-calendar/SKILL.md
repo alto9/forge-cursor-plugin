@@ -98,6 +98,7 @@ Plain-language goal of the ritual — not the harness steps. Lead with the indus
 | `forge.discovery` | Discovery | Looking for evidence about users and problems, then updating what you believe is true. This is research, not a feature brainstorm. |
 | `forge.competitive-scan` | Competitive scan | Refreshing how alternatives win or lose so the product story stays honest. This is not a feature-parity checklist. |
 | `forge.messaging-refresh` | Messaging refresh | Updating the external story — positioning, words, and voice — so it still matches the product and the market. |
+| `forge.design-system-audit` | Design system audit | Refreshing the app’s Figma theme binding and the token/screen/component inventory so design memory matches Figma. |
 | `forge.dependency-audit` | Dependency audit | Checking third-party packages for known issues and risky upgrades, then recommending what to change. |
 | `forge.refinement` | Refinement | Turning a high-level idea into a self-contained ticket someone can actually build, with clear scope and acceptance. |
 | `forge.init-project` | Project init | Standing up the first product sketch and working memory for a repo so later rituals have something to work from. |

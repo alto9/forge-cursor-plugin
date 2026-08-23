@@ -46,13 +46,17 @@ Propose insights.md updates: replace stale Themes/Evidence/Implications; remove 
 Propose personas.md edits only with durable evidence; delete personas/segments you are not actually designing for.
 Propose backlog.md changes only for validated promotions; remove speculative items discovery disproved.
 Propose brief.md edits only when who/problem clearly changed; otherwise leave brief.md alone.
+Designer: attend with design-principles — sync persona UX implications into design/principles.md when discovery changes who you design for; leave principles alone when personas did not move.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/insights.md
 <super-repo>/.ai/memory/<submodule>/product/personas.md
 <super-repo>/.ai/memory/<submodule>/product/brief.md
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
+<super-repo>/.ai/memory/<submodule>/design/principles.md
 Agents:
 Product Owner:
     skills/product-owner/discovery/SKILL.md
     skills/product-owner/problem-framing/SKILL.md
     skills/product-owner/feedback-synthesis/SKILL.md
+Designer:
+    skills/designer/design-principles/SKILL.md

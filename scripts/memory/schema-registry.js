@@ -164,6 +164,31 @@ import {
   SCHEMA_VERSION as MarketingSocialQueue_SCHEMA_VERSION,
 } from "./schemas/marketing-social-queue-v1.js";
 import {
+  validateDesignThemes,
+  DOC_ID as DesignThemes_DOC_ID,
+  SCHEMA_VERSION as DesignThemes_SCHEMA_VERSION,
+} from "./schemas/design-themes-v1.js";
+import {
+  validateDesignTokens,
+  DOC_ID as DesignTokens_DOC_ID,
+  SCHEMA_VERSION as DesignTokens_SCHEMA_VERSION,
+} from "./schemas/design-tokens-v1.js";
+import {
+  validateDesignScreens,
+  DOC_ID as DesignScreens_DOC_ID,
+  SCHEMA_VERSION as DesignScreens_SCHEMA_VERSION,
+} from "./schemas/design-screens-v1.js";
+import {
+  validateDesignComponents,
+  DOC_ID as DesignComponents_DOC_ID,
+  SCHEMA_VERSION as DesignComponents_SCHEMA_VERSION,
+} from "./schemas/design-components-v1.js";
+import {
+  validateDesignPrinciples,
+  DOC_ID as DesignPrinciples_DOC_ID,
+  SCHEMA_VERSION as DesignPrinciples_SCHEMA_VERSION,
+} from "./schemas/design-principles-v1.js";
+import {
   validateProductSpec,
   DOC_ID as ProductSpec_DOC_ID,
   SCHEMA_VERSION as ProductSpec_SCHEMA_VERSION,
@@ -299,6 +324,26 @@ export const SCHEMA_DOC_MAP = {
     doc: MarketingSocialQueue_DOC_ID,
     versions: { [MarketingSocialQueue_SCHEMA_VERSION]: validateMarketingSocialQueue },
   },
+  "design/themes.md": {
+    doc: DesignThemes_DOC_ID,
+    versions: { [DesignThemes_SCHEMA_VERSION]: validateDesignThemes },
+  },
+  "design/tokens.md": {
+    doc: DesignTokens_DOC_ID,
+    versions: { [DesignTokens_SCHEMA_VERSION]: validateDesignTokens },
+  },
+  "design/screens.md": {
+    doc: DesignScreens_DOC_ID,
+    versions: { [DesignScreens_SCHEMA_VERSION]: validateDesignScreens },
+  },
+  "design/components.md": {
+    doc: DesignComponents_DOC_ID,
+    versions: { [DesignComponents_SCHEMA_VERSION]: validateDesignComponents },
+  },
+  "design/principles.md": {
+    doc: DesignPrinciples_DOC_ID,
+    versions: { [DesignPrinciples_SCHEMA_VERSION]: validateDesignPrinciples },
+  },
 };
 
 
@@ -394,5 +439,10 @@ export {
   validateMarketingVoice,
   validateMarketingCalendar,
   validateMarketingSocialQueue,
+  validateDesignThemes,
+  validateDesignTokens,
+  validateDesignScreens,
+  validateDesignComponents,
+  validateDesignPrinciples,
   validateProductSpec,
 };

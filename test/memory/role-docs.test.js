@@ -7,6 +7,7 @@ import { validateQaQueue } from "../../scripts/memory/schemas/qa-queue-v1.js";
 import { validateSecurityChecklist } from "../../scripts/memory/schemas/security-checklist-v1.js";
 import { validateReleaseChecklist } from "../../scripts/memory/schemas/release-checklist-v1.js";
 import { validateMarketingPositioning } from "../../scripts/memory/schemas/marketing-positioning-v1.js";
+import { validateDesignThemes } from "../../scripts/memory/schemas/design-themes-v1.js";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -128,6 +129,17 @@ promise: ""
 differentiator: ""
 proof: []
 non_positioning: []
+---
+`,
+      ],
+      [
+        "design/themes.md",
+        validateDesignThemes,
+        `---
+doc: design.themes
+schema_version: 1
+updated: 2026-08-22
+themes: []
 ---
 `,
       ],

@@ -1,15 +1,16 @@
 ---
-name: forge.feedback-triage
+name: forge.design-system-audit
 description: >-
-  Weekly; lead Product Owner. Forge event command.
+  Monthly; lead Designer. Audit Figma themes, tokens, screens, and components
+  against design/ memory projections.
 ---
 
-# forge.feedback-triage
+# forge.design-system-audit
 ## Parent execution model
 
 1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
 2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
-3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
+3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.** Figma wins over stale design memory — update memory to match Figma.
 4. HITL pause using the Mode / Pause when / hand-off shape below.
 5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
 
@@ -33,30 +34,32 @@ Reply: **approve all** / **approve subset** Applies this set; **reject** Applies
 
 ## Event contract
 
-Cadence: Weekly
-Lead: Product Owner
+Cadence: Monthly
+Lead: Designer
 HITL:
-Mode: approve-before-vendor
+Mode: approve-before-write
 Pause when:
-    Insights themes rewritten or removed
-    Backlog candidates added, re-ranked, or dropped
-    Experiments started or stopped
-    Any GitHub/GitLab issue/ticket mutation
+    themes.md / tokens.md / screens.md / components.md / principles.md would change
+    Theme URL missing, stale, or MCP unreachable
 Instructions:
-Pull new signal (issues, comments, usage, user feedback); do not paste raw threads into docs.
-Propose insights.md updates: rewrite Themes/Open questions/Implications to current truth; remove themes that are resolved or no longer relevant.
-Propose backlog.md changes only when triage creates, re-ranks, or drops a candidate; remove won't-do items rather than commenting them out.
-Propose experiments.md changes only when triage starts/stops a bet; move stopped work out of Active (Concluded briefly, then drop when no longer actionable).
-Designer: classify usability/UX signal vs product noise; propose design/principles.md edits only when triage changes durable a11y or interaction rules; leave design docs alone for pure product/priority signal.
+Bind to the **active submodule** only. Audit that app's design theme.
+If themes.md has no bound row for this app, run theme-bind first (ask for Figma URL if missing).
+For each bound theme: run token-audit, screen-inventory, and component-audit via Figma MCP (`figma-mcp`). Update memory projections to match Figma; list gaps (missing tokens, undocumented screens, orphan components, stale URL).
+Optionally refresh design-principles when a11y or interaction rules drifted.
+Do not invent token or frame values when MCP fails — flag blockers in Questions and leave projections alone or mark theme status stale.
+Do not mutate Figma in this event unless the orchestrator explicitly redirects to write tools under a new HITL.
 Docs:
-<super-repo>/.ai/memory/<submodule>/product/insights.md
-<super-repo>/.ai/memory/<submodule>/product/backlog.md
-<super-repo>/.ai/memory/<submodule>/product/experiments.md
+<super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/design/tokens.md
+<super-repo>/.ai/memory/<submodule>/design/screens.md
+<super-repo>/.ai/memory/<submodule>/design/components.md
 <super-repo>/.ai/memory/<submodule>/design/principles.md
+<super-repo>/.ai/memory/<submodule>/product/brief.md
 Agents:
-Product Owner:
-    skills/product-owner/feedback-synthesis/SKILL.md
-    skills/product-owner/problem-framing/SKILL.md
-    skills/product-owner/prioritization/SKILL.md
 Designer:
+    skills/designer/figma-mcp/SKILL.md
+    skills/designer/theme-bind/SKILL.md
+    skills/designer/token-audit/SKILL.md
+    skills/designer/screen-inventory/SKILL.md
+    skills/designer/component-audit/SKILL.md
     skills/designer/design-principles/SKILL.md

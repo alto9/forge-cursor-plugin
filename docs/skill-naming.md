@@ -16,6 +16,13 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/architect/technical-risk/SKILL.md | skills/architect/technical-risk/ | technical-risk |
 | skills/architect/tradeoff-analysis/SKILL.md | skills/architect/tradeoff-analysis/ | tradeoff-analysis |
 | skills/architect/write-tech-spec/SKILL.md | skills/architect/write-tech-spec/ | write-tech-spec |
+| skills/designer/component-audit/SKILL.md | skills/designer/component-audit/ | component-audit |
+| skills/designer/design-principles/SKILL.md | skills/designer/design-principles/ | design-principles |
+| skills/designer/figma-mcp/SKILL.md | skills/designer/figma-mcp/ | figma-mcp |
+| skills/designer/refinement-design-check/SKILL.md | skills/designer/refinement-design-check/ | refinement-design-check |
+| skills/designer/screen-inventory/SKILL.md | skills/designer/screen-inventory/ | screen-inventory |
+| skills/designer/theme-bind/SKILL.md | skills/designer/theme-bind/ | theme-bind |
+| skills/designer/token-audit/SKILL.md | skills/designer/token-audit/ | token-audit |
 | skills/engineer/debug/SKILL.md | skills/engineer/debug/ | debug |
 | skills/engineer/fix-bug/SKILL.md | skills/engineer/fix-bug/ | fix-bug |
 | skills/engineer/implement-ticket/SKILL.md | skills/engineer/implement-ticket/ | implement-ticket |

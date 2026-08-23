@@ -47,6 +47,7 @@ Read brief/roadmap/spec and current architecture docs; don’t invent product sc
 Propose tradeoff analysis in the hand-off; propose decisions.md only if the orchestrator locks a choice.
 Propose overview/interfaces/constraints/risks updates only for what the spike settles; leave unsettled areas alone.
 If the bet is not ready to decide, propose a time-boxed spike entry (question + done-when) and no ADR.
+**UX flow exploration:** when the unknown is product-surface (flows, states, frames) rather than structure, Designer attends with figma-mcp / screen-inventory / design-principles. Architect remains Lead for structural spikes; Designer leads UX findings in the hand-off merge under Lead (Architect) unless Instructions redirect.
 Docs:
 <super-repo>/.ai/memory/<submodule>/architecture/overview.md
 <super-repo>/.ai/memory/<submodule>/architecture/constraints.md
@@ -56,6 +57,9 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/product/brief.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md
 <super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
+<super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/design/screens.md
+<super-repo>/.ai/memory/<submodule>/design/principles.md
 Agents:
 Architect:
     skills/architect/spike-framing/SKILL.md
@@ -65,6 +69,11 @@ Architect:
     skills/architect/architecture-decision/SKILL.md
 Product Owner:
     skills/product-owner/scope-control/SKILL.md
+Designer:
+    skills/designer/figma-mcp/SKILL.md
+    skills/designer/screen-inventory/SKILL.md
+    skills/designer/design-principles/SKILL.md
+# Designer when spike is UX/flow exploration; optional for pure structural spikes
 Engineer:
     skills/engineer/implement-ticket/SKILL.md
     skills/engineer/debug/SKILL.md

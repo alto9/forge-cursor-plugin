@@ -45,6 +45,11 @@ Pluggable frontmatter schemas for Forge memory docs. All seeded memory files use
 | `marketing/voice.md` | `marketing.voice` |
 | `marketing/calendar.md` | `marketing.calendar` |
 | `marketing/social-queue.md` | `marketing.social_queue` |
+| `design/themes.md` | `design.themes` |
+| `design/tokens.md` | `design.tokens` |
+| `design/screens.md` | `design.screens` |
+| `design/components.md` | `design.components` |
+| `design/principles.md` | `design.principles` |
 
 Shared helpers: [`scripts/memory/schema-common.js`](../scripts/memory/schema-common.js) (`createProductDocSchema`).
 

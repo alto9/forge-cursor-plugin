@@ -49,7 +49,7 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 
 If memory disagrees with SCM, update or discard memory drift. When grooming/init writes tickets: write to the board first (HITL), then refresh memory to match. Memory backlog/queue files should reference board issue ids/URLs — never invent a parallel ticket numbering system.
 
-**Tickets are actionable only** — never create epic/umbrella issues. Group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `ai-ready` also has a tech spec issue comment. `/forge.implement-ticket` takes only `ai-ready` (body + tech spec).
+**Tickets are actionable only** — never create epic/umbrella issues. Group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `ai-ready` also has a tech spec issue comment. User-facing tickets also need a design Ready gate (pass/fail/N/A) with Figma refs inlined in the body when applicable. `/forge.implement-ticket` takes only `ai-ready` (body + tech spec).
 
 ## Memory layout
 
@@ -60,7 +60,7 @@ If memory disagrees with SCM, update or discard memory drift. When grooming/init
     <submodulePath>/
       forge.json
       product/  project/  architecture/  engineering/
-      qa/  security/  release/  marketing/
+      qa/  security/  release/  marketing/  design/
   <submodulePath>/            # code submodule
 ```
 
@@ -126,15 +126,15 @@ One concern per file; reference board issue id/URL.
 
 1. `/forge.help` — optional orientation (observe-only)
 2. Ensure memory-repo submodule at `.ai/memory` (see setup above)
-3. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch + `commit-memory`
+3. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch + optional Figma theme bind + `commit-memory`
 4. `/forge.roadmap-review` — shape Now/Next/Later
 5. `/forge.backlog-grooming` — high-level Intention + acceptance → board **Refinement**
-6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (product contract in issue body for all tickets; **`ai-ready` only** — Architect + Security tech spec comment with `<!-- forge-tech-spec -->`; `human-ready` body-only is OK; optional memory specs as projection only)
+6. `/forge.refinement` — low-level full ticket build (`agent-ready-ticket`) → board **Ready** (product contract in issue body for all tickets; **`ai-ready` only** — Architect + Security tech spec comment with `<!-- forge-tech-spec -->`; `human-ready` body-only is OK; **user-facing** — Designer inlines Figma refs/states/a11y and Ready gate includes design pass/fail/N/A; optional memory specs as projection only)
 7. `/forge.plan-refresh` — delivery sequence once Ready work exists
 8. `/forge.implement-ticket` — only Ready + `ai-ready`; requires issue body + complete tech spec comment; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready` / missing tech spec. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
 9. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no HITL, no memory)
 
-**Two-step tickets:** grooming = product intent; refinement = product contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`. For `ai-ready`, Architect + Security also post a tech spec comment (speckit plan-document format); `/forge.implement-ticket` reads body + that comment.
+**Two-step tickets:** grooming = product intent; refinement = product contract in the issue body (Outcome, Scope, AC, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`. For `ai-ready`, Architect + Security also post a tech spec comment (speckit plan-document format). For user-facing tickets, Designer enriches the body inline with Figma context (no separate design-spec comment). `/forge.implement-ticket` reads body + tech spec comment.
 
 ## Execution model
 
@@ -202,7 +202,7 @@ A letter, Other, or freeform during Questions is a **redirect**: reshape and ask
 
 ## Agents
 
-See [`agents/*.md`](agents/) — Architect, Engineer, Marketing Manager, Product Owner, Project Manager, Quality Assurance, Security, Release Manager.
+See [`agents/*.md`](agents/) — Architect, Designer, Engineer, Marketing Manager, Product Owner, Project Manager, Quality Assurance, Security, Release Manager.
 
 ## Event commands
 

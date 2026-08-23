@@ -47,6 +47,7 @@ Propose specs/<feature>.md updates so Requirements/Acceptance/Out of scope match
 Propose backlog.md updates: pull must-haves still open into focus; remove or Icebox items cut from this release.
 Propose status.md / milestones.md updates to reflect ship reality; clear met milestones and finished in-flight items after the call.
 Architect: structural go/no-go — read overview/constraints/interfaces/risks; propose architecture/risks or decisions updates only if ship reality changes the locked shape; flag unresolved structural risks that should block launch.
+Designer: UX go/no-go for user-facing releases — verify theme is bound and screen coverage matches what is shipping; propose design doc edits only when ship reality changes inventory; flag missing themes/screens that should weigh against go.
 QA: report queue/findings/test-plan posture for the release; open blockers or unapproved Ready-for-QA items should weigh against go; propose qa doc edits only to clear stale Approved/Passed back noise for this ship call.
 Security: report threat-model/findings/checklist posture; open Blockers should weigh against go; propose security doc edits only for release-gate truth.
 Release Manager: report checklist/notes/status for the version target; call out ship blockers and missing notes; propose release doc edits to match the go/no-go call (not the vendor publish — that’s cut-release).
@@ -62,6 +63,10 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/architecture/interfaces.md
 <super-repo>/.ai/memory/<submodule>/architecture/risks.md
 <super-repo>/.ai/memory/<submodule>/architecture/decisions.md
+<super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/design/screens.md
+<super-repo>/.ai/memory/<submodule>/design/components.md
+<super-repo>/.ai/memory/<submodule>/design/principles.md
 <super-repo>/.ai/memory/<submodule>/qa/queue.md
 <super-repo>/.ai/memory/<submodule>/qa/findings.md
 <super-repo>/.ai/memory/<submodule>/qa/test-plan.md
@@ -82,6 +87,10 @@ Architect:
     skills/architect/review-design/SKILL.md
     skills/architect/technical-risk/SKILL.md
     skills/architect/constraint-mapping/SKILL.md
+Designer:
+    skills/designer/figma-mcp/SKILL.md
+    skills/designer/theme-bind/SKILL.md
+    skills/designer/screen-inventory/SKILL.md
 Quality Assurance:
     skills/quality-assurance/verify-acceptance/SKILL.md
     skills/quality-assurance/regression-check/SKILL.md
