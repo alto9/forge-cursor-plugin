@@ -1,8 +1,9 @@
 ---
 doc: product.brief
-schema_version: 1
+schema_version: 2
 updated: 1970-01-01
-product: ""
+product_name: ""
+product_description: ""
 problem: ""
 audience: []
 goals: []
@@ -18,6 +19,8 @@ Authoring (not validated):
 - Forbidden in body: changelogs, history sections, dated decision logs.
 - Empty body is valid at init. Soft max ~6000 chars (warning only).
 - Bump `updated` (YYYY-MM-DD) when any frontmatter field changes.
+- product_name = short official product name (sidebar + dashboard header).
+- product_description = short product description (Brief tab only).
 
 Doc boundaries:
 | Brief field        | Related doc            | Rule |

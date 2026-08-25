@@ -64,14 +64,14 @@ CLI JSON: `{ ok, errors[], warnings[] }`. Exit 1 only when `errors` is non-empty
 5. Bump `schema_version` on breaking field changes; old files fail validation on next Apply (no migration scripts — rewrite under HITL).
 6. Add tests under `test/memory/`.
 
-Reference: [`product-brief-v1.js`](../scripts/memory/schemas/product-brief-v1.js).
+Reference: [`product-brief-v1.js`](../scripts/memory/schemas/product-brief-v1.js) (legacy `product` field) and [`product-brief-v2.js`](../scripts/memory/schemas/product-brief-v2.js) (`product_name` + `product_description`).
 
 ## Error vs warning
 
 | Kind | Blocks Apply | Examples |
 |------|--------------|----------|
 | **Error** | Yes | Missing frontmatter, wrong `doc` / `schema_version`, bad types, forbidden body sections |
-| **Warning** | No | Weak brief (empty `product` / `problem` / `current_focus`), no goals (not strong), body over soft max, legacy `#` headings in body |
+| **Warning** | No | Weak brief (empty `product_name` / `problem` / `current_focus`), no goals (not strong), body over soft max, legacy `#` headings in body |
 
 Readiness warnings are advisory only. No event command gates on brief strength.
 

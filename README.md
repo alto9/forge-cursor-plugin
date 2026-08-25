@@ -109,7 +109,7 @@ Optional `release.gates[]`: ordered event ids for **this** submodule (no harness
 
 See [`ensure-config`](skills/forge/ensure-config/SKILL.md), [`init-memory`](skills/forge/init-memory/SKILL.md), [`validate-memory`](skills/forge/validate-memory/SKILL.md), [`sync-memory`](skills/forge/sync-memory/SKILL.md), [`commit-memory`](skills/forge/commit-memory/SKILL.md).
 
-**Memory docs:** YAML frontmatter is source of truth (`doc: <role>.*`, `schema_version: 1`, typed core fields); body is expansion-only. `validate-memory` emits readiness **warnings** for weak briefs (empty `product` / `problem` / `current_focus`); warnings do not block Apply and no event command gates on brief strength. Schema docs: [docs/memory-schemas.md](docs/memory-schemas.md).
+**Memory docs:** YAML frontmatter is source of truth (`doc: <role>.*`, `schema_version: 1` or current version, typed core fields); body is expansion-only. `validate-memory` emits readiness **warnings** for weak briefs (empty `product_name` / `problem` / `current_focus`); warnings do not block Apply and no event command gates on brief strength. Schema docs: [docs/memory-schemas.md](docs/memory-schemas.md).
 
 ## Risk & findings ownership
 

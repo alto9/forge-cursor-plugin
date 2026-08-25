@@ -9,6 +9,10 @@ import {
   SCHEMA_VERSION as BRIEF_SCHEMA_VERSION,
 } from "./schemas/product-brief-v1.js";
 import {
+  validateProductBriefV2,
+  SCHEMA_VERSION as BRIEF_SCHEMA_VERSION_V2,
+} from "./schemas/product-brief-v2.js";
+import {
   validateProductRoadmap,
   DOC_ID as ProductRoadmap_DOC_ID,
   SCHEMA_VERSION as ProductRoadmap_SCHEMA_VERSION,
@@ -198,7 +202,10 @@ import {
 export const SCHEMA_DOC_MAP = {
   "product/brief.md": {
     doc: BRIEF_DOC_ID,
-    versions: { [BRIEF_SCHEMA_VERSION]: validateProductBrief },
+    versions: {
+      [BRIEF_SCHEMA_VERSION]: validateProductBrief,
+      [BRIEF_SCHEMA_VERSION_V2]: validateProductBriefV2,
+    },
   },
   "product/roadmap.md": {
     doc: ProductRoadmap_DOC_ID,

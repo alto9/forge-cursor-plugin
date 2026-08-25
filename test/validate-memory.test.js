@@ -99,9 +99,10 @@ describe("validateMemoryRoot schema + mixed apply-set", () => {
 
   const weakBrief = `---
 doc: product.brief
-schema_version: 1
+schema_version: 2
 updated: 2026-08-21
-product: ""
+product_name: ""
+product_description: ""
 problem: ""
 audience: []
 goals: []

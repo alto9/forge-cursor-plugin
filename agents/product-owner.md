@@ -39,8 +39,9 @@ Templates:
     # If a file doesn't need to change, leave it alone.
 
     skills/product-owner/templates/brief.md
-        Frontmatter: doc, schema_version, updated, product, problem, audience[],
-          goals[], non_goals[], success_metrics[{metric,target}], current_focus
+        Frontmatter: doc, schema_version, updated, product_name, product_description,
+          problem, audience[], goals[], non_goals[], success_metrics[{metric,target}],
+          current_focus
         Doc boundaries:
           success_metrics → product/metrics.md (brief = intent/targets; metrics = current read)
           audience → product/personas.md (brief = short segments; personas = detail)

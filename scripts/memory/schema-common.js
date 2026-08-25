@@ -108,6 +108,7 @@ export function validateObjectArray(arr, field, errors) {
  * @param {{
  *   docId: string,
  *   defaultPath: string,
+ *   schemaVersion?: number,
  *   stringFields?: string[],
  *   stringArrayFields?: string[],
  *   objectArrayFields?: string[],
@@ -120,6 +121,7 @@ export function createProductDocSchema(opts) {
   const {
     docId,
     defaultPath,
+    schemaVersion = 1,
     stringFields = [],
     stringArrayFields = [],
     objectArrayFields = [],
@@ -127,7 +129,7 @@ export function createProductDocSchema(opts) {
     legacyHeadings = [],
     extraValidate,
   } = opts;
-  const SCHEMA_VERSION = 1;
+  const SCHEMA_VERSION = schemaVersion;
   const coreKeys = [
     ...stringFields,
     ...stringArrayFields,

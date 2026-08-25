@@ -339,7 +339,7 @@ export const courses = [
             type: "desk",
             title: "When you write this work down, it lives here",
             items: [
-              { name: "Product brief", file: "product/brief.md", note: "Frontmatter holds the shared product story (product, problem, audience, goals, non-goals, success metrics, current focus); the body expands with context and links only." },
+              { name: "Product brief", file: "product/brief.md", note: "Frontmatter holds the shared product story (product name, product description, problem, audience, goals, non-goals, success metrics, current focus); the body expands with context and links only." },
               { name: "Roadmap", file: "product/roadmap.md", note: "Frontmatter horizons: themes, now, next, later, not planning." },
               { name: "Backlog notes", file: "product/backlog.md", note: "Frontmatter projection of board columns; the tickets themselves still live on the board." },
               { name: "Metrics", file: "product/metrics.md", note: "Frontmatter: primary/supporting names, targets, and the current read." },
