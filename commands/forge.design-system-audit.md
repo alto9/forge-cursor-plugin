@@ -39,17 +39,19 @@ Lead: Designer
 HITL:
 Mode: approve-before-write
 Pause when:
-    themes.md / tokens.md / screens.md / components.md / principles.md would change
+    themes.md / structure.md / tokens.md / screens.md / components.md / principles.md would change
     Theme URL missing, stale, or MCP unreachable
+    File-structure gaps (required pages, variable naming patterns, component categories)
 Instructions:
 Bind to the **active submodule** only. Audit that app's design theme.
-If themes.md has no bound row for this app, run theme-bind first (ask for Figma URL if missing).
-For each bound theme: run token-audit, screen-inventory, and component-audit via Figma MCP (`figma-mcp`). Update memory projections to match Figma; list gaps (missing tokens, undocumented screens, orphan components, stale URL).
+If themes.md has no bound row for this app, run theme-bind first (ask for Figma URL if missing). Defer unbound only via explicit HITL; record structure fail / `"no theme bound"` in `design/structure.md`.
+For each bound theme: run `design-structure-check` (pages, variable naming patterns, component categories — names not values), then token-audit, screen-inventory, and component-audit via Figma MCP (`figma-mcp`). Update memory projections to match Figma; list gaps (structure misses in `design/structure.md`; inventory notes in tokens/components; undocumented screens; orphan components; stale URL). Fail on missing structure; never fail because two apps use different brand colors.
 Optionally refresh design-principles when a11y or interaction rules drifted.
 Do not invent token or frame values when MCP fails — flag blockers in Questions and leave projections alone or mark theme status stale.
 Do not mutate Figma in this event unless the orchestrator explicitly redirects to write tools under a new HITL.
 Docs:
 <super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/design/structure.md
 <super-repo>/.ai/memory/<submodule>/design/tokens.md
 <super-repo>/.ai/memory/<submodule>/design/screens.md
 <super-repo>/.ai/memory/<submodule>/design/components.md
@@ -59,6 +61,8 @@ Agents:
 Designer:
     skills/designer/figma-mcp/SKILL.md
     skills/designer/theme-bind/SKILL.md
+    skills/designer/design-structure/SKILL.md
+    skills/designer/design-structure-check/SKILL.md
     skills/designer/token-audit/SKILL.md
     skills/designer/screen-inventory/SKILL.md
     skills/designer/component-audit/SKILL.md

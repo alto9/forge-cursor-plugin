@@ -55,22 +55,22 @@ Work the board **Refinement** column (forge.json statusIds.refinement) — pull 
 For each selected item: expand grooming brief into a full Ready body via skills/product-owner/agent-ready-ticket + requirements-writing. Issue body must stand alone for product facts — no links to memory paths.
 Classify executor: exactly one of `ai-ready` | `human-ready` (forge.json labels.aiReady / labels.humanReady).
 
-Classify **user-facing** (UI flows, visual states, accessibility, interaction) vs not. For user-facing tickets, spawn Designer with `refinement-design-check` (+ `figma-mcp` / `theme-bind` as needed). Designer proposes **inline** Scope/AC/Verification deltas (Figma file + node refs, states, responsive, a11y) — **no** `<!-- forge-design-spec -->` comment. For non-user-facing tickets, design gate is **N/A**.
+Classify **user-facing** (UI flows, visual states, accessibility, interaction) vs not. For user-facing tickets, spawn Designer with `refinement-design-check` (+ `figma-mcp` / `theme-bind` / `design-structure-check` as needed). Designer proposes **inline** Scope/AC/Verification deltas (Figma file + node refs, states, responsive, a11y) — **no** `<!-- forge-design-spec -->` comment. For non-user-facing tickets, design and structure gates are **N/A**.
 
 **If `human-ready`:**
-Run product checklist (items 1–9); tech spec is N/A — do not spawn Architect/Security for tech spec writing. PO may still use Architect constraint-mapping to inline product-level constraints into the body. Design enrichment is recommended for user-facing work; do not hard-fail solely because Figma MCP is unavailable when a human executor owns UX — note MCP gaps in Questions. On HITL approve: promote to Ready with `human-ready` only — no tech spec comment.
+Run product checklist (items 1–9); tech spec is N/A — do not spawn Architect/Security for tech spec writing. PO may still use Architect constraint-mapping to inline product-level constraints into the body. Design enrichment is recommended for user-facing work; do not hard-fail solely because Figma MCP is unavailable or file structure is incomplete when a human executor owns UX — note MCP/structure gaps in Questions. On HITL approve: promote to Ready with `human-ready` only — no tech spec comment.
 
 **If `ai-ready`:**
 1. Architect proposes tech spec sections via `write-tech-spec` (template `skills/forge/templates/tech-spec.md`) plus constraint-mapping / interface-contracts / change-impact as needed.
 2. Security proposes security sections via `security-write-tech-spec` (and threat-model context as needed).
 3. Parent merges into one comment body starting with `<!-- forge-tech-spec:v1 -->`.
-4. Ready gate requires merged tech spec complete (mandatory sections; Constitution Check pass; no open clarifications). **Technical** design gaps (unclear approach, missing interface) → stay Refinement or spawn `/forge.design-spike` (Architect-led). **UX** design gaps (missing frames, states, a11y) → design gate fail; stay Refinement or attend design-spike for flow exploration — do not promote.
+4. Ready gate requires merged tech spec complete (mandatory sections; Constitution Check pass; no open clarifications). **Technical** design gaps (unclear approach, missing interface) → stay Refinement or spawn `/forge.design-spike` (Architect-led). **UX** design gaps (missing frames, states, a11y) or **file-structure** gaps (unbound theme, missing required pages/variable naming patterns/component categories from `design-structure-check`) → design/structure gate fail; stay Refinement or attend design-spike for flow exploration — do not promote.
 5. On HITL approve: post comment via `vendor-issues-comment` **before or with** column move to Ready; use `vendor-issues-comments-list` to find an existing marker comment (update on GitLab via `update_issue_note`, or post replacement on GitHub — newest marker wins).
 6. Reclassify `ai-ready` → `human-ready`: do not block promotion if the tech spec is absent.
 
-Only checklist **pass** (items 1–9 + item 10 pass or N/A + **design pass or N/A**) → vendor move to statusIds.ready, apply the readiness label (strip the other), + backlog.md # Ready. Failures stay Refinement or Blocked; never promote weak tickets.
+Only checklist **pass** (items 1–9 + item 10 pass or N/A + **design pass or N/A** + for user-facing **`ai-ready`**, **structure pass**) → vendor move to statusIds.ready, apply the readiness label (strip the other), + backlog.md # Ready. Failures stay Refinement or Blocked; never promote weak tickets.
 Optionally create/edit product/specs/<feature>.md as a memory projection when multi-area — never link it from the issue. Open questions must be empty before Ready.
-HITL must include Ready gate table (pass/fail + label + tech spec pass/fail/N/A + **design pass/fail/N/A**). Do not claim ready for /forge.implement-ticket unless promoting with `ai-ready` **and** a complete tech spec comment.
+HITL must include Ready gate table (pass/fail + label + tech spec pass/fail/N/A + **design pass/fail/N/A** + **structure pass/fail/N/A**). Do not claim ready for /forge.implement-ticket unless promoting with `ai-ready` **and** a complete tech spec comment.
 Do not run high-level prioritization/Icebox cleanup here — that is backlog-grooming.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
@@ -81,6 +81,7 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/security/threat-model.md
 <super-repo>/.ai/memory/<submodule>/security/checklist.md
 <super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/design/structure.md
 <super-repo>/.ai/memory/<submodule>/design/screens.md
 <super-repo>/.ai/memory/<submodule>/design/components.md
 <super-repo>/.ai/memory/<submodule>/design/principles.md
@@ -93,7 +94,9 @@ Designer:
     skills/designer/refinement-design-check/SKILL.md
     skills/designer/figma-mcp/SKILL.md
     skills/designer/theme-bind/SKILL.md
-# refinement-design-check only when ticket is user-facing
+    skills/designer/design-structure/SKILL.md
+    skills/designer/design-structure-check/SKILL.md
+# refinement-design-check only when ticket is user-facing; structure-check required for ai-ready user-facing
 Architect:
     skills/architect/write-tech-spec/SKILL.md
     skills/architect/constraint-mapping/SKILL.md

@@ -15,11 +15,13 @@ Invoked by Forge event commands or the designer agent when an app/submodule need
 
 1. Read `memoryRoot/design/themes.md` and `forge.json.path` (submodulePath). Match template `skills/designer/templates/themes.md`.
 2. Identify the theme row for this app (`app` = submodulePath). If missing, propose a new row.
-3. Resolve `figma_url` from the user/orchestrator or existing memory. Parse `figma_file_key` via `figma-mcp`.
-4. Verify the file is reachable with Figma MCP (`get_metadata` or `get_libraries`). On success set `status: bound`; on failure set `status: unbound` or `stale` and propose a Question.
-5. Propose frontmatter updates (`doc: design.themes`); bump `updated`; leave other apps alone.
-6. When event-spawned: return a hand-off blob. Do **not** Apply, HITL, or mutate SCM.
+3. Resolve `figma_url` from the user/orchestrator or existing memory. Ask for the Figma URL for user-facing apps. Defer unbound only via explicit HITL (“no Figma file yet”); then propose `design/structure.md` with `structure_status: fail` and gap `"no theme bound"`.
+4. Parse `figma_file_key` via `figma-mcp`. When `status: bound`, `figma_url` and `figma_file_key` must both be non-empty.
+5. Verify the file is reachable with Figma MCP (`get_metadata` or `get_libraries`). On success set `status: bound`; on failure set `status: unbound` or `stale` and propose a Question.
+6. Propose frontmatter updates (`doc: design.themes`); bump `updated`; leave other apps alone.
+7. After a successful bind (init-project, audit, or refinement repair), run `design-structure-check` to seed/refresh `design/structure.md`.
+8. When event-spawned: return a hand-off blob. Do **not** Apply, HITL, or mutate SCM.
 
 ## Outputs / stop conditions
 
-Proposed `design/themes.md` edit and binding status. Stop Ready promotion for user-facing tickets when the active app has no bound theme (parent Ready gate). Stop if path/config unresolved.
+Proposed `design/themes.md` edit, binding status, and optional `design/structure.md`. Stop Ready promotion for user-facing **`ai-ready`** tickets when the active app has no bound theme or structure fails (parent Ready gate). Stop if path/config unresolved.

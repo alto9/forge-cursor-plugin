@@ -173,6 +173,11 @@ import {
   SCHEMA_VERSION as DesignThemes_SCHEMA_VERSION,
 } from "./schemas/design-themes-v1.js";
 import {
+  validateDesignStructure,
+  DOC_ID as DesignStructure_DOC_ID,
+  SCHEMA_VERSION as DesignStructure_SCHEMA_VERSION,
+} from "./schemas/design-structure-v1.js";
+import {
   validateDesignTokens,
   DOC_ID as DesignTokens_DOC_ID,
   SCHEMA_VERSION as DesignTokens_SCHEMA_VERSION,
@@ -335,6 +340,10 @@ export const SCHEMA_DOC_MAP = {
     doc: DesignThemes_DOC_ID,
     versions: { [DesignThemes_SCHEMA_VERSION]: validateDesignThemes },
   },
+  "design/structure.md": {
+    doc: DesignStructure_DOC_ID,
+    versions: { [DesignStructure_SCHEMA_VERSION]: validateDesignStructure },
+  },
   "design/tokens.md": {
     doc: DesignTokens_DOC_ID,
     versions: { [DesignTokens_SCHEMA_VERSION]: validateDesignTokens },
@@ -447,6 +456,7 @@ export {
   validateMarketingCalendar,
   validateMarketingSocialQueue,
   validateDesignThemes,
+  validateDesignStructure,
   validateDesignTokens,
   validateDesignScreens,
   validateDesignComponents,

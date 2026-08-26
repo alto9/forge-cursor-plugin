@@ -46,6 +46,7 @@ Pluggable frontmatter schemas for Forge memory docs. All seeded memory files use
 | `marketing/calendar.md` | `marketing.calendar` |
 | `marketing/social-queue.md` | `marketing.social_queue` |
 | `design/themes.md` | `design.themes` |
+| `design/structure.md` | `design.structure` |
 | `design/tokens.md` | `design.tokens` |
 | `design/screens.md` | `design.screens` |
 | `design/components.md` | `design.components` |

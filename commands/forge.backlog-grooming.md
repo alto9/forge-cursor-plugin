@@ -49,6 +49,7 @@ Instructions:
 Bind to the **active submodule** only. Do not groom other configured projects in this run; the orchestrator invokes the command again per path.
 Read roadmap.md for focus; propose roadmap edits only if grooming exposes a clear conflict (otherwise leave for roadmap-review).
 Shape work at **high level**: Intention + Acceptance criteria via skills/product-owner/groom-ticket. Do not require full Scope/Constraints/Verification/Ready bodies here.
+Spawn **Designer** with `grooming-design-triage` for each groomed item: classify likely user-facing vs not; if user-facing, propose a Notes line `Design: required at refinement`; if `design/themes.md` is unbound for the active app, warn in Questions (do not block Refinement move). No Figma MCP at grooming — enrichment and structure gate happen at `/forge.refinement`.
 **Tickets are actionable only** — never create epic/parent/umbrella issues. If a theme splits into **5 or more** related tickets, create/reuse a **host milestone** and assign those issues; below 5, leave ungrouped.
 Propose vendor issue create/update and set status to **Refinement** (forge.json statusIds.refinement). Mirror under backlog.md # Refinement. Do not apply ai-ready/human-ready here.
 Do **not** move items to Ready in this event. Do not say “ready for implementation” — say “ready for refinement” / list the Refinement queue.
@@ -60,6 +61,7 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md
 <super-repo>/.ai/memory/<submodule>/project/plan.md
+<super-repo>/.ai/memory/<submodule>/design/themes.md
 Agents:
 Product Owner:
     skills/product-owner/groom-ticket/SKILL.md
@@ -69,3 +71,6 @@ Product Owner:
 Project Manager:
     skills/project-manager/sequencing/SKILL.md
     skills/project-manager/work-planning/SKILL.md
+Designer:
+    skills/designer/grooming-design-triage/SKILL.md
+# grooming-design-triage: classify likely user-facing; note Design required at refinement; warn if theme unbound — no Figma MCP required

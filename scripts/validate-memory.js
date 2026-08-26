@@ -136,6 +136,7 @@ export const DOC_TEMPLATE_MAP = {
   "marketing/calendar.md": "skills/marketing-manager/templates/calendar.md",
   "marketing/social-queue.md": "skills/marketing-manager/templates/social-queue.md",
   "design/themes.md": "skills/designer/templates/themes.md",
+  "design/structure.md": "skills/designer/templates/structure.md",
   "design/tokens.md": "skills/designer/templates/tokens.md",
   "design/screens.md": "skills/designer/templates/screens.md",
   "design/components.md": "skills/designer/templates/components.md",

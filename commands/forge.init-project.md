@@ -50,7 +50,7 @@ After Apply, parent runs **commit-memory** so seeds land on memory-repo `origin/
 PO: propose first-pass brief.md (schema_version 2 frontmatter: `product_name`, `product_description`, `problem`, `audience`, `goals`, `non_goals`, `success_metrics`, `current_focus` — fields may be empty; empty body OK), roadmap.md (Themes + coarse Now/Next), backlog.md (high-level outcomes in Icebox — **not** Refinement/Ready yet), metrics.md stubs if known. Do not create epic issues; Icebox holds coarse outcomes until grooming splits them into actionable tickets.
 Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
 PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice (memory projection; host milestones come later when ≥5 related tickets exist).
-Designer: seed design/* via init-memory; run theme-bind + figma-mcp — ask for the app's Figma theme URL when known; leave unbound if none yet. Optionally propose thin design-principles stubs.
+Designer: seed design/* via init-memory (including `design/structure.md`); run theme-bind + figma-mcp — ask for the app's Figma theme URL for user-facing apps; defer unbound only via explicit HITL (“no Figma file yet”) and record `structure_status: fail` / gap `"no theme bound"` in `design/structure.md`. After a successful bind, run `design-structure-check` to seed compliance. Optionally propose thin design-principles stubs.
 Do not deep-refine tickets here — next: `/forge.backlog-grooming` (→ Refinement) then `/forge.refinement` (→ Ready + `ai-ready`/`human-ready`).
 Ensure forge.json statusIds includes `refinement` when board fields are collected. Ensure `labels.aiReady` / `labels.humanReady` (defaults `ai-ready` / `human-ready`) and propose creating those host labels under HITL if missing.
 Other role docs may be seeded empty via init-memory and left alone until their events need them.
@@ -66,6 +66,7 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/project/status.md
 <super-repo>/.ai/memory/<submodule>/project/milestones.md
 <super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/design/structure.md
 <super-repo>/.ai/memory/<submodule>/design/tokens.md
 <super-repo>/.ai/memory/<submodule>/design/screens.md
 <super-repo>/.ai/memory/<submodule>/design/components.md
@@ -85,4 +86,6 @@ Project Manager:
 Designer:
     skills/designer/figma-mcp/SKILL.md
     skills/designer/theme-bind/SKILL.md
+    skills/designer/design-structure/SKILL.md
+    skills/designer/design-structure-check/SKILL.md
     skills/designer/design-principles/SKILL.md
