@@ -54,7 +54,7 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/marketing/social-queue.md
 Agents:
 Product Owner:
-    skills/product-owner/discovery/SKILL.md
+    skills/product-owner/insights-review/SKILL.md
     skills/product-owner/feedback-synthesis/SKILL.md
 Marketing Manager:
     skills/marketing-manager/competitive-angle/SKILL.md

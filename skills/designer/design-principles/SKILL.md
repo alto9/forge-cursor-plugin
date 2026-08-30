@@ -9,7 +9,7 @@ description: >-
 
 ## When to use
 
-Invoked by `/forge.discovery`, `/forge.init-project`, `/forge.design-system-audit`, or the designer agent when UX/a11y rules need updating.
+Invoked by `/forge.insights-review`, `/forge.init-project`, `/forge.design-system-audit`, or the designer agent when UX/a11y rules need updating.
 
 ## Steps
 

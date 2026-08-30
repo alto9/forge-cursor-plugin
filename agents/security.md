@@ -20,6 +20,8 @@ Docs:
         Template: skills/security/templates/findings.md
     <super-repo>/.ai/memory/<submodule>/security/checklist.md
         Template: skills/security/templates/checklist.md
+    <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/security.md
+        Template: skills/security/templates/initiative-security.md
 
 Templates:
     # Harness-owned. Security docs must follow the matching template.
@@ -46,12 +48,16 @@ Skills:
     skills/security/security-pass-back/SKILL.md
     skills/security/security-approve-change/SKILL.md
     skills/security/security-write-tech-spec/SKILL.md
+    skills/security/initiative-security-spec/SKILL.md
 
 Schedule:
     On demand: forge.validate-ticket
     On demand: forge.security-review
+    On demand: forge.initiative-design
+    Weekly: forge.initiative-planning
     Monthly: forge.dependency-audit
     Per release: forge.security-release-gate
     # Also participates in launch-readiness-check and refinement (ai-ready tech spec)
     # validate-ticket is the PR/MR gate with QA (SCM-only auto-merge on dual approve); security-review covers non-MR surfaces
     # refinement: security-write-tech-spec for ai-ready only; parent merges and posts the comment
+    # initiative-design: initiative-security-spec for HLD (required sign-off)

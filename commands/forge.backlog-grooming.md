@@ -1,11 +1,14 @@
 ---
 name: forge.backlog-grooming
 description: >-
-  Weekly; lead Product Owner. High-level backlog shaping — Intention + acceptance → board Refinement.
+  Weekly; lead Product Owner. LLD entry — split HLD-complete initiatives into
+  Refinement tickets (Intention + AC). Does not produce Ready tickets.
 ---
 
 # forge.backlog-grooming
-High-level design pass. **Does not** produce Ready tickets — that is the sibling event `/forge.refinement`.
+**LLD pass.** Splits initiatives with `status: lld` into actionable board tickets. **Does not** produce Ready tickets — that is `/forge.refinement`.
+
+Also supports legacy Icebox / coarse outcomes when no initiative is in scope (same Intention + AC shape).
 
 ## Parent execution model
 
@@ -44,33 +47,38 @@ Pause when:
     Priority / Icebox / kill decisions
     Creating or reshaping issues (Intention + Acceptance criteria)
     Moving items into board Refinement (statusIds.refinement)
+    Creating host milestone for an initiative
     plan.md sequence changes from re-ordering
 Instructions:
 Bind to the **active submodule** only. Do not groom other configured projects in this run; the orchestrator invokes the command again per path.
-Read roadmap.md for focus; propose roadmap edits only if grooming exposes a clear conflict (otherwise leave for roadmap-review).
-Shape work at **high level**: Intention + Acceptance criteria via skills/product-owner/groom-ticket. Do not require full Scope/Constraints/Verification/Ready bodies here.
-Spawn **Designer** with `grooming-design-triage` for each groomed item: classify likely user-facing vs not; if user-facing, propose a Notes line `Design: required at refinement`; if `design/themes.md` is unbound for the active app, warn in Questions (do not block Refinement move). No Figma MCP at grooming — enrichment and structure gate happen at `/forge.refinement`.
-**Tickets are actionable only** — never create epic/parent/umbrella issues. If a theme splits into **5 or more** related tickets, create/reuse a **host milestone** and assign those issues; below 5, leave ungrouped.
-Propose vendor issue create/update and set status to **Refinement** (forge.json statusIds.refinement). Mirror under backlog.md # Refinement. Do not apply ai-ready/human-ready here.
-Do **not** move items to Ready in this event. Do not say “ready for implementation” — say “ready for refinement” / list the Refinement queue.
-Re-rank In progress / Refinement; remove shipped, duplicate, or won't-do (delete or Icebox). Leave existing Ready alone unless roadmap kills it (then demote/Icebox).
-Propose plan.md Sequence/Dependencies only when backlog order changes delivery order; otherwise leave plan.md alone.
-Coarse init-project outcomes → split/clarify into Refinement briefs or Icebox. Escalate product decisions under Questions.
-Suggested next after Apply: `/forge.refinement` on the Refinement queue.
+**Initiative LLD (preferred):** For each selected `initiatives/<slug>/` with `initiative.md` `status: lld`, run split-initiative:
+  - Gate: HLD package present (`features/initiative.feature`, `spec.md`, security; design when user_facing). If still `hld` → stop; hand off to `/forge.initiative-planning`.
+  - Split into actionable tickets only (no epics). Intention + AC derived from initiative.feature scenarios via groom-ticket / split-initiative.
+  - Always create/reuse **one host milestone per initiative** and assign all its tickets; record `board_milestone` + `board_tickets[]` on initiative.md.
+  - Create stub `features/<ticket-slug>.feature` per ticket under the initiative folder.
+Spawn **Designer** with `grooming-design-triage` for each groomed item: classify likely user-facing vs not; if user-facing, propose Notes `Design: required at refinement`; unbound theme = warning only.
+**Legacy path:** Coarse Icebox / roadmap outcomes without an initiative → same Intention + AC → Refinement; host milestone only when **≥5** related tickets.
+**Tickets are actionable only** — never create epic/parent/umbrella issues.
+Propose vendor issue create/update and set status to **Refinement**. Mirror under backlog.md # Refinement. Do not apply ai-ready/human-ready here.
+Do **not** move items to Ready. Do not say “ready for implementation” — say “ready for refinement”.
+Suggested next after Apply: `/forge.plan-refresh` (sequence initiative tickets) then `/forge.refinement`.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md
 <super-repo>/.ai/memory/<submodule>/project/plan.md
 <super-repo>/.ai/memory/<submodule>/design/themes.md
+<super-repo>/.ai/memory/<submodule>/initiatives/<slug>/initiative.md
+<super-repo>/.ai/memory/<submodule>/initiatives/<slug>/features/
 Agents:
 Product Owner:
     skills/product-owner/groom-ticket/SKILL.md
+    skills/product-owner/split-initiative/SKILL.md
     skills/product-owner/prioritization/SKILL.md
     skills/product-owner/scope-control/SKILL.md
     skills/product-owner/outcome-definition/SKILL.md
 Project Manager:
     skills/project-manager/sequencing/SKILL.md
     skills/project-manager/work-planning/SKILL.md
+    skills/project-manager/milestone-tracking/SKILL.md
 Designer:
     skills/designer/grooming-design-triage/SKILL.md
-# grooming-design-triage: classify likely user-facing; note Design required at refinement; warn if theme unbound — no Figma MCP required

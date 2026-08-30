@@ -37,15 +37,15 @@ Enough that a refinement pass can expand into a Ready ticket without re-discover
 
 ## Host milestones (grouping)
 
-- If a theme/outcome would spawn **5 or more** related actionable tickets, create or reuse a **host milestone** (GitHub/GitLab) and assign those issues to it via vendor-issues-write.
-- Fewer than 5 related tickets: leave ungrouped (roadmap Themes/Now is enough) — do **not** invent a milestone for a small cluster.
+- **Initiative LLD:** always create/reuse **one host milestone per initiative** (see split-initiative) and assign all its tickets — regardless of count.
+- **Legacy (no initiative):** If a theme/outcome would spawn **5 or more** related actionable tickets, create or reuse a **host milestone** and assign those issues. Fewer than 5: leave ungrouped.
 - Never substitute an epic/parent issue for a milestone.
 
 ## Steps
 
-1. Read roadmap focus; split/merge/Icebox coarse outcomes into **actionable** tickets only.
-2. Draft or update board issues with Intention + Acceptance criteria (not full Scope/Constraints/Verification yet).
-3. When splitting into ≥5 related tickets, propose host milestone create/reuse + assign.
+1. Prefer splitting `status: lld` initiatives via **split-initiative**; otherwise read roadmap focus and split/merge/Icebox coarse outcomes into **actionable** tickets only.
+2. Draft or update board issues with Intention + Acceptance criteria (not full Scope/Constraints/Verification yet). For initiatives, derive AC from `initiative.feature` scenario groups.
+3. Apply milestone rules above.
 4. Set board status to `statusIds.refinement` (forge.json). Never place newly groomed work in Ready. Do not apply `ai-ready` / `human-ready` here.
 5. Mirror ids under backlog.md `# Refinement`. Keep `# Ready` for post-refinement only.
 6. Leave lasting product decisions under HITL **Questions**; park blocked items in Blocked.

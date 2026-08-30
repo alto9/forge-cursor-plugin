@@ -16,8 +16,9 @@ Launching or repairing `memoryRoot` for a submodule (`init-project`, or gap-fill
 2. For each mapping below, if the memory file is missing, copy the template content into `memoryRoot/<memory path>`.
 3. Do **not** overwrite non-empty existing files.
 4. Safe to re-run (fills gaps only).
-5. Specs (`product/specs/<feature>.md`) are **not** seeded here — optional memory projections may be created during `/forge.refinement` (or launch-readiness) when multi-area; Ready tickets never link to them.
-6. Parent Apply + **commit-memory** publish seeds to memory-repo `origin/main` (this skill only proposes/writes local files when invoked by the parent).
+5. Specs (`product/specs/<feature>.md`) are **not** seeded here — deprecated soft; new work uses `initiatives/<slug>/` created by `/forge.new-initiative`. Ready tickets never link to memory paths.
+6. `product/open-questions.md` is seeded empty (rollup for initiative-planning). Initiative folders are **not** seeded at init — created by `/forge.new-initiative`.
+7. Parent Apply + **commit-memory** publish seeds to memory-repo `origin/main` (this skill only proposes/writes local files when invoked by the parent).
 
 ## Template → memory map
 
@@ -31,6 +32,7 @@ Launching or repairing `memoryRoot` for a submodule (`init-project`, or gap-fill
 | product/competitive.md | skills/product-owner/templates/competitive.md |
 | product/personas.md | skills/product-owner/templates/personas.md |
 | product/experiments.md | skills/product-owner/templates/experiments.md |
+| product/open-questions.md | skills/product-owner/templates/open-questions-index.md |
 | project/plan.md | skills/project-manager/templates/plan.md |
 | project/status.md | skills/project-manager/templates/status.md |
 | project/risks.md | skills/project-manager/templates/risks.md |

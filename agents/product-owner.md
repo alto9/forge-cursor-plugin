@@ -28,8 +28,17 @@ Docs:
         Template: skills/product-owner/templates/personas.md
     <super-repo>/.ai/memory/<submodule>/product/experiments.md
         Template: skills/product-owner/templates/experiments.md
+    <super-repo>/.ai/memory/<submodule>/product/open-questions.md
+        Template: skills/product-owner/templates/open-questions-index.md
     <super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
         Template: skills/product-owner/templates/spec.md
+        # Soft-deprecated: prefer initiatives/<slug>/ for new work
+    <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/initiative.md
+        Template: skills/product-owner/templates/initiative.md
+    <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/open-questions.md
+        Template: skills/product-owner/templates/open-questions.md
+    <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/features/initiative.feature
+        Template: skills/product-owner/templates/initiative.feature
 
 Templates:
     # Harness-owned. Project docs must follow the matching template.
@@ -72,13 +81,30 @@ Templates:
     skills/product-owner/templates/spec.md
         Frontmatter: feature, problem, users[], requirements[], acceptance_criteria[],
           out_of_scope[], constraints[], verification, open_questions[], success_metrics[{metric,target}]
-        Optional under product/specs/<feature>.md; Ready ticket body remains the contract.
+        Soft-deprecated under product/specs/<feature>.md; Ready ticket body remains the contract.
+
+    skills/product-owner/templates/initiative.md
+        Frontmatter: slug, title, status, user_facing, signoffs{po,architect,designer,security},
+          board_milestone, board_tickets[]
+        status: intake | hld | lld | executing | shipped
+
+    skills/product-owner/templates/open-questions.md
+        Frontmatter: questions[{id,question,blocking,status,owner}]
+
+    skills/product-owner/templates/open-questions-index.md
+        Frontmatter: items[{initiative,id,question,blocking,status}]
 
 Skills:
-    skills/product-owner/discovery/SKILL.md
+    skills/product-owner/insights-review/SKILL.md
+    skills/product-owner/new-initiative/SKILL.md
+    skills/product-owner/write-initiative-feature/SKILL.md
+    skills/product-owner/initiative-planning/SKILL.md
+    skills/product-owner/open-questions-rollup/SKILL.md
     skills/product-owner/problem-framing/SKILL.md
     skills/product-owner/prioritization/SKILL.md
     skills/product-owner/groom-ticket/SKILL.md
+    skills/product-owner/split-initiative/SKILL.md
+    skills/product-owner/compile-ticket-feature/SKILL.md
     skills/product-owner/agent-ready-ticket/SKILL.md
     skills/product-owner/requirements-writing/SKILL.md
     skills/product-owner/roadmapping/SKILL.md
@@ -91,13 +117,16 @@ Skills:
 
 Schedule:
     On demand: forge.init-project
+    On demand: forge.new-initiative
+    On demand: forge.initiative-design
+    Weekly: forge.initiative-planning
     Weekly: forge.backlog-grooming
     On demand: forge.refinement
     Weekly: forge.feedback-triage
     Weekly: forge.stakeholder-sync
     Biweekly: forge.metrics-review
     Biweekly: forge.roadmap-review
-    Monthly: forge.discovery
+    Monthly: forge.insights-review
     Monthly: forge.competitive-scan
     Per release: forge.launch-readiness-check
     Per release: forge.outcomes-retro

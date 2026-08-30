@@ -20,7 +20,13 @@ Pluggable frontmatter schemas for Forge memory docs. All seeded memory files use
 | `product/competitive.md` | `product.competitive` |
 | `product/personas.md` | `product.personas` |
 | `product/experiments.md` | `product.experiments` |
-| `product/specs/<feature>.md` | `product.spec` |
+| `product/open-questions.md` | `product.open_questions_index` |
+| `product/specs/<feature>.md` | `product.spec` (soft-deprecated; prefer initiatives) |
+| `initiatives/<slug>/initiative.md` | `product.initiative` |
+| `initiatives/<slug>/open-questions.md` | `product.open_questions` |
+| `initiatives/<slug>/spec.md` | `product.initiative_spec` |
+| `initiatives/<slug>/design.md` | `product.initiative_design` |
+| `initiatives/<slug>/security.md` | `product.initiative_security` |
 | `architecture/overview.md` | `architecture.overview` |
 | `architecture/constraints.md` | `architecture.constraints` |
 | `architecture/interfaces.md` | `architecture.interfaces` |
@@ -53,6 +59,8 @@ Pluggable frontmatter schemas for Forge memory docs. All seeded memory files use
 | `design/principles.md` | `design.principles` |
 
 Shared helpers: [`scripts/memory/schema-common.js`](../scripts/memory/schema-common.js) (`createProductDocSchema`).
+
+**Gherkin `.feature` files** under `initiatives/<slug>/features/` are not YAML-frontmatter docs. `validate-memory` checks they exist, are non-empty, and contain `Feature:` plus at least one `Scenario:` (see [`scripts/memory/validate-gherkin-feature.js`](../scripts/memory/validate-gherkin-feature.js)). HLD uses `initiative.feature`; LLD creates one `<ticket-slug>.feature` per ticket.
 
 CLI JSON: `{ ok, errors[], warnings[] }`. Exit 1 only when `errors` is non-empty. Warnings (weak brief, body soft-max, legacy headings) never block Apply.
 

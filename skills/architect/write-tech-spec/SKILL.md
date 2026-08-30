@@ -15,7 +15,7 @@ Template: `skills/forge/templates/tech-spec.md` (document format only — not Gi
 
 ## Steps
 
-1. Read the draft Ready **issue body** (product contract) and in-scope architecture memory under `memoryRoot/architecture/` (`constraints.md`, `interfaces.md`, `overview.md`, `decisions.md`, `risks.md` as needed).
+1. Read the draft Ready **issue body** (product contract) and in-scope architecture memory under `memoryRoot/architecture/` (`constraints.md`, `interfaces.md`, `overview.md`, `decisions.md`, `risks.md` as needed). When the ticket belongs to an initiative, also read `initiatives/<slug>/spec.md` and **slice** relevant approach/interfaces/structure into the comment — do not link the memory path.
 2. Propose Architect-owned sections of the tech spec comment, following the template structure and preserving the header marker `<!-- forge-tech-spec:v1 -->`:
    - Summary
    - Technical Context (all fields filled; no `[NEEDS CLARIFICATION]`)

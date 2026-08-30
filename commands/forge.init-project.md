@@ -51,7 +51,7 @@ PO: propose first-pass brief.md (schema_version 2 frontmatter: `product_name`, `
 Architect: propose thin overview.md + constraints.md sketch from the idea; leave decisions.md empty unless something is already locked.
 PM: propose empty-but-valid plan.md / status.md / milestones.md aligned to the coarse Now slice (memory projection; host milestones come later when ≥5 related tickets exist).
 Designer: seed design/* via init-memory (including `design/structure.md`); run theme-bind + figma-mcp — ask for the app's Figma theme URL for user-facing apps; defer unbound only via explicit HITL (“no Figma file yet”) and record `structure_status: fail` / gap `"no theme bound"` in `design/structure.md`. After a successful bind, run `design-structure-check` to seed compliance. Optionally propose thin design-principles stubs.
-Do not deep-refine tickets here — next: `/forge.backlog-grooming` (→ Refinement) then `/forge.refinement` (→ Ready + `ai-ready`/`human-ready`).
+Do not deep-refine tickets here — next for large ideas: `/forge.new-initiative` → HLD (`/forge.initiative-design`, `/forge.initiative-planning`) → LLD (`/forge.backlog-grooming` → `/forge.refinement`). Icebox still holds coarse outcomes until they become initiatives or legacy groomed tickets.
 Ensure forge.json statusIds includes `refinement` when board fields are collected. Ensure `labels.aiReady` / `labels.humanReady` (defaults `ai-ready` / `human-ready`) and propose creating those host labels under HITL if missing.
 Other role docs may be seeded empty via init-memory and left alone until their events need them.
 Docs:

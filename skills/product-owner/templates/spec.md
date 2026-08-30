@@ -16,7 +16,8 @@ success_metrics: []
 
 <!--
 Authoring (not validated):
-- Optional memory projection for a multi-area change. The Ready ticket body remains the contract.
+- DEPRECATED soft: prefer initiatives/<slug>/ for new work (HLD package).
+- Optional legacy memory projection for a multi-area change. The Ready ticket body remains the contract.
 - success_metrics: { metric, target }. Empty body OK.
 - Bump updated when any frontmatter field changes.
 -->

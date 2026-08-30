@@ -22,6 +22,8 @@ Docs:
         Template: skills/architect/templates/decisions.md
     <super-repo>/.ai/memory/<submodule>/architecture/risks.md
         Template: skills/architect/templates/risks.md
+    <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/spec.md
+        Template: skills/architect/templates/initiative-spec.md
 
 Templates:
     # Harness-owned. Architecture docs must follow the matching template.
@@ -57,9 +59,13 @@ Skills:
     skills/architect/spike-framing/SKILL.md
     skills/architect/review-design/SKILL.md
     skills/architect/write-tech-spec/SKILL.md
+    skills/architect/write-initiative-spec/SKILL.md
 
 Schedule:
     Biweekly: forge.architecture-review
     Per major bet: forge.design-spike
+    On demand: forge.initiative-design
+    Weekly: forge.initiative-planning
     # Also participates in roadmap-review, plan-refresh, launch-readiness-check
     # refinement (ai-ready): write-tech-spec comment sections; parent merges with Security and posts
+    # initiative-design: write-initiative-spec for HLD package

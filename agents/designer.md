@@ -40,6 +40,8 @@ Docs:
         Template: skills/designer/templates/components.md
     <super-repo>/.ai/memory/<submodule>/design/principles.md
         Template: skills/designer/templates/principles.md
+    <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/design.md
+        Template: skills/designer/templates/initiative-design.md
 
 Templates:
     # Harness-owned. Design docs must follow the matching template.
@@ -78,9 +80,12 @@ Skills:
     skills/designer/component-audit/SKILL.md
     skills/designer/design-principles/SKILL.md
     skills/designer/grooming-design-triage/SKILL.md
+    skills/designer/initiative-design-check/SKILL.md
     skills/designer/refinement-design-check/SKILL.md
 
 Schedule:
     Monthly: forge.design-system-audit
+    On demand: forge.initiative-design
+    Weekly: forge.initiative-planning
     # Also participates in backlog-grooming (triage), refinement, init-project,
-    # discovery, launch-readiness-check, design-spike (UX exploration), feedback-triage
+    # insights-review, initiative-design, launch-readiness-check, design-spike (UX exploration), feedback-triage

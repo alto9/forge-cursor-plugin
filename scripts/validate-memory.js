@@ -28,6 +28,10 @@ import {
   validateProductExperiments,
   validateProductSpec,
 } from "./memory/schema-registry.js";
+import {
+  isInitiativeFeaturePath,
+  validateGherkinFeature,
+} from "./memory/validate-gherkin-feature.js";
 
 export {
   SCHEMA_DOC_MAP,
@@ -43,6 +47,8 @@ export {
   validateProductPersonas,
   validateProductExperiments,
   validateProductSpec,
+  isInitiativeFeaturePath,
+  validateGherkinFeature,
 };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -111,6 +117,8 @@ export const DOC_TEMPLATE_MAP = {
   "product/competitive.md": "skills/product-owner/templates/competitive.md",
   "product/personas.md": "skills/product-owner/templates/personas.md",
   "product/experiments.md": "skills/product-owner/templates/experiments.md",
+  "product/open-questions.md":
+    "skills/product-owner/templates/open-questions-index.md",
   "project/plan.md": "skills/project-manager/templates/plan.md",
   "project/status.md": "skills/project-manager/templates/status.md",
   "project/risks.md": "skills/project-manager/templates/risks.md",
@@ -147,6 +155,21 @@ export function templateForMemoryDoc(relPath) {
   if (DOC_TEMPLATE_MAP[relPath]) return DOC_TEMPLATE_MAP[relPath];
   if (relPath.startsWith("product/specs/") && relPath.endsWith(".md")) {
     return "skills/product-owner/templates/spec.md";
+  }
+  const init = relPath.match(/^initiatives\/[^/]+\/([^/]+)\.md$/);
+  if (init) {
+    const file = init[1];
+    const map = {
+      initiative: "skills/product-owner/templates/initiative.md",
+      "open-questions": "skills/product-owner/templates/open-questions.md",
+      spec: "skills/architect/templates/initiative-spec.md",
+      design: "skills/designer/templates/initiative-design.md",
+      security: "skills/security/templates/initiative-security.md",
+    };
+    return map[file] || null;
+  }
+  if (isInitiativeFeaturePath(relPath)) {
+    return "skills/product-owner/templates/initiative.feature";
   }
   return null;
 }
@@ -187,6 +210,13 @@ export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBo
       continue;
     }
     const content = fs.readFileSync(abs, "utf8");
+
+    if (isInitiativeFeaturePath(rel)) {
+      const result = validateGherkinFeature(content, rel);
+      errors.push(...result.errors);
+      warnings.push(...result.warnings);
+      continue;
+    }
 
     if (isSchemaDoc(rel)) {
       const result = validateSchemaDoc(rel, content);

@@ -33,19 +33,21 @@ Reply: **approve all** / **approve subset** Applies this set; **reject** Applies
 
 ## Event contract
 
-Cadence: Per major bet
+Cadence: Per major bet / during HLD when one unknown blocks sign-off
 Lead: Architect
 HITL:
 Mode: approve-before-write
 Pause when:
     Always — spike question, options, and recommendation require orchestrator call
     Any ADR, overview, interfaces, constraints, or risks change proposed
+    Initiative spec/design updates proposed
     Recommendation implies roadmap/backlog/plan change (call out; prefer PO/PM events to apply those)
 Instructions:
 Frame one structural unknown: question, options, recommendation, done-when — then stop.
-Read brief/roadmap/spec and current architecture docs; don’t invent product scope.
+Read brief/roadmap and current architecture docs; prefer `initiatives/<slug>/spec.md` (and design.md for UX) over legacy `product/specs/<feature>.md`. Don’t invent product scope.
 Propose tradeoff analysis in the hand-off; propose decisions.md only if the orchestrator locks a choice.
 Propose overview/interfaces/constraints/risks updates only for what the spike settles; leave unsettled areas alone.
+Fold settled answers into initiative `spec.md` / `design.md` / `open-questions.md` when an initiative is in scope.
 If the bet is not ready to decide, propose a time-boxed spike entry (question + done-when) and no ADR.
 **UX flow exploration:** when the unknown is product-surface (flows, states, frames) rather than structure, Designer attends with figma-mcp / screen-inventory / design-principles. Architect remains Lead for structural spikes; Designer leads UX findings in the hand-off merge under Lead (Architect) unless Instructions redirect.
 Docs:
@@ -56,6 +58,9 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/architecture/risks.md
 <super-repo>/.ai/memory/<submodule>/product/brief.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md
+<super-repo>/.ai/memory/<submodule>/initiatives/<slug>/spec.md
+<super-repo>/.ai/memory/<submodule>/initiatives/<slug>/design.md
+<super-repo>/.ai/memory/<submodule>/initiatives/<slug>/open-questions.md
 <super-repo>/.ai/memory/<submodule>/product/specs/<feature>.md
 <super-repo>/.ai/memory/<submodule>/design/themes.md
 <super-repo>/.ai/memory/<submodule>/design/screens.md
@@ -67,12 +72,14 @@ Architect:
     skills/architect/tech-selection/SKILL.md
     skills/architect/change-impact/SKILL.md
     skills/architect/architecture-decision/SKILL.md
+    skills/architect/write-initiative-spec/SKILL.md
 Product Owner:
     skills/product-owner/scope-control/SKILL.md
 Designer:
     skills/designer/figma-mcp/SKILL.md
     skills/designer/screen-inventory/SKILL.md
     skills/designer/design-principles/SKILL.md
+    skills/designer/initiative-design-check/SKILL.md
 # Designer when spike is UX/flow exploration; optional for pure structural spikes
 Engineer:
     skills/engineer/implement-ticket/SKILL.md

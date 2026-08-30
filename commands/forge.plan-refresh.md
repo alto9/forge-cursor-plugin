@@ -45,6 +45,7 @@ Pause when:
 Instructions:
 Propose rewrite of plan.md to the current execution story (replace stale Sequence/Dependencies/Handoffs; don’t append old plan versions).
 Read backlog.md and roadmap.md as inputs; don’t propose product doc edits here unless a delivery constraint forces an explicit cut (prefer PO grooming/roadmap-review).
+**Initiative LLD:** When initiatives with `status: lld` have `board_tickets[]`, sequence those tickets in plan.md and align `milestones.md` / host milestone dates with the initiative milestone.
 Propose milestones.md updates to match the plan: move/remove completed or abandoned milestones; use Slipped temporarily, then clear or re-date — don’t stockpile slips.
 Architect: read constraints/interfaces/risks; propose plan Dependency/Handoff changes only when sequence is structurally forced; leave architecture docs alone unless plan exposes a new structural risk (then prefer architecture-review).
 Docs:
@@ -52,6 +53,7 @@ Docs:
 <super-repo>/.ai/memory/<submodule>/project/milestones.md
 <super-repo>/.ai/memory/<submodule>/product/backlog.md
 <super-repo>/.ai/memory/<submodule>/product/roadmap.md
+<super-repo>/.ai/memory/<submodule>/initiatives/<slug>/initiative.md
 <super-repo>/.ai/memory/<submodule>/architecture/constraints.md
 <super-repo>/.ai/memory/<submodule>/architecture/interfaces.md
 <super-repo>/.ai/memory/<submodule>/architecture/risks.md

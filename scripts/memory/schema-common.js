@@ -111,6 +111,8 @@ export function validateObjectArray(arr, field, errors) {
  *   schemaVersion?: number,
  *   stringFields?: string[],
  *   stringArrayFields?: string[],
+ *   booleanFields?: string[],
+ *   objectFields?: string[],
  *   objectArrayFields?: string[],
  *   metricTargetFields?: string[],
  *   legacyHeadings?: string[],
@@ -124,6 +126,8 @@ export function createProductDocSchema(opts) {
     schemaVersion = 1,
     stringFields = [],
     stringArrayFields = [],
+    booleanFields = [],
+    objectFields = [],
     objectArrayFields = [],
     metricTargetFields = [],
     legacyHeadings = [],
@@ -133,6 +137,8 @@ export function createProductDocSchema(opts) {
   const coreKeys = [
     ...stringFields,
     ...stringArrayFields,
+    ...booleanFields,
+    ...objectFields,
     ...objectArrayFields,
     ...metricTargetFields,
   ];
@@ -168,6 +174,20 @@ export function createProductDocSchema(opts) {
     for (const key of stringArrayFields) {
       if (!isStringArray(data[key])) {
         errors.push(`${key} must be an array of strings`);
+      }
+    }
+    for (const key of booleanFields) {
+      if (typeof data[key] !== "boolean") {
+        errors.push(`${key} must be a boolean`);
+      }
+    }
+    for (const key of objectFields) {
+      if (
+        data[key] == null ||
+        typeof data[key] !== "object" ||
+        Array.isArray(data[key])
+      ) {
+        errors.push(`${key} must be an object`);
       }
     }
     for (const key of objectArrayFields) {

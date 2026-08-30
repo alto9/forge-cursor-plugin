@@ -14,7 +14,8 @@ Invoked by Forge event commands or the project-manager agent for `project-manage
 ## Host vs memory
 
 - **Host milestones** (GitHub/GitLab) are the source of truth for grouping tickets.
-- Host milestones are created/assigned when a group has **5 or more** related actionable tickets (see groom-ticket). Never invent epic issues.
+- **Initiative LLD:** always one host milestone per initiative (see split-initiative / backlog-grooming).
+- **Legacy:** Host milestones when a group has **5 or more** related actionable tickets (see groom-ticket). Never invent epic issues.
 - Memory `project/milestones.md` projects host state: title, URL/id, related board issue ids/URLs, Active / Upcoming / Slipped. **Board/SCM wins** — refresh memory to match the host.
 
 ## Steps

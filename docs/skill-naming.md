@@ -16,12 +16,14 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/architect/technical-risk/SKILL.md | skills/architect/technical-risk/ | technical-risk |
 | skills/architect/tradeoff-analysis/SKILL.md | skills/architect/tradeoff-analysis/ | tradeoff-analysis |
 | skills/architect/write-tech-spec/SKILL.md | skills/architect/write-tech-spec/ | write-tech-spec |
+| skills/architect/write-initiative-spec/SKILL.md | skills/architect/write-initiative-spec/ | write-initiative-spec |
 | skills/designer/component-audit/SKILL.md | skills/designer/component-audit/ | component-audit |
 | skills/designer/design-principles/SKILL.md | skills/designer/design-principles/ | design-principles |
 | skills/designer/design-structure/SKILL.md | skills/designer/design-structure/ | design-structure |
 | skills/designer/design-structure-check/SKILL.md | skills/designer/design-structure-check/ | design-structure-check |
 | skills/designer/figma-mcp/SKILL.md | skills/designer/figma-mcp/ | figma-mcp |
 | skills/designer/grooming-design-triage/SKILL.md | skills/designer/grooming-design-triage/ | grooming-design-triage |
+| skills/designer/initiative-design-check/SKILL.md | skills/designer/initiative-design-check/ | initiative-design-check |
 | skills/designer/refinement-design-check/SKILL.md | skills/designer/refinement-design-check/ | refinement-design-check |
 | skills/designer/screen-inventory/SKILL.md | skills/designer/screen-inventory/ | screen-inventory |
 | skills/designer/theme-bind/SKILL.md | skills/designer/theme-bind/ | theme-bind |
@@ -53,8 +55,15 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/marketing-manager/voice/SKILL.md | skills/marketing-manager/voice/ | voice |
 | skills/product-owner/agent-ready-ticket/SKILL.md | skills/product-owner/agent-ready-ticket/ | agent-ready-ticket |
 | skills/product-owner/groom-ticket/SKILL.md | skills/product-owner/groom-ticket/ | groom-ticket |
+| skills/product-owner/split-initiative/SKILL.md | skills/product-owner/split-initiative/ | split-initiative |
+| skills/product-owner/compile-ticket-feature/SKILL.md | skills/product-owner/compile-ticket-feature/ | compile-ticket-feature |
 | skills/product-owner/decision-hygiene/SKILL.md | skills/product-owner/decision-hygiene/ | decision-hygiene |
-| skills/product-owner/discovery/SKILL.md | skills/product-owner/discovery/ | discovery |
+| skills/product-owner/insights-review/SKILL.md | skills/product-owner/insights-review/ | insights-review |
+| skills/product-owner/discovery/SKILL.md | skills/product-owner/discovery/ | discovery (deprecated alias) |
+| skills/product-owner/new-initiative/SKILL.md | skills/product-owner/new-initiative/ | new-initiative |
+| skills/product-owner/write-initiative-feature/SKILL.md | skills/product-owner/write-initiative-feature/ | write-initiative-feature |
+| skills/product-owner/initiative-planning/SKILL.md | skills/product-owner/initiative-planning/ | initiative-planning |
+| skills/product-owner/open-questions-rollup/SKILL.md | skills/product-owner/open-questions-rollup/ | open-questions-rollup |
 | skills/product-owner/feedback-synthesis/SKILL.md | skills/product-owner/feedback-synthesis/ | feedback-synthesis |
 | skills/product-owner/launch-readiness/SKILL.md | skills/product-owner/launch-readiness/ | launch-readiness |
 | skills/product-owner/outcome-definition/SKILL.md | skills/product-owner/outcome-definition/ | outcome-definition |
@@ -93,6 +102,7 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/security/security-review/SKILL.md | skills/security/security-review/ | security-review |
 | skills/security/threat-model/SKILL.md | skills/security/threat-model/ | threat-model |
 | skills/security/security-write-tech-spec/SKILL.md | skills/security/security-write-tech-spec/ | security-write-tech-spec |
+| skills/security/initiative-security-spec/SKILL.md | skills/security/initiative-security-spec/ | initiative-security-spec |
 | skills/vendor/branches/list/SKILL.md | skills/vendor/vendor-branches-list/ | vendor-branches-list |
 | skills/vendor/branches/write/SKILL.md | skills/vendor/vendor-branches-write/ | vendor-branches-write |
 | skills/vendor/ci/run/SKILL.md | skills/vendor/vendor-ci-run/ | vendor-ci-run |

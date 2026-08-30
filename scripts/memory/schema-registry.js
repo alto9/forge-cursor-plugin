@@ -202,6 +202,36 @@ import {
   DOC_ID as ProductSpec_DOC_ID,
   SCHEMA_VERSION as ProductSpec_SCHEMA_VERSION,
 } from "./schemas/product-spec-v1.js";
+import {
+  validateProductInitiative,
+  DOC_ID as ProductInitiative_DOC_ID,
+  SCHEMA_VERSION as ProductInitiative_SCHEMA_VERSION,
+} from "./schemas/product-initiative-v1.js";
+import {
+  validateProductOpenQuestions,
+  DOC_ID as ProductOpenQuestions_DOC_ID,
+  SCHEMA_VERSION as ProductOpenQuestions_SCHEMA_VERSION,
+} from "./schemas/product-open-questions-v1.js";
+import {
+  validateProductOpenQuestionsIndex,
+  DOC_ID as ProductOpenQuestionsIndex_DOC_ID,
+  SCHEMA_VERSION as ProductOpenQuestionsIndex_SCHEMA_VERSION,
+} from "./schemas/product-open-questions-index-v1.js";
+import {
+  validateProductInitiativeSpec,
+  DOC_ID as ProductInitiativeSpec_DOC_ID,
+  SCHEMA_VERSION as ProductInitiativeSpec_SCHEMA_VERSION,
+} from "./schemas/product-initiative-spec-v1.js";
+import {
+  validateProductInitiativeDesign,
+  DOC_ID as ProductInitiativeDesign_DOC_ID,
+  SCHEMA_VERSION as ProductInitiativeDesign_SCHEMA_VERSION,
+} from "./schemas/product-initiative-design-v1.js";
+import {
+  validateProductInitiativeSecurity,
+  DOC_ID as ProductInitiativeSecurity_DOC_ID,
+  SCHEMA_VERSION as ProductInitiativeSecurity_SCHEMA_VERSION,
+} from "./schemas/product-initiative-security-v1.js";
 
 /** Exact memory-relative path -> schema handler */
 export const SCHEMA_DOC_MAP = {
@@ -360,6 +390,13 @@ export const SCHEMA_DOC_MAP = {
     doc: DesignPrinciples_DOC_ID,
     versions: { [DesignPrinciples_SCHEMA_VERSION]: validateDesignPrinciples },
   },
+  "product/open-questions.md": {
+    doc: ProductOpenQuestionsIndex_DOC_ID,
+    versions: {
+      [ProductOpenQuestionsIndex_SCHEMA_VERSION]:
+        validateProductOpenQuestionsIndex,
+    },
+  },
 };
 
 
@@ -368,6 +405,50 @@ const SPEC_ENTRY = {
   versions: { [ProductSpec_SCHEMA_VERSION]: validateProductSpec },
 };
 
+const INITIATIVE_ENTRY = {
+  doc: ProductInitiative_DOC_ID,
+  versions: { [ProductInitiative_SCHEMA_VERSION]: validateProductInitiative },
+};
+
+const INITIATIVE_OQ_ENTRY = {
+  doc: ProductOpenQuestions_DOC_ID,
+  versions: {
+    [ProductOpenQuestions_SCHEMA_VERSION]: validateProductOpenQuestions,
+  },
+};
+
+const INITIATIVE_SPEC_ENTRY = {
+  doc: ProductInitiativeSpec_DOC_ID,
+  versions: {
+    [ProductInitiativeSpec_SCHEMA_VERSION]: validateProductInitiativeSpec,
+  },
+};
+
+const INITIATIVE_DESIGN_ENTRY = {
+  doc: ProductInitiativeDesign_DOC_ID,
+  versions: {
+    [ProductInitiativeDesign_SCHEMA_VERSION]: validateProductInitiativeDesign,
+  },
+};
+
+const INITIATIVE_SECURITY_ENTRY = {
+  doc: ProductInitiativeSecurity_DOC_ID,
+  versions: {
+    [ProductInitiativeSecurity_SCHEMA_VERSION]:
+      validateProductInitiativeSecurity,
+  },
+};
+
+/**
+ * Match initiatives/<slug>/<file>.md (exactly one path segment for slug).
+ * @param {string} relPath
+ * @returns {{ slug: string, file: string }|null}
+ */
+function parseInitiativeMdPath(relPath) {
+  const m = relPath.match(/^initiatives\/([^/]+)\/([^/]+)\.md$/);
+  if (!m) return null;
+  return { slug: m[1], file: m[2] };
+}
 
 /**
  * @param {string} relPath
@@ -377,6 +458,14 @@ export function schemaEntryForPath(relPath) {
   if (SCHEMA_DOC_MAP[relPath]) return SCHEMA_DOC_MAP[relPath];
   if (relPath.startsWith("product/specs/") && relPath.endsWith(".md")) {
     return SPEC_ENTRY;
+  }
+  const init = parseInitiativeMdPath(relPath);
+  if (init) {
+    if (init.file === "initiative") return INITIATIVE_ENTRY;
+    if (init.file === "open-questions") return INITIATIVE_OQ_ENTRY;
+    if (init.file === "spec") return INITIATIVE_SPEC_ENTRY;
+    if (init.file === "design") return INITIATIVE_DESIGN_ENTRY;
+    if (init.file === "security") return INITIATIVE_SECURITY_ENTRY;
   }
   return null;
 }
@@ -462,4 +551,10 @@ export {
   validateDesignComponents,
   validateDesignPrinciples,
   validateProductSpec,
+  validateProductInitiative,
+  validateProductOpenQuestions,
+  validateProductOpenQuestionsIndex,
+  validateProductInitiativeSpec,
+  validateProductInitiativeDesign,
+  validateProductInitiativeSecurity,
 };

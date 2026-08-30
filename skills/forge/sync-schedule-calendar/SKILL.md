@@ -95,7 +95,7 @@ Plain-language goal of the ritual — not the harness steps. Lead with the indus
 | `forge.roadmap-review` | Roadmap review | Reconciling what you will do now, next, and later with the product brief, the numbers, and actual capacity — including hard cuts. |
 | `forge.architecture-review` | Architecture review | Checking that the system's shape, constraints, and interfaces still match how the product is being built. |
 | `forge.plan-refresh` | Plan refresh | Rewriting the execution sequence so order, dependencies, and milestones match the work as it stands now. |
-| `forge.discovery` | Discovery | Looking for evidence about users and problems, then updating what you believe is true. This is research, not a feature brainstorm. |
+| `forge.insights-review` | Insights review | Looking for evidence about users and problems, then updating what you believe is true. This is research, not a feature brainstorm or initiative intake. (Formerly `forge.discovery`.) |
 | `forge.competitive-scan` | Competitive scan | Refreshing how alternatives win or lose so the product story stays honest. This is not a feature-parity checklist. |
 | `forge.messaging-refresh` | Messaging refresh | Updating the external story — positioning, words, and voice — so it still matches the product and the market. |
 | `forge.design-system-audit` | Design system audit | Refreshing the app’s Figma theme binding and the token/screen/component inventory so design memory matches Figma. |
