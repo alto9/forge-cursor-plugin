@@ -5,7 +5,7 @@ description: >-
   not ai-ready, missing/incomplete tech spec comment, or the issue body fails
   the Ready gate. Claim In Progress immediately after the gate; wait for CI
   after the PR/MR exists; move to In Review only when CI has succeeded (or the
-  host has no CI). Auto-Apply SCM only — no HITL, no memory.
+  host has no CI). Auto-Apply SCM only — no Plan pause, no memory.
 ---
 
 # implement-ticket
@@ -28,7 +28,7 @@ description: >-
 4. Implement the smallest change that meets Acceptance criteria + Verification from the **issue body**, following technical approach, structure, interfaces, and security requirements from the **tech spec comment**. Do not invent scope beyond body AC; follow the spec for *how*.
 5. When ready for verification: open/update the PR/MR (auto-Apply). After the PR/MR exists on the host, **wait for CI** via `vendor-ci-status` on that head SHA. Do **not** treat the event as complete while checks/pipelines are pending or running. If CI fails or is cancelled, fix the smallest change that addresses the failure, push (auto-Apply), and wait again. If the host has no CI for the PR/MR, skip the wait.
 6. Only after CI completes successfully (or no CI): Apply board → `statusIds.in_review`. Next command: `/forge.validate-ticket`.
-7. When event-spawned: propose code/PR/In Review actions to the parent; parent auto-Applies vendor/SCM. Waiting on CI is parent/Engineer polling — not a HITL pause. Do not write memory.
+7. When event-spawned: propose code/PR/In Review actions to the parent; parent auto-Applies vendor/SCM. Waiting on CI is parent/Engineer polling — not a Plan pause. Do not write memory.
 
 ## Outputs / stop conditions
 

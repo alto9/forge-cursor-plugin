@@ -12,37 +12,38 @@ Also supports legacy Icebox / coarse outcomes when no initiative is in scope (sa
 
 ## Parent execution model
 
-1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
-3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
-4. HITL pause using the Mode / Pause when / hand-off shape below.
-5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
+1. Resolve target via `resolve-paths` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure). Prefer Cursor **Plan Mode** for research and the plan delta (request SwitchMode to `plan` if invoked in Agent without an accepted plan for this event). Do **not** write memory or mutate vendor/SCM during Plan. Skip `sync-memory` until Accept — Apply pulls then.
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath (or group members), memoryRepoRoot, memoryRoot / groupRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not pause with the orchestrator, must not mutate vendor/SCM.
+3. Merge subagent proposals into one plan delta. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
+4. AskQuestion on forks when needed; then present the **plan delta** via CreatePlan when available, else markdown. See Plan shape below. Nothing is written yet.
+5. After **Accept (build):** run `sync-memory` first; if pulled files diverge from the accepted plan, fail closed and return to Plan. Then `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates. **Adjust** reshapes the plan; **Cancel** Applies nothing.
 
+### Plan shape (required)
 
-### Hand-off shape (required)
+Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / cloud). Parent only; subagents propose-only. See README Plan shape. No writes until Accept.
 
-Two phases; see README Hand-off shape. Parent only; subagents propose-only.
-
-**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork; lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
-
-**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
+**Plan delta** (reviewable — not a full file dump):
 
 - **Intent** — 1–2 sentences
-- **Proposed memory edits** — per file: update / remove / create
+- **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
-- **Questions** — `None`
 - **Left alone** — in-scope docs/actions intentionally unchanged
-- **Refinement queue** — issue ids moved/kept in Refinement (candidates for `/forge.refinement`)
-- **How to reply** — required footer; see README Hand-off shape
+- Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
+After the plan exists, only three options:
+
+- **Accept (build)** — Apply exactly this plan. Whole plan, last word.
+- **Conversationally adjust** — stay in Plan, reshape, show a new whole plan. Dropping a line is an adjust, not a partial Apply.
+- **Cancel (close)** — Apply nothing. End the event.
+
+Never Apply a plan the user has not accepted as a whole. Headless: same three options in markdown (accept the whole plan / say what to change / cancel).
 
 ## Event contract
 
 Cadence: Weekly
 Lead: Product Owner
-HITL:
-Mode: approve-before-vendor
+Gate:
+Mode: plan
 Pause when:
     Priority / Icebox / kill decisions
     Creating or reshaping issues (Intention + Acceptance criteria)
@@ -50,6 +51,8 @@ Pause when:
     Creating host milestone for an initiative
     plan.md sequence changes from re-ordering
 Instructions:
+If product scope and `forge.json.kind` is `site`: **STOP** — this project is `kind: site` (no ticket board ritual). Use a group target or an `app`/`library` member.
+If group scope: skip `kind: site` members for ticket work unless that member has a board; family narrative still reads them for context.
 Bind to the **active submodule** only. Do not groom other configured projects in this run; the orchestrator invokes the command again per path.
 **Initiative LLD (preferred):** For each selected `initiatives/<slug>/` with `initiative.md` `status: lld`, run split-initiative:
   - Gate: HLD package present (`features/initiative.feature`, `spec.md`, security; design when user_facing). If still `hld` → stop; hand off to `/forge.initiative-planning`.

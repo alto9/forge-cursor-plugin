@@ -84,6 +84,52 @@ describe("validateForgeJson", () => {
     );
     expect(errs.some((e) => e.includes("!="))).toBe(true);
   });
+
+  it("accepts kind site without board when requireBoard", () => {
+    const errs = validateForgeJson(
+      {
+        version: 1,
+        path: "apps/www",
+        host: "github",
+        github: { owner: "acme", repo: "www" },
+        kind: "site",
+      },
+      "apps/www",
+      { requireBoard: true }
+    );
+    expect(errs).toEqual([]);
+  });
+
+  it("rejects invalid kind", () => {
+    const errs = validateForgeJson(
+      {
+        version: 1,
+        path: "apps/foo",
+        host: "github",
+        github: { owner: "acme", repo: "foo" },
+        kind: "website",
+      },
+      "apps/foo"
+    );
+    expect(errs.some((e) => e.includes("kind"))).toBe(true);
+  });
+
+  it("requires group.json when group set and memoryRepoRoot given", () => {
+    const mem = fs.mkdtempSync(path.join(os.tmpdir(), "forge-g-"));
+    const errs = validateForgeJson(
+      {
+        version: 1,
+        path: "apps/foo",
+        host: "github",
+        github: { owner: "acme", repo: "foo" },
+        group: "missing",
+      },
+      "apps/foo",
+      { memoryRepoRoot: mem }
+    );
+    expect(errs.some((e) => e.includes("group.json"))).toBe(true);
+    fs.rmSync(mem, { recursive: true, force: true });
+  });
 });
 
 describe("validateMemoryRoot schema + mixed apply-set", () => {

@@ -22,7 +22,7 @@ Skip if Calendar MCP is unavailable — report that and stop (do not invent CLI 
 
 1. Plugin `agents/*.md` → each agent's `Schedule:` lines (`Cadence: event-id`). Commands live in the plugin; no project path needed.
 2. Existing Google Calendar events titled `Forge: forge.<event-id>` (slot source of truth on re-runs).
-3. HITL for first-run timezone, calendar id, and slot times. Defaults if the orchestrator does not specify:
+3. AskQuestion / plan for first-run timezone, calendar id, and slot times. Defaults if the orchestrator does not specify:
 
 ```
 calendarId: primary
@@ -48,16 +48,16 @@ includeCadences: Weekly, Biweekly, Monthly
 | On demand | Skip |
 | Per release, Per milestone, Per major bet | Skip |
 
-List skipped events under **Left alone**. Orchestrator may opt in to specific skipped ids in HITL (still meetings only — no auto-run).
+List skipped events under **Left alone**. Orchestrator may opt in to specific skipped ids in the plan (still meetings only — no auto-run).
 
 ## Steps
 
 1. Confirm Google Calendar MCP tools are available (`list_calendars`). If not → stop with clear message.
 2. Do **not** run `resolve-paths`, `sync-memory`, or `resolve-config`. Do not ask for `--submodule` or `FORGE_SUPER_REPO`. Continue even if the workspace is not a Forge super-repo.
 3. Collect unique `event-id` + cadence from plugin `agents/*.md` Schedule sections (and optionally `commands/*.md` cadence lines for completeness). Dedupe by event-id; if cadences conflict, prefer the Lead agent's schedule or ask in Questions.
-4. Filter by default include/skip (Weekly / Biweekly / Monthly in; On demand and per-release/milestone/bet out unless HITL opts in).
+4. Filter by default include/skip (Weekly / Biweekly / Monthly in; On demand and per-release/milestone/bet out unless plan Accept opts in).
 5. Idempotency: `search_events` (or `list_events`) for summary `Forge: forge.<event-id>`.
-   - Missing → propose `create_event` with a default slot (spread weeklies across mornings; biweeklies Tuesday; monthlies day 1). Put defaults in HITL — do not invent times silently on Apply.
+   - Missing → propose `create_event` with a default slot (spread weeklies across mornings; biweeklies Tuesday; monthlies day 1). Put defaults in the plan — do not invent times silently on Apply.
    - Exists → keep its time/RRULE; propose `update_event` when any of: description drifted, orchestrator-requested time change, `availability` is still `FREE` / not `BUSY`, or the event has no Google Meet conference data.
 6. Event payload:
    - `summary`: `Forge: forge.<event-id>` (keep this exact string — idempotency key)
@@ -71,12 +71,12 @@ List skipped events under **Left alone**. Orchestrator may opt in to specific sk
 
      Never add a project or submodule line.
    - Use the catalog verbatim. If an event-id is missing, write one sentence in the same voice from the command’s purpose — never use the slash command as the description.
-   - `startTime` / `endTime` from existing event or HITL-approved slot + `durationMinutes`
+   - `startTime` / `endTime` from existing event or plan-accepted slot + `durationMinutes`
    - `timeZone`, `recurrenceData` (`RRULE:...`), `availability: AVAILABILITY_BUSY` (explicit busy block)
    - `addGoogleMeetUrl: true` on create; on update set `true` when Meet is missing
    - No extra attendees (organizer only)
-   - `calendarId` from HITL or primary
-7. HITL: Mode `approve-before-vendor` (calendar writes). Proposed vendor actions = calendar create/update/delete list. Proposed memory edits = none.
+   - `calendarId` from plan Accept or primary
+7. Plan: Mode `plan` (calendar writes). Proposed vendor actions = calendar create/update/delete list. Proposed memory edits = none.
 8. On approve: Apply calendar ops via MCP only. If Meet creation fails, report the MCP error and stop that write.
 
 ## Meeting descriptions
@@ -96,9 +96,9 @@ Plain-language goal of the ritual — not the harness steps. Lead with the indus
 | `forge.architecture-review` | Architecture review | Checking that the system's shape, constraints, and interfaces still match how the product is being built. |
 | `forge.plan-refresh` | Plan refresh | Rewriting the execution sequence so order, dependencies, and milestones match the work as it stands now. |
 | `forge.insights-review` | Insights review | Looking for evidence about users and problems, then updating what you believe is true. This is research, not a feature brainstorm or initiative intake. (Formerly `forge.discovery`.) |
-| `forge.competitive-scan` | Competitive scan | Refreshing how alternatives win or lose so the product story stays honest. This is not a feature-parity checklist. |
+| `forge.competitive-scan` | Competitive scan | Going looking at how alternatives win or lose, then rewriting competitive posture so the product story stays honest. This is not a feature-parity checklist. |
 | `forge.messaging-refresh` | Messaging refresh | Updating the external story — positioning, words, and voice — so it still matches the product and the market. |
-| `forge.design-system-audit` | Design system audit | Refreshing the app’s Figma theme binding and the token/screen/component inventory so design memory matches Figma. |
+| `forge.design-system-audit` | Design system audit | Refreshing the app’s Figma theme binding and the token/screen/component ref inventory so design memory matches Figma. |
 | `forge.dependency-audit` | Dependency audit | Checking third-party packages for known issues and risky upgrades, then recommending what to change. |
 | `forge.refinement` | Refinement | Turning a high-level idea into a self-contained ticket someone can actually build, with clear scope and acceptance. |
 | `forge.init-project` | Project init | Standing up the first product sketch and working memory for a repo so later rituals have something to work from. |

@@ -24,9 +24,9 @@ A session often restates a second command (grooming also teaches `/forge.refinem
 
 ## What must match
 
-Facts: board columns, readiness labels (`ai-ready` / `human-ready`), who acts when, HITL/Apply rules, claim and column-move timing, merge rules, memory vs board.
+Facts: board columns, readiness labels (`ai-ready` / `human-ready`), who acts when, Plan Mode Accept/adjust/Cancel and Apply rules, group vs product targets, claim and column-move timing, merge rules, memory vs board.
 
-Voice may differ. The course teaches; the plugin contracts. The course analogy is a restaurant that never closes (kitchen, the line, the pass, the table, the icebox). Leave that premise out of agents, and leave HITL checklists out of slides.
+Voice may differ. The course teaches; the plugin contracts. The course analogy is a restaurant that never closes (kitchen, the line, the pass, the table, the icebox). Leave that premise out of agents, and leave Plan Accept checklists out of slides.
 
 Course chrome (`styles.css`, progress in `app.js`) has no plugin twin. Plugin scripts, tests, and generate tooling have no course twin unless the course already names them.
 

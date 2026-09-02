@@ -30,7 +30,7 @@ Load `figma-mcp` and `design-structure` first.
    - `structure_gaps`, `required_pages_found`, `required_variable_patterns_missing`, `required_component_categories_missing`
    - `last_checked`: today (YYYY-MM-DD); bump `updated`
 7. Prefer Figma over inventing inventory. If MCP fails mid-check, leave prior structure projection alone (or mark fail with MCP gap) and flag the blocker in Questions.
-8. When event-spawned: return a hand-off blob with structural pass/fail + gaps. Do **not** Apply, HITL, or mutate SCM.
+8. When event-spawned: return a plan-delta blob with structural pass/fail + gaps. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

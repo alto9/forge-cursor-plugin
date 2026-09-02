@@ -17,13 +17,13 @@ Parent Apply phase, **after** writing validated memory files under `memoryRoot` 
 3. Stage only paths under `memoryRepoRoot` (`git add` within that repo). Refuse any path that escapes the memory-repo or would touch a code submodule.
 4. If nothing to commit: succeed as no-op.
 5. `git commit` on `main` with a concise message (e.g. `chore(memory): apply <event-id>`).
-6. `git push origin main`. If rejected: `git pull --rebase --autostash origin main` then push again. On conflict: **STOP** for HITL — never create a branch or PR/MR.
+6. `git push origin main`. If rejected: `git pull --rebase --autostash origin main` then push again. On conflict: **STOP** for the orchestrator — never create a branch or PR/MR.
 7. Do **not** require a super-repo commit of the gitlink after every push (optional later hygiene).
 
 ## Rules
 
 - Agent-owned git policy: direct-to-`main` only. No feature branches, no PRs/MRs on the memory-repo.
-- HITL still gates *content*; this skill only publishes already-approved Apply writes.
+- Plan Accept still gates *content*; this skill only publishes already-approved Apply writes.
 - Subagents never run this; the parent command does after Apply.
 
 ## Script

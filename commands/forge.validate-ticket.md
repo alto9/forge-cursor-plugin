@@ -2,7 +2,7 @@
 name: forge.validate-ticket
 description: >-
   On demand; lead Quality Assurance. Combined QA + Security ticket gate
-  (open PR/MR). Auto-applies SCM only — no HITL, no memory. Dual approve
+  (open PR/MR). Auto-applies SCM only — no Plan pause, no memory. Dual approve
   auto-merges.
 ---
 
@@ -10,16 +10,16 @@ description: >-
 ## Parent execution model
 
 1. Run skills `resolve-paths` → `resolve-config` (fail closed on path ambiguity). **Skip** `sync-memory`. Memory-repo sync failure is not a stop for this event.
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, submoduleRoot, skills to use, and relevant Instructions. Do **not** pass memoryRoot or docs in scope. Subagents must not write memory, must not HITL, and must not mutate vendor/SCM unless the parent asks them to execute an already-decided Apply step.
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, submoduleRoot, skills to use, and relevant Instructions. Do **not** pass memoryRoot or docs in scope. Subagents must not write memory, must not pause with the orchestrator, and must not mutate vendor/SCM unless the parent asks them to execute an already-decided Apply step.
 3. Merge subagent proposals. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM is the source of truth** — no memory projection. Exception: Security vetoes merge — do not merge unless both QA and Security approve.
-4. **Auto-Apply** vendor/SCM actions immediately — no Questions phase, no apply-set, no orchestrator approve.
+4. **Auto-Apply** vendor/SCM actions immediately — no Plan pause, no Accept gate.
 5. **No memory Apply** — skip `validate-memory` and `commit-memory`.
 
 ## Event contract
 
 Cadence: On demand
 Lead: Quality Assurance
-HITL:
+Gate:
 Mode: auto-apply
 Pause when:
     Never — this command auto-Applies all vendor/SCM actions after QA + Security verdicts

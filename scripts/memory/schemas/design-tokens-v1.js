@@ -7,13 +7,13 @@ const schema = createProductDocSchema({
   docId: "design.tokens",
   defaultPath: "design/tokens.md",
   stringFields: [],
-  stringArrayFields: [
+  stringArrayFields: ["gaps"],
+  objectArrayFields: [
     "color",
     "typography",
     "spacing",
     "radius",
     "elevation",
-    "gaps",
   ],
   legacyHeadings: [
     "# Color",

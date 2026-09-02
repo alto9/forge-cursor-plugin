@@ -254,7 +254,7 @@ export function commitMemory(
             ok: false,
             action: "commit",
             error:
-              `Push rejected and rebase failed (stop for HITL; do not create a branch): ` +
+              `Push rejected and rebase failed (stop for the orchestrator; do not create a branch): ` +
               `${re.stderr || re.message || re}`,
           };
         }

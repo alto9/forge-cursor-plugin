@@ -25,7 +25,7 @@ Template: `skills/forge/templates/tech-spec.md` (document format only — not Gi
    - Complexity Tracking (only if a constitution violation needs justification)
 3. Reuse judgment from `constraint-mapping`, `interface-contracts`, and `change-impact`. Facts must be self-contained in the comment.
 4. If design gaps remain (unclear approach, missing interface, spike needed): **do not** mark Constitution Check as pass. Propose Questions for the parent and recommend `/forge.design-spike` instead of Ready.
-5. When event-spawned: return a hand-off blob with Intent, Proposed memory edits (usually none for this skill), Proposed vendor actions (none — parent posts), Questions, Left alone, and the **proposed tech spec markdown** (Architect sections). Do **not** Apply, HITL, or mutate SCM.
+5. When event-spawned: return a plan-delta blob with Intent, Proposed memory edits (usually none for this skill), Proposed vendor actions (none — parent posts), Left alone, and the **proposed tech spec markdown** (Architect sections). Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

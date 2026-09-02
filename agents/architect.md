@@ -6,7 +6,7 @@ description: >-
 
 # Architect
 
-Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not HITL with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
+Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not pause with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
 
 Owns how the system is shaped. Keeps architecture overview, constraints, interfaces, and decisions current, and can answer at any time: what the system looks like, what must not break, what a proposed bet implies structurally, and which decisions are already locked.
 

@@ -70,7 +70,7 @@ CLI JSON: `{ ok, errors[], warnings[] }`. Exit 1 only when `errors` is non-empty
 2. Register the memory path (or glob rule) in `schema-registry.js`.
 3. Replace the role template with frontmatter + optional body authoring hints.
 4. Keep the path in `DOC_TEMPLATE_MAP` so `init-memory` can seed it.
-5. Bump `schema_version` on breaking field changes; old files fail validation on next Apply (no migration scripts — rewrite under HITL).
+5. Bump `schema_version` on breaking field changes; old files fail validation on next Apply (no migration scripts — rewrite under plan Accept).
 6. Add tests under `test/memory/`.
 
 Reference: [`product-brief-v1.js`](../scripts/memory/schemas/product-brief-v1.js) (legacy `product` field) and [`product-brief-v2.js`](../scripts/memory/schemas/product-brief-v2.js) (`product_name` + `product_description`).
@@ -88,5 +88,5 @@ Readiness warnings are advisory only. No event command gates on brief strength.
 
 - No automated migration.
 - Unsupported or missing `schema_version` → hard error.
-- Operator/agent reworks the file to the current template under HITL.
+- Operator/agent reworks the file to the current template under plan Accept.
 - Per-file Apply: invalid proposed files block; valid files in the same apply-set may still Apply.

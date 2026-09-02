@@ -57,6 +57,7 @@ Leaf folders are globally unique. README paths map as follows:
 | skills/product-owner/groom-ticket/SKILL.md | skills/product-owner/groom-ticket/ | groom-ticket |
 | skills/product-owner/split-initiative/SKILL.md | skills/product-owner/split-initiative/ | split-initiative |
 | skills/product-owner/compile-ticket-feature/SKILL.md | skills/product-owner/compile-ticket-feature/ | compile-ticket-feature |
+| skills/product-owner/competitive-scan/SKILL.md | skills/product-owner/competitive-scan/ | competitive-scan |
 | skills/product-owner/decision-hygiene/SKILL.md | skills/product-owner/decision-hygiene/ | decision-hygiene |
 | skills/product-owner/insights-review/SKILL.md | skills/product-owner/insights-review/ | insights-review |
 | skills/product-owner/discovery/SKILL.md | skills/product-owner/discovery/ | discovery (deprecated alias) |

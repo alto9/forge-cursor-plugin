@@ -23,7 +23,7 @@ Template: `skills/forge/templates/tech-spec.md` (document format only — not Gi
    - Security Verification (how each SR is proven)
 3. Fill every mandatory Security section; no `[NEEDS CLARIFICATION]` placeholders. If a safety decision is blocked on product or architecture, put it under Questions for the parent (escalate to PO/Architect) rather than inventing scope.
 4. Do **not** rewrite product or architecture memory during this skill unless the parent event separately proposes those edits. Prefer leaving security memory alone unless a finding must be recorded as a projection.
-5. When event-spawned: return a hand-off blob with Intent, Proposed memory edits (usually none), Proposed vendor actions (none — parent posts), Questions, Left alone, and the **proposed Security sections** markdown. Do **not** Apply, HITL, or mutate SCM.
+5. When event-spawned: return a plan-delta blob with Intent, Proposed memory edits (usually none), Proposed vendor actions (none — parent posts), Left alone, and the **proposed Security sections** markdown. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

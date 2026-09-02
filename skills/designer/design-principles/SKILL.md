@@ -16,7 +16,7 @@ Invoked by `/forge.insights-review`, `/forge.init-project`, `/forge.design-syste
 1. Read `memoryRoot/design/principles.md`, related `product/personas.md` / `product/brief.md` when in event Docs. Match template `skills/designer/templates/principles.md`.
 2. Propose updates to `principles`, `a11y_rules`, `interaction_patterns`, `anti_patterns` (string arrays). Current state only.
 3. Do not invent product scope; align with brief/personas. Leave file alone if unchanged.
-4. When event-spawned: return a hand-off blob. Do **not** Apply, HITL, or mutate SCM.
+4. When event-spawned: return a plan-delta blob. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

@@ -9,37 +9,38 @@ Optional convenience. **Not** part of New project path, release gates, or role s
 
 ## Parent execution model
 
-1. Do **not** run `resolve-paths`, `sync-memory`, or `resolve-config`. Do not read or write memory, `forge.json`, or a submodule. Path ambiguity is not a stop.
-2. Do **not** spawn role subagents. Parent runs `skills/forge/sync-schedule-calendar/SKILL.md` directly.
-3. If Google Calendar MCP is unavailable: report and stop (observe). No CLI fallback.
-4. Merge proposed calendar creates/updates into one hand-off. Existing `Forge: forge.<event-id>` events are the slot source of truth on re-runs.
-5. HITL: `approve-before-vendor` before any calendar write.
-6. On approve: Apply calendar MCP ops only. No memory Apply, no `commit-memory`.
+1. Resolve target via `resolve-paths` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure). Prefer Cursor **Plan Mode** for research and the plan delta (request SwitchMode to `plan` if invoked in Agent without an accepted plan for this event). Do **not** write memory or mutate vendor/SCM during Plan. Skip `sync-memory` until Accept — Apply pulls then.
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath (or group members), memoryRepoRoot, memoryRoot / groupRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not pause with the orchestrator, must not mutate vendor/SCM.
+3. Merge subagent proposals into one plan delta. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
+4. AskQuestion on forks when needed; then present the **plan delta** via CreatePlan when available, else markdown. See Plan shape below. Nothing is written yet.
+5. After **Accept (build):** run `sync-memory` first; if pulled files diverge from the accepted plan, fail closed and return to Plan. Then `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates. **Adjust** reshapes the plan; **Cancel** Applies nothing.
 
+### Plan shape (required)
 
-### Hand-off shape (required)
+Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / cloud). Parent only; subagents propose-only. See README Plan shape. No writes until Accept.
 
-Two phases; see README Hand-off shape. Parent only; no role subagents.
-
-**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork (timezone, calendar id, slot times for events not already on the calendar; opt-in for On demand / Per release if requested); lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
-
-**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
+**Plan delta** (reviewable — not a full file dump):
 
 - **Intent** — 1–2 sentences
-- **Proposed memory edits** — none
-- **Proposed vendor actions** — calendar create/update/delete list (`Forge: forge.<event-id>`)
-- **Questions** — `None`
-- **Left alone** — On demand / Per release / Per milestone / Per major bet (unless opted in); events already in sync
-- **How to reply** — required footer; see README Hand-off shape
+- **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
+- **Proposed vendor actions** — none, or explicit list
+- **Left alone** — in-scope docs/actions intentionally unchanged
+- Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
+After the plan exists, only three options:
+
+- **Accept (build)** — Apply exactly this plan. Whole plan, last word.
+- **Conversationally adjust** — stay in Plan, reshape, show a new whole plan. Dropping a line is an adjust, not a partial Apply.
+- **Cancel (close)** — Apply nothing. End the event.
+
+Never Apply a plan the user has not accepted as a whole. Headless: same three options in markdown (accept the whole plan / say what to change / cancel).
 
 ## Event contract
 
 Cadence: On demand
 Lead: (harness — no role Lead)
-HITL:
-Mode: approve-before-vendor
+Gate:
+Mode: plan
 Pause when:
     Always before create/update/delete on Google Calendar
     When proposing first-time timezone / calendar id / slot times

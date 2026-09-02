@@ -283,7 +283,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "When a ticket is Ready, you also put exactly one mark on the card: an agent can execute this, or a person has to. Work in the codebase (change the product, add tests, update docs in the repo) can be marked for an agent. Work that leaves the repo stays with a person: a vendor console, credentials, a payment-provider dashboard, a conversation with legal. That still needs a complete ticket, and a person has to do the steps.",
+              "When a ticket is Ready, you also put exactly one mark on the card: an agent can finish this start to finish, or a person has to. Work in the codebase (change the product, add tests, update docs in the repo) can be marked for an agent. Work that leaves the repo stays with a person: a vendor console, credentials, a payment-provider dashboard, a conversation with legal, a command someone must run after deploy. That still needs a complete ticket, and a person has to do the steps. If a person still has a command to run after the agent is done, that command is its own Ready card marked for a human — do not bury it in Verification on the agent card.",
               "Both kinds of work can sit in Ready, and only the agent-marked cards go to an Engineer agent later. Agent-marked cards also need the tech spec comment before they leave Refinement. Human-ready cards may omit it. If you are unsure, mark it for a human, because ambiguity is how an agent invents a second product in the margins.",
             ],
           },
@@ -868,7 +868,7 @@ export const courses = [
             items: [
               { name: "Themes", file: "design/themes.md", note: "App to Figma file binding." },
               { name: "Structure", file: "design/structure.md", note: "File-structure compliance: pages, naming patterns, categories." },
-              { name: "Tokens", file: "design/tokens.md", note: "Color, type, spacing, and gaps from Figma." },
+              { name: "Tokens", file: "design/tokens.md", note: "Variable names and Figma ids, not hex or type sizes." },
               { name: "Screens", file: "design/screens.md", note: "Frames, node ids, states, responsive notes." },
               { name: "Components", file: "design/components.md", note: "Design-system inventory and variants." },
               { name: "Principles", file: "design/principles.md", note: "UX and accessibility rules we keep." },
@@ -923,7 +923,7 @@ export const courses = [
     sessions: [
       {
         id: "orient",
-        title: "Judging the hand-off",
+        title: "Judging the plan",
         duration: "40–50 min",
         source: "commands/forge.help.md",
         blocks: [
@@ -931,25 +931,24 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Forge is a Cursor plugin, but the important picture is simpler: you are the parent of the ritual. A command calls the roles. They propose. They do not ship. When there is a fork, you answer Questions first — a picker when Cursor offers one, or the same list in chat when it does not. Each question is one decision; its letters are options to that decision, with (Recommended) on the first. After answers (or when there was nothing to ask), you read the apply-set — intent, files, remote actions, what they left alone — and you talk until that set is right. Only then do you approve.",
-              "Ask the Agent any time: between rituals, mid-sentence, or when a page is half-written. /forge.help just looks and does not write, so start there when the map goes fuzzy.",
+              "Forge is a Cursor plugin, but the important picture is simpler: you are the parent of the ritual. A command calls the roles. They propose. They do not ship. Pausing events prefer Cursor Plan Mode: research and AskQuestion happen while nothing is written, then you get a plan delta — intent, material memory edits, remote actions, what they left alone — not a dump of every file body. Talk until that whole plan is right. Only then do you Accept (build).",
+              "Ask the Agent any time: between rituals, mid-sentence, or when a page is half-written. /forge.help just looks and does not write, so start there when the map goes fuzzy. Cursor Plan Mode is the review surface; /forge.plan-refresh is a different command that rewrites the delivery plan.md.",
             ],
           },
           {
             type: "list",
-            title: "How you reply at every pause",
+            title: "After the plan exists — only three options",
             items: [
-              "Questions phase — pick one option per named question (Recommended is the default if you want it), or say Other / describe a different idea. Nothing is written yet. Independent forks are separate questions, not one flat A/B/C list.",
-              "approve all — Apply exactly the memory and remote actions on the apply-set screen. Last word. Only valid when Questions is None.",
-              "approve subset — Apply only the lines you name from that set. Still an Apply; still this proposal, just smaller.",
-              "reject — Apply nothing and end the event.",
-              "Anything else on the apply-set — a new idea or freeform steer. That is a redirect: the Agent reshapes (and may ask Questions again). Nothing is written until you approve a set you have seen.",
+              "Accept (build) — Apply exactly this plan. Whole plan, last word.",
+              "Conversationally adjust — stay in Plan, reshape, show a new whole plan. Dropping a line is an adjust, not a partial Apply.",
+              "Cancel (close) — Apply nothing and end the event.",
+              "If Plan Mode is unavailable (CLI / Auto / some cloud sessions), the same three options appear as markdown in chat.",
             ],
           },
           {
             type: "prose",
             paragraphs: [
-              "Picture a grooming pass where the board is empty. The Agent asks one question — Hold, Live maturity slice, or polish — with Hold marked (Recommended). You pick Hold (or another letter). Then the apply-set appears with Questions: None, often memory-only and vendor none. approve all ships that Hold. If you change your mind after seeing the set, say what to change; the Agent comes back with a new hand-off. You do not approve a direction you have not seen as an apply-set.",
+              "Picture a grooming pass where the board is empty. The Agent asks which slice to take — Hold marked recommended — then shows a plan delta with the Hold ticket titles and what stays alone. You Accept and it Applies. If one ticket is wrong, say so; the plan revises; you Accept the new whole plan. You never Apply a direction you have not accepted as a whole.",
             ],
           },
           {
@@ -957,17 +956,15 @@ export const courses = [
             title: "The ways a ritual can pause",
             items: [
               "observe — just telling you (help).",
-              "propose — a draft; nothing moves unless you say so.",
-              "approve-before-write — pause before memory changes.",
-              "approve-before-vendor — pause before GitHub, GitLab, or the calendar.",
-              "auto-apply — implement-ticket and validate-ticket: no pause; SCM only.",
+              "plan — research and plan delta; Accept / adjust / Cancel before Apply.",
+              "auto-apply — implement-ticket and validate-ticket: no Plan pause; SCM only.",
             ],
           },
           {
             type: "callout",
             tone: "note",
             title: "Try it",
-            body: "Run /forge.help. See whether you can name the super-repo, the code submodule, and the memory-repo — or honestly say they are unresolved. Do not invent a folder to silence the error. That creates a second source of truth.",
+            body: "Run /forge.help. See whether you can name the super-repo, the target (group or product), and the memory-repo — or honestly say they are unresolved. Do not invent a folder to silence the error. That creates a second source of truth.",
           },
         ],
       },
@@ -982,17 +979,17 @@ export const courses = [
             type: "prose",
             paragraphs: [
               "The rituals you type live in a Cursor plugin at ~/.cursor/plugins/local/forge-cursor. Forge Studio (the VS Code / Cursor extension) clones that repo on first launch and fast-forwards it when origin moves; Command Palette → Forge: Sync Cursor Plugin does the same on demand. Command Palette → Forge: Open Forge Course serves this workshop from that clone and opens a browser tab. Reload the window after the files change.",
-              "The code lives in a git submodule, with the usual branches and pull requests. The agents’ notes live in a second submodule at .ai/memory, on main only — no feature branches, no PRs on that repo. Memory is a projection of the board, not a second product.",
-              "Every real ritual starts the same way: find the paths, pull memory’s main, read forge.json. If that fails, stop. Guessing the submodule is how you write someone else’s project. Two exceptions skip the memory pull: /forge.implement-ticket and /forge.validate-ticket run on the board and the PR only (implement also reads the tech spec comment on the issue).",
-              "A super-repo can hold several code submodules. Each one set up for Forge has its own forge.json and its own board under .ai/memory/<that path>/. The command binds to the one it resolved; remaining configured projects wait for their own invocation.",
-              "Standing up: add the memory submodule, run /forge.init-project, approve the first brief and the empty pages, let it push main. Icebox is fine for coarse outcomes. Large ideas go through /forge.new-initiative (HLD) before grooming. Refining tickets on day one is not.",
+              "The code lives in a git submodule, with the usual branches and pull requests. The agents’ notes live in a second submodule at .ai/memory, on main only — no feature branches, no PRs on that repo. Memory is a projection of the board, not a second product. Optional product-family groups live under .ai/memory/groups/<id>/ (shared marketing, personas, competitive, principles); each product still has its own forge.json and board under .ai/memory/<submodulePath>/.",
+              "Every pausing ritual starts by resolving a target (group or product) and reading forge.json. Sync of memory’s main waits until you Accept the plan — Plan Mode cannot pull. If path resolution fails, stop. Guessing the target is how you write someone else’s project. Two exceptions skip memory entirely: /forge.implement-ticket and /forge.validate-ticket run on the board and the PR only (implement also reads the tech spec comment on the issue).",
+              "A super-repo can hold several code submodules. Pass a group id for one plan across the family, or a product path / cwd for one repo. Marketing-only repos can be kind: site (brief + design; no ticket rituals).",
+              "Standing up: add the memory submodule, run /forge.init-project (standalone, create group, or join group; pick kind), Accept the first brief and the empty pages, let it push main. Icebox is fine for coarse outcomes. Large ideas go through /forge.new-initiative (HLD) before grooming. Refining tickets on day one is not.",
             ],
           },
           {
             type: "callout",
             tone: "note",
-            title: "One ritual, one project",
-            body: "If you keep three Forge projects, you run the same command three times: stand in that submodule, or pass --submodule. Each run has its own hand-off, because the Agent does not tour the workspace for you.",
+            title: "One ritual, one target",
+            body: "Pass a group id for a broader view in one plan, or a product (--submodule / cwd) for one repo. Family narrative events write shared group docs once. Board rituals launched on a group may list several members in that same plan. Ticket auto-apply uses a group as a search scope, then pins one member once a card is chosen.",
           },
           {
             type: "callout",
@@ -1044,8 +1041,8 @@ export const courses = [
             type: "prose",
             paragraphs: [
               "Grooming and refinement are the LLD board passes after an initiative leaves HLD (status lld), or for small work that never needed an initiative folder. Once a week, /forge.backlog-grooming reads the HLD package, splits into actionable tickets, parks them on Refinement under one host milestone per initiative, and stubs per-ticket Gherkin features. Designer attends lightly: if the work looks user-facing, Notes get Design: required at refinement, and an unbound Figma theme is a warning rather than a block. When you are actually ready to let go, /forge.refinement compiles the ticket .feature into Intention and AC, writes the product contract into the issue, and moves it to Ready with one label: for an agent, or still for a human. Agent-bound cards also get a tech spec comment from Architect and Security (sliced from HLD spec.md) before promotion; human-ready cards do not need one. When the work is user-facing, Designer also attends refinement: Figma refs, states, and accessibility checks land in the issue body, and the Ready gate includes design and structure rows (pass, fail, or N/A). For user-facing ai-ready work, an unbound theme or missing file structure (required pages, token naming patterns, component categories) fails the gate; brand colors can still differ per app.",
-              "Each command grooms or refines the project it resolved — the folder you are standing in, or the submodule you named. Three configured projects means three grooming runs, then three refinement runs, each with its own hand-off.",
-              "Judge the hand-off the same way Course 2 taught you: talk until the apply-set is right, then approve. If a groom is secretly an epic, redirect toward an initiative instead of an umbrella issue. If Open questions is not None, it is not Ready. For ai-ready, the tech spec row on the Ready gate must pass too. For user-facing work, the design and structure rows must pass or be N/A. The board is the truth; memory just points at the issue.",
+              "Each command binds to the target you passed — a group id for one plan across members, or the product folder you are standing in / named. A family grooming pass can list several members in that same plan; adjust if the batch is too big.",
+              "Judge the plan the same way Course 2 taught you: Accept, conversationally adjust, or Cancel. If a groom is secretly an epic, redirect toward an initiative instead of an umbrella issue. If Open questions is not None, it is not Ready. For ai-ready, the tech spec row on the Ready gate must pass too. For user-facing work, the design and structure rows must pass or be N/A. The board is the truth; memory just points at the issue.",
             ],
           },
           {
@@ -1081,7 +1078,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "/forge.implement-ticket will not start unless the card is Ready, marked for an agent, and has a complete tech spec comment on the issue. If the card sits on an initiative milestone, every sibling on that milestone must also be Ready — no partial slices. It loads the issue body and that comment, claims In Progress right away, opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no hand-off and no memory write; the board, the tech spec comment, and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
+              "/forge.implement-ticket will not start unless the card is Ready, marked for an agent, and has a complete tech spec comment on the issue. If the card sits on an initiative milestone, every sibling on that milestone must also be Ready — no partial slices. It loads the issue body and that comment, claims In Progress right away, opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no Plan pause and no memory write; the board, the tech spec comment, and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
               "Read the diff against the issue and the tech spec, not against your hope. Extra scope is not a gift. Tests should be able to fail the acceptance criteria. New packages you do not recognize are a question, not a flourish.",
             ],
           },
@@ -1161,17 +1158,17 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Most hard stops are the same three: you are not in the super-repo, you did not say which submodule, or memory was never added as a submodule. Pull memory’s main at the start of a ritual; push main only after you Apply.",
-              "The command picks a project this way: you passed --submodule, or your folder is already inside one code submodule, or there is only one code submodule to choose. Anything else stops and lists the paths rather than guessing or looping the rest.",
-              "Calendar meetings are optional, harness-wide, and they never start the work for you. One meeting set covers every Forge project you manage; when the slot starts, run that command once per project.",
-              "When the map blurs, /forge.help. When you are about to Apply, tell the story in Course 1 words first — who, what, why, when — and only then press the button.",
+              "Most hard stops are the same few: you are not in the super-repo, the target is ambiguous (group vs product), or memory was never added as a submodule. Pausing rituals skip the memory pull until you Accept the plan; Apply syncs main, then writes, then pushes.",
+              "The command picks a target this way: --group, --submodule / --product, a bare name (group id first), your folder already inside one code submodule, or there is only one product to choose. Anything else stops and lists groups and paths rather than guessing.",
+              "Calendar meetings are optional, harness-wide, and they never start the work for you. One meeting set covers every Forge project you manage; when the slot starts, run that command once per target (group or product).",
+              "When the map blurs, /forge.help. When you are about to Accept, tell the story in Course 1 words first — who, what, why, when — and only then build the plan.",
             ],
           },
           {
             type: "callout",
             tone: "note",
             title: "You are ready for Course 3 when",
-            body: "You can take a repo you did not write through init, groom, refine, implement, and validate, and you can explain each pause in plain language before you Apply. Course 3 is the station book: which events you lead, which skills you load, and how you use them for the work this role actually does.",
+            body: "You can take a repo you did not write through init, groom, refine, implement, and validate, and you can explain each plan pause in plain language before you Accept. Course 3 is the station book: which events you lead, which skills you load, and how you use them for the work this role actually does.",
           },
         ],
       },
@@ -1194,7 +1191,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Course 1 told you who stands at which station. After that, Using Forge taught you that a ritual proposes, you talk until the apply-set is right, then you Apply. This course is the book on the station: which events you run, which skills the Agent loads, and what to ask between rituals.",
+              "Course 1 told you who stands at which station. After that, Using Forge taught you that a ritual proposes in Plan Mode, you Accept / adjust / Cancel, then Apply. This course is the book on the station: which events you run, which skills the Agent loads, and what to ask between rituals.",
               "The pages that follow are the same nine roles you already know, written as a kit rather than a job description, with three kinds of tool for the same work.",
             ],
           },
@@ -1205,7 +1202,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "An event is a slash command with a cadence: /forge.backlog-grooming every week, /forge.implement-ticket when a card is Ready and marked for an agent. You either lead it (your role owns the hand-off) or you attend (another role leads; you still get spawned and you still propose). One invocation binds to one code submodule; if you keep several Forge projects, you run the event once for each.",
+              "An event is a slash command with a cadence: /forge.backlog-grooming every week, /forge.implement-ticket when a card is Ready and marked for an agent. You either lead it (your role owns the plan) or you attend (another role leads; you still get spawned and you still propose). One invocation binds to one target — a group id or a product. A group target is one plan across members, not one run per repo.",
               "The schedule lives on the agent file. If this page and that file disagree, the agent file and the command win.",
             ],
           },
@@ -1216,7 +1213,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "A skill is a procedure the Agent loads when that event, or your ask, needs it: groom-ticket writes Intention and acceptance criteria, and agent-ready-ticket writes the full Ready contract. You name the skill that already exists under skills/<role>/ rather than inventing a second procedure. Those procedures assume the event already picked a project; they shape that board and that memory tree.",
+              "A skill is a procedure the Agent loads when that event, or your ask, needs it: groom-ticket writes Intention and acceptance criteria, and agent-ready-ticket writes the full Ready contract. You name the skill that already exists under skills/<role>/ rather than inventing a second procedure. Those procedures assume the event already picked a target (group or product); they shape that board and that memory tree (including groupRoot when the product is in a family).",
               "Vendor skills (issues, pulls, CI) are shared machinery. They show up inside events; each role kit stays the skills listed on that agent file.",
             ],
           },
@@ -1235,7 +1232,7 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "You still judge",
-            body: "Lead or attend, the Agent still proposes. You still answer Questions when they appear, then talk until the apply-set is right, then approve all or approve subset — or reject, or redirect with a freeform steer — the same way Course 2 taught you.",
+            body: "Lead or attend, the Agent still proposes. You still answer AskQuestion forks when they appear, then Accept the whole plan, conversationally adjust it, or Cancel — the same way Course 2 taught you.",
           },
           {
             type: "heading",
@@ -1245,7 +1242,7 @@ export const courses = [
             type: "table",
             headers: ["You are…", "What that means"],
             rows: [
-              ["Lead", "The command names your role as Lead. You own the hand-off shape. On a conflict between spawned roles, you win unless the command says otherwise."],
+              ["Lead", "The command names your role as Lead. You own the plan delta. On a conflict between spawned roles, you win unless the command says otherwise."],
               ["Attend", "Another role leads, and you still propose from your pages and skills without rewriting their contract."],
               ["Required peer", "Same room: QA and Security on /forge.validate-ticket. Either domain can fail the change; dual approve auto-merges."],
             ],
@@ -1290,13 +1287,13 @@ export const courses = [
               ["On demand", "/forge.initiative-design", "Incremental HLD: initiative.feature, spec.md, design.md, security.md."],
               ["Weekly", "/forge.initiative-planning", "Roll up open questions; propose status: lld when all sign-offs are green."],
               ["Weekly", "/forge.backlog-grooming", "LLD: split an lld initiative into Intention + AC. Land cards in Refinement under one milestone. Designer triage flags likely user-facing work."],
-              ["On demand", "/forge.refinement", "LLD: compile ticket .feature into Intention + AC; write the product Ready contract. One label: ai-ready or human-ready. ai-ready also needs a tech spec comment. User-facing work also needs Designer inline Figma context and design + structure Ready gates."],
+              ["On demand", "/forge.refinement", "LLD: compile ticket .feature into Intention + AC; write the product Ready contract. One label: ai-ready (agent finishes start to finish) or human-ready. Split leftover human executor steps. ai-ready also needs a tech spec comment. User-facing work also needs Designer inline Figma context and design + structure Ready gates."],
               ["Weekly", "/forge.feedback-triage", "Promote a comment toward a ticket or Now, park it in the icebox, or drop it."],
               ["Weekly", "/forge.stakeholder-sync", "Say what is still true and what changed. Get decisions out of hallway chat."],
               ["Every other week", "/forge.metrics-review", "Read the numbers you claimed would move, and say so when they did not."],
               ["Every other week", "/forge.roadmap-review", "Check whether the current bets are still the right ones. Rewrite Now / Next / Later in place."],
-              ["Monthly", "/forge.insights-review", "Go looking on purpose: problems, alternatives, where we win and lose. Research synthesis — not initiative intake."],
-              ["Monthly", "/forge.competitive-scan", "Update the competitive page. Change the brief or roadmap only when a bet actually moves."],
+              ["Monthly", "/forge.insights-review", "Go looking on purpose: users, problems, personas. Research synthesis — not initiative intake."],
+              ["Monthly", "/forge.competitive-scan", "Go look at alternatives, then rewrite the competitive page. Change the brief or roadmap only when a bet actually moves."],
               ["Per release", "/forge.launch-readiness-check", "Go, no-go, or ship-with-exceptions. The launch words have to match the outcome you asked for."],
               ["Per release", "/forge.outcomes-retro", "Did the outcome happen? Fold the learning into insights and the next roadmap."],
             ],
@@ -1332,11 +1329,12 @@ export const courses = [
               ["compile-ticket-feature", "LLD refinement: compile features/<ticket-slug>.feature into Intention + AC."],
               ["groom-ticket", "Weekly grooming: Intention + acceptance, then stop at Refinement."],
               ["requirements-writing", "Refinement: expand the brief into a Ready product body."],
-              ["agent-ready-ticket", "Ready gate: body checklist; tech spec comment required only when ai-ready; design pass/fail/N/A for user-facing; Open questions is None; one readiness label."],
+              ["agent-ready-ticket", "Ready gate: body checklist; ai-ready finishes start to finish (split leftover human steps); tech spec only when ai-ready; design pass/fail/N/A for user-facing; Open questions is None; one readiness label."],
               ["scope-control", "Someone is about to add a second product in the margins."],
               ["prioritization", "Now is too long, or two cards both want to be first."],
               ["roadmapping", "Themes, Now, Next, Later, Not planning need a rewrite."],
-              ["insights-review", "Monthly looking: problems and alternatives, which is a different job from writing a feature list or starting an initiative."],
+              ["insights-review", "Monthly looking: users and problems, which is a different job from writing a feature list or starting an initiative."],
+              ["competitive-scan", "Monthly looking: alternatives, where we win and lose; rewrite competitive posture after you look."],
               ["feedback-synthesis", "Comments, metrics, and team noise have to become implications."],
               ["stakeholder-alignment", "A decision is still living in a hallway."],
               ["decision-hygiene", "The page is turning into a diary of how you argued."],
@@ -1361,7 +1359,7 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "Ask versus event",
-            body: "A one-card groom can be an ask; a weekly pass over the icebox is /forge.backlog-grooming. That weekly pass is still one project. If the Agent would create or move issues, run the event so you get a hand-off you can approve.",
+            body: "A one-card groom can be an ask; a weekly pass over the icebox is /forge.backlog-grooming. That weekly pass is still one target (group or product). If the Agent would create or move issues, run the event so you get a plan you can Accept.",
           },
           {
             type: "heading",
@@ -1376,6 +1374,7 @@ export const courses = [
               ["An lld initiative becomes groomed cards", "/forge.backlog-grooming", "split-initiative, groom-ticket, outcome-definition, scope-control (Designer: grooming-design-triage)"],
               ["That card is a contract a builder can finish", "/forge.refinement", "compile-ticket-feature, requirements-writing, agent-ready-ticket (ai-ready: Architect + Security tech spec; user-facing: Designer design + structure gates)"],
               ["The current bets are honest", "/forge.roadmap-review", "roadmapping, prioritization"],
+              ["Where we win and lose is current", "/forge.competitive-scan", "competitive-scan, feedback-synthesis"],
               ["User noise becomes a decision", "/forge.feedback-triage", "feedback-synthesis"],
               ["We can tell a true launch story", "/forge.launch-readiness-check", "launch-readiness, scope-control"],
               ["We learn whether it mattered", "/forge.outcomes-retro", "outcome-definition, decision-hygiene"],
@@ -1704,7 +1703,7 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["On demand", "/forge.implement-ticket", "Ready + ai-ready + tech spec comment only: claim In Progress right away, open the PR, wait for CI, and move to In Review when checks are green, or when the host has no checks, which you say out loud. No hand-off, no memory. Merge waits for validate-ticket."],
+              ["On demand", "/forge.implement-ticket", "Ready + ai-ready + tech spec comment only: claim In Progress right away, open the PR, wait for CI, and move to In Review when checks are green, or when the host has no checks, which you say out loud. No Plan pause, no memory. Merge waits for validate-ticket."],
               ["On demand", "/forge.respond-to-review", "The conversation until the change is ready to re-gate; merge still waits for validate-ticket."],
             ],
           },
@@ -2331,7 +2330,7 @@ export const courses = [
             type: "table",
             headers: ["Command", "Who leads", "What you bring"],
             rows: [
-              ["/forge.init-project", "Product Owner", "Seed design docs; bind a Figma theme URL; run an initial structure check (defer unbound only via HITL)."],
+              ["/forge.init-project", "Product Owner", "Seed design docs; bind a Figma theme URL; run an initial structure check (defer unbound only via plan Accept)."],
               ["/forge.backlog-grooming", "Product Owner", "Triage: likely user-facing → Notes Design required at refinement; warn if theme unbound. No Figma MCP required."],
               ["/forge.refinement", "Product Owner", "User-facing tickets: inline Figma refs, states, a11y AC; design and structure Ready gates pass/fail/N/A (ai-ready structure must pass)."],
               ["/forge.insights-review", "Product Owner", "Persona UX implications into principles when who you design for moved."],
@@ -2353,7 +2352,7 @@ export const courses = [
               ["theme-bind", "This app needs a Figma URL, or the binding looks stale."],
               ["design-structure", "Remind yourself what pages, naming patterns, and categories are required."],
               ["design-structure-check", "Verify the bound file against structure expectations; update design/structure.md."],
-              ["token-audit", "Variables from Figma into design/tokens.md."],
+              ["token-audit", "Variable names and Figma ids into design/tokens.md."],
               ["screen-inventory", "Frames and states into design/screens.md."],
               ["component-audit", "Design-system components and orphans."],
               ["design-principles", "A11y and interaction rules that must stay current."],
@@ -2370,7 +2369,7 @@ export const courses = [
             items: [
               "Which Figma theme is bound to this app, and is MCP able to open it?",
               "Does the bound file pass structure-check? What is in structure_gaps?",
-              "Audit tokens against the bound file. What is inventory-only versus structure miss?",
+              "Audit tokens against the bound file. What refs are inventoried versus a structure miss?",
               "This Refinement card is user-facing. What Figma nodes and states belong in Scope and AC?",
               "Password reset just landed in Refinement. Walk refinement-design-check and say pass or fail on design and structure.",
             ],

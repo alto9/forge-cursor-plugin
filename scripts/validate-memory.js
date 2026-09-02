@@ -78,7 +78,7 @@ export function validateDocAgainstTemplate(docMarkdown, templateMarkdown) {
   return errors;
 }
 
-export function validateForgeJson(obj, submodulePath, { requireBoard = false } = {}) {
+export function validateForgeJson(obj, submodulePath, { requireBoard = false, memoryRepoRoot } = {}) {
   const errors = [];
   if (obj == null || typeof obj !== "object") {
     return ["forge.json must be an object"];
@@ -89,16 +89,35 @@ export function validateForgeJson(obj, submodulePath, { requireBoard = false } =
   if (submodulePath && obj.path && obj.path !== submodulePath) {
     errors.push(`forge.json.path (${obj.path}) != submodulePath (${submodulePath})`);
   }
+  if (obj.kind != null && obj.kind !== "") {
+    if (!["app", "site", "library"].includes(obj.kind)) {
+      errors.push(`forge.json.kind must be app|site|library, got: ${obj.kind}`);
+    }
+  }
+  if (obj.group != null && obj.group !== "") {
+    if (typeof obj.group !== "string") {
+      errors.push("forge.json.group must be a string");
+    } else if (memoryRepoRoot) {
+      const groupJson = path.join(memoryRepoRoot, "groups", obj.group, "group.json");
+      if (!fs.existsSync(groupJson)) {
+        errors.push(
+          `forge.json.group "${obj.group}" missing groups/${obj.group}/group.json`
+        );
+      }
+    }
+  }
+  const kind = obj.kind || "app";
+  const boardRequired = requireBoard && kind !== "site";
   if (obj.host === "github") {
     if (!obj.github?.owner) errors.push("Missing github.owner");
     if (!obj.github?.repo) errors.push("Missing github.repo");
-    if (requireBoard) {
+    if (boardRequired) {
       if (!obj.github?.projectId) errors.push("Missing github.projectId (board sync)");
       if (!obj.github?.statusIds) errors.push("Missing github.statusIds (board sync)");
     }
   } else if (obj.host === "gitlab") {
     if (!obj.gitlab?.projectId) errors.push("Missing gitlab.projectId");
-    if (requireBoard) {
+    if (boardRequired) {
       if (!obj.gitlab?.statusIds) errors.push("Missing gitlab.statusIds (board sync)");
     }
   } else if (obj.host) {
@@ -106,6 +125,29 @@ export function validateForgeJson(obj, submodulePath, { requireBoard = false } =
   }
   return errors;
 }
+
+/** Docs seeded under groups/<id>/ when a product joins a group. */
+export const GROUP_DOC_TEMPLATE_MAP = {
+  "marketing/positioning.md": "skills/marketing-manager/templates/positioning.md",
+  "marketing/messaging.md": "skills/marketing-manager/templates/messaging.md",
+  "marketing/voice.md": "skills/marketing-manager/templates/voice.md",
+  "marketing/calendar.md": "skills/marketing-manager/templates/calendar.md",
+  "marketing/social-queue.md": "skills/marketing-manager/templates/social-queue.md",
+  "product/personas.md": "skills/product-owner/templates/personas.md",
+  "product/competitive.md": "skills/product-owner/templates/competitive.md",
+  "design/principles.md": "skills/designer/templates/principles.md",
+};
+
+/** Site kind seeds only brief + design (no marketing/engineering/board roles). */
+export const SITE_DOC_PATHS = [
+  "product/brief.md",
+  "design/themes.md",
+  "design/structure.md",
+  "design/tokens.md",
+  "design/screens.md",
+  "design/components.md",
+  "design/principles.md",
+];
 
 /** Map memory-relative doc path -> template path under plugin (seeding + heading docs) */
 export const DOC_TEMPLATE_MAP = {
@@ -178,20 +220,50 @@ export function templateForMemoryDoc(relPath) {
  * Validate memory root. Returns { errors, warnings }.
  * Schema docs (all seeded memory files) use frontmatter schemas; legacy paths use heading templates.
  */
-export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBoard } = {}) {
+export function memoryRepoRootFromMemoryRoot(memoryRoot) {
+  let dir = path.resolve(memoryRoot);
+  for (;;) {
+    const parent = path.dirname(dir);
+    if (path.basename(dir) === "memory" && path.basename(parent) === ".ai") {
+      return dir;
+    }
+    if (parent === dir) return null;
+    dir = parent;
+  }
+}
+
+export function validateGroupJson(obj, groupId) {
+  const errors = [];
+  if (obj == null || typeof obj !== "object") {
+    return ["group.json must be an object"];
+  }
+  if (!obj.id || obj.id !== groupId) {
+    errors.push(`group.json.id must equal folder name "${groupId}"`);
+  }
+  if (!Array.isArray(obj.members) || obj.members.length === 0) {
+    errors.push("group.json.members must be a non-empty array of submodule paths");
+  }
+  return errors;
+}
+
+export function validateMemoryRoot(memoryRoot, { files, submodulePath, requireBoard, memoryRepoRoot } = {}) {
   const errors = [];
   const warnings = [];
+  const repoRoot = memoryRepoRoot || memoryRepoRootFromMemoryRoot(memoryRoot);
   const forgePath = path.join(memoryRoot, "forge.json");
+  let forgeObj = null;
   if (fs.existsSync(forgePath)) {
-    let obj;
     try {
-      obj = JSON.parse(fs.readFileSync(forgePath, "utf8"));
+      forgeObj = JSON.parse(fs.readFileSync(forgePath, "utf8"));
     } catch (e) {
       errors.push(`forge.json parse error: ${e.message}`);
       return { errors, warnings };
     }
     errors.push(
-      ...validateForgeJson(obj, submodulePath || obj.path, { requireBoard })
+      ...validateForgeJson(forgeObj, submodulePath || forgeObj.path, {
+        requireBoard,
+        memoryRepoRoot: repoRoot,
+      })
     );
   } else if (files?.includes("forge.json")) {
     errors.push("forge.json missing");

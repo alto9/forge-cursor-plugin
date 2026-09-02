@@ -1,6 +1,6 @@
 # Forge Cursor Plugin
 
-Solo SDLC harness for a **super-repo of git submodules** (GitHub and GitLab mixed). You are the orchestrator; agents are role specialists. Event commands own HITL and Apply.
+Solo SDLC harness for a **super-repo of git submodules** (GitHub and GitLab mixed). You are the orchestrator; agents are role specialists. Event commands own Plan Mode and Apply.
 
 ## Install locally
 
@@ -35,7 +35,7 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 ## Harness context
 
 - Workspace is the **super-repo**. Code work happens inside the active project submodule; agent memory does not.
-- Memory lives in the **memory-repo**: the git submodule checked out at `<super-repo>/.ai/memory/` (tracks `main`). Per code submodule: `.ai/memory/<submodulePath>/`.
+- Memory lives in the **memory-repo**: the git submodule checked out at `<super-repo>/.ai/memory/` (tracks `main`). Per code submodule (product): `.ai/memory/<submodulePath>/`. Optional product-family **group** docs: `.ai/memory/groups/<groupId>/` (id from `group.json`; not hardcoded).
 - Agents **pull `origin/main`** before reading memory and **commit + push `main`** after Apply (no branches or PRs/MRs on the memory-repo).
 - Vendor skills are shared capabilities roles may call; they are not listed on Events by default.
 
@@ -47,9 +47,9 @@ Bootstrap from a full design dump at `docs/harness-design.md` (optional): `npm r
 - Code → submodule git history
 - Memory (`.ai/memory/...` memory-repo) → shared agent notes, plans, queues (never linked from Ready issue bodies)
 
-If memory disagrees with SCM, update or discard memory drift. When grooming/init writes tickets: write to the board first (HITL), then refresh memory to match. Memory backlog/queue files should reference board issue ids/URLs — never invent a parallel ticket numbering system.
+If memory disagrees with SCM, update or discard memory drift. When grooming/init writes tickets: write to the board first (plan Accept), then refresh memory to match. Memory backlog/queue files should reference board issue ids/URLs — never invent a parallel ticket numbering system.
 
-**Tickets are actionable only** — never create epic/umbrella issues. **Initiatives** replace epics: HLD lives under `initiatives/<slug>/`; LLD grooming always creates one host milestone per initiative. Outside initiatives, group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `ai-ready` also has a tech spec issue comment. User-facing tickets also need a design Ready gate (pass/fail/N/A) with Figma refs inlined in the body when applicable. `/forge.implement-ticket` takes only `ai-ready` (body + tech spec) and requires every sibling on an initiative milestone to be Ready before claim.
+**Tickets are actionable only** — never create epic/umbrella issues. **Initiatives** replace epics: HLD lives under `initiatives/<slug>/`; LLD grooming always creates one host milestone per initiative. Outside initiatives, group with a host milestone only when there are **5+** related tickets. After `/forge.refinement`, every Ready ticket has exactly one of `ai-ready` | `human-ready`; `ai-ready` means the agent finishes the ticket start to finish (leftover human executor steps become a separate `human-ready` issue) and also has a tech spec issue comment. User-facing tickets also need a design Ready gate (pass/fail/N/A) with Figma refs inlined in the body when applicable. `/forge.implement-ticket` takes only `ai-ready` (body + tech spec) and requires every sibling on an initiative milestone to be Ready before claim.
 
 ## Memory layout
 
@@ -57,13 +57,17 @@ If memory disagrees with SCM, update or discard memory drift. When grooming/init
 <super-repo>/
   .gitmodules                 # includes path = .ai/memory (memory-repo)
   .ai/memory/                 # memory-repo submodule on main
+    groups/<groupId>/         # optional shared family docs + group.json
+      group.json              # { id, members: ["<submodulePath>", ...] }
+      marketing/ … personas, competitive, design/principles
     <submodulePath>/
-      forge.json
+      forge.json              # optional group + kind (app|site|library)
       product/  project/  architecture/  engineering/
-      qa/  security/  release/  marketing/  design/
+      qa/  security/  release/  design/   # marketing under group when grouped
   <submodulePath>/            # code submodule
 ```
 
+Events take a **target**: `--group <id>`, `--submodule` / `--product <path>`, bare name (group id first), or cwd inside a product. **One event, one plan, one target** — a group id is a broader view across members, not one run per repo.
 ### One-time memory-repo setup
 
 1. Create an empty remote (allow direct push to `main`; no required PR/MR / branch protection that blocks agents).
@@ -77,19 +81,21 @@ The super-repo gitlink SHA is a **hint only**. Fresh clones and every event run 
 
 ## Path resolution
 
-Every command starts with [`resolve-paths`](skills/forge/resolve-paths/SKILL.md) → [`sync-memory`](skills/forge/sync-memory/SKILL.md) → [`resolve-config`](skills/forge/resolve-config/SKILL.md). Ambiguity or sync failure is a hard stop.
+Every pausing command starts with [`resolve-paths`](skills/forge/resolve-paths/SKILL.md) → [`resolve-config`](skills/forge/resolve-config/SKILL.md); **`sync-memory` runs on Accept** (before Apply). Ambiguity is a hard stop. Memory-repo sync failure is a hard stop when Apply runs.
 
 Exceptions: `/forge.sync-schedule` skips path/memory entirely. `/forge.implement-ticket` and `/forge.validate-ticket` run `resolve-paths` → `resolve-config` only (skip sync-memory / memory Apply / commit-memory); path ambiguity is still a hard stop, memory-repo sync failure is not.
 
-Outputs: `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRepoRoot`, `memoryRoot`.
+**Product outputs:** `superRepoRoot`, `submodulePath`, `submoduleRoot`, `memoryRepoRoot`, `memoryRoot`, optional `groupId` / `groupRoot`, `kind`.
+**Group outputs:** `superRepoRoot`, `memoryRepoRoot`, `groupId`, `groupRoot`, `members[]`.
 
 - Super-repo: `FORGE_SUPER_REPO`, else walk-up for `.gitmodules` (prefer a root that also has `.ai/memory/`).
 - Memory-repo: required `.gitmodules` entry with `path = .ai/memory` (excluded from the code-submodule list).
-- Code submodule: `--submodule <path>`, else cwd inside a code gitmodules path, else unique configured code submodule. One invocation binds to that one submodule — repeat the command (new `--submodule` or cwd) to run the same ritual on another configured project.
+- Target: `--group <id>` | `--submodule` / `--product <path>` | bare `--target` (group id first, then path) | cwd inside a code path | unique configured product. Fail closed when a bare name matches both a group and a product.
 - `memoryRepoRoot = superRepoRoot / .ai/memory`
 - `memoryRoot = memoryRepoRoot / submodulePath` (never under submodule code).
+- `groupRoot = memoryRepoRoot / groups / <groupId>` when grouped.
 
-Script: `npm run resolve-paths -- [--cwd DIR] [--submodule PATH] [--super-repo DIR]`
+Script: `npm run resolve-paths -- [--cwd DIR] [--submodule PATH] [--product PATH] [--group ID] [--target NAME] [--super-repo DIR]`
 
 ## Forge config
 
@@ -97,7 +103,9 @@ Script: `npm run resolve-paths -- [--cwd DIR] [--submodule PATH] [--super-repo D
 
 Always required: `version`, `path` (= submodulePath), `host`, and host identity (`github.owner`+`repo` or `gitlab.projectId`).
 
-Board fields (`projectId` / `boardId` / `statusIds`) required only before board-sync events. Include:
+Optional `kind`: `app` (default) | `site` | `library`. Optional `group`: must match `groups/<id>/group.json`.
+
+Board fields (`projectId` / `boardId` / `statusIds`) required only before board-sync events (not for `kind: site` unless the site has a board). Include:
 
 `backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
 
@@ -109,7 +117,7 @@ Optional `release.gates[]`: ordered event ids for **this** submodule (no harness
 
 See [`ensure-config`](skills/forge/ensure-config/SKILL.md), [`init-memory`](skills/forge/init-memory/SKILL.md), [`validate-memory`](skills/forge/validate-memory/SKILL.md), [`sync-memory`](skills/forge/sync-memory/SKILL.md), [`commit-memory`](skills/forge/commit-memory/SKILL.md).
 
-**Memory docs:** YAML frontmatter is source of truth (`doc: <role>.*`, `schema_version: 1` or current version, typed core fields); body is expansion-only. `validate-memory` emits readiness **warnings** for weak briefs (empty `product_name` / `problem` / `current_focus`); warnings do not block Apply and no event command gates on brief strength. Schema docs: [docs/memory-schemas.md](docs/memory-schemas.md).
+**Memory docs:** YAML frontmatter is source of truth (`doc: <role>.*`, `schema_version: 1` or current version, typed core fields); body is expansion-only. `validate-memory` emits readiness **warnings** for weak briefs (empty `product_name` / `problem` / `current_focus`); warnings do not block Apply and no event command gates on brief strength. Schema docs: [docs/memory-schemas.md](docs/memory-schemas.md). Group-owned when `group` is set: `marketing/*`, `product/personas.md`, `product/competitive.md`, `design/principles.md` under `groups/<id>/`.
 
 ## Risk & findings ownership
 
@@ -126,84 +134,79 @@ One concern per file; reference board issue id/URL.
 
 1. `/forge.help` — optional orientation (observe-only)
 2. Ensure memory-repo submodule at `.ai/memory` (see setup above)
-3. `/forge.init-project` — forge.json + seed memory + first brief/roadmap/backlog/architecture sketch + Figma theme bind (defer unbound only via HITL) + initial structure check + `commit-memory`
+3. `/forge.init-project` — forge.json (+ optional group/kind) + seed memory + first brief/roadmap/backlog/architecture sketch + Figma theme bind (defer unbound only via plan Accept) + initial structure check + `commit-memory`
 4. `/forge.roadmap-review` — shape Now/Next/Later
 5. **Large ideas (HLD):** `/forge.new-initiative` → `/forge.initiative-design` (incremental) + weekly `/forge.initiative-planning` until sign-offs green (`status: lld`). Optional `/forge.design-spike` when one unknown blocks sign-off. Icebox still holds coarse outcomes; initiatives are separate from Icebox tickets.
 6. **LLD:** `/forge.backlog-grooming` — require initiative `status == lld`; split into actionable tickets → board **Refinement** (one host milestone per initiative; Designer triage: likely user-facing → Notes `Design: required at refinement`; stub `features/<ticket-slug>.feature` per ticket)
 7. `/forge.plan-refresh` — sequence initiative `board_tickets[]` into `project/plan.md` / milestones once grooming has created them
 8. `/forge.refinement` — compile ticket `.feature` into Intention + AC; full Ready product body (`agent-ready-ticket`) → board **Ready** (product contract in issue body for all tickets; **`ai-ready` only** — Architect + Security tech spec comment with `<!-- forge-tech-spec -->` from HLD `spec.md`; `human-ready` body-only is OK; **user-facing** — Designer inlines Figma refs/states/a11y; Ready gate includes design pass/fail/N/A and structure pass/fail/N/A; for user-facing **`ai-ready`**, unbound theme or file-structure gaps fail the gate). When the last sibling goes Ready, mark initiative `status: executing`.
-9. `/forge.implement-ticket` — only Ready + `ai-ready`; requires issue body + complete tech spec comment; **all initiative siblings Ready**; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no HITL, no memory); refuses Refinement / `human-ready` / missing tech spec / partial initiative. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
-10. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no HITL, no memory)
+9. `/forge.implement-ticket` — only Ready + `ai-ready`; requires issue body + complete tech spec comment; **all initiative siblings Ready**; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no Plan pause, no memory); refuses Refinement / `human-ready` / missing tech spec / partial initiative. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
+10. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no Plan pause, no memory)
 
 **Initiative lifecycle (memory):** `intake → hld → lld → executing → shipped` on `initiatives/<slug>/initiative.md`. HLD package: `features/initiative.feature`, `spec.md`, `design.md`, `security.md`, `open-questions.md`. LLD ticket features under `features/<ticket-slug>.feature`. Project rollup: `product/open-questions.md`. Soft-deprecated: `product/specs/<feature>.md` (legacy validation only; new work uses initiatives).
 
-**Monthly research:** `/forge.insights-review` (formerly `/forge.discovery`) synthesizes insights/personas/brief — not initiative intake.
+**Monthly research:** `/forge.insights-review` (formerly `/forge.discovery`) synthesizes insights/personas/brief; `/forge.competitive-scan` goes looking at alternatives and rewrites competitive posture — neither is initiative intake.
 
-**Two-step tickets (LLD):** grooming = product intent from HLD (+ Designer triage for likely user-facing); refinement = product contract in the issue body (Outcome, Scope, AC from ticket feature, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`. For `ai-ready`, Architect + Security also post a tech spec comment (speckit plan-document format). For user-facing tickets, Designer enriches the body inline with Figma context (no separate design-spec comment) and the Ready gate includes design + structure rows; for user-facing `ai-ready`, structure must pass (bound theme, required Figma pages/variable naming patterns/component categories — values stay per-app). `/forge.implement-ticket` reads body + tech spec comment.
+**Two-step tickets (LLD):** grooming = product intent from HLD (+ Designer triage for likely user-facing); refinement = product contract in the issue body (Outcome, Scope, AC from ticket feature, Out of scope, Constraints, Verification, Open questions=None) plus exactly one of `ai-ready` | `human-ready`. `ai-ready` means the agent finishes the ticket start to finish; leftover human executor steps become a separate `human-ready` issue. For `ai-ready`, Architect + Security also post a tech spec comment (speckit plan-document format). For user-facing tickets, Designer enriches the body inline with Figma context (no separate design-spec comment) and the Ready gate includes design + structure rows; for user-facing `ai-ready`, structure must pass (bound theme, required Figma pages/variable naming patterns/component categories — values stay per-app). `/forge.implement-ticket` reads body + tech spec comment.
 
 ## Execution model
 
 Each event is a **human-callable command** (not a cron/automation). Parent owns the ritual:
 
-1. `resolve-paths` → `sync-memory` → `resolve-config` (fail closed)
+1. `resolve-paths` → `resolve-config` (fail closed). Prefer Cursor **Plan Mode** for research and the plan delta (request SwitchMode to `plan` if invoked in Agent without an accepted plan). Skip `sync-memory` until Accept.
 2. Spawn listed Agents as **propose-only** subagents with the event brief
 3. Merge proposals; Lead wins on ties unless Instructions say otherwise; **board/SCM wins over memory**
-4. HITL pause (hand-off shape below)
-5. On approve: `validate-memory` → Apply vendor/SCM first → Apply memory → `commit-memory` (push memory-repo `main`) if memory changed
+4. AskQuestion on forks when needed; present the **plan delta** (CreatePlan when available; else markdown)
+5. After **Accept (build):** `sync-memory` first (fail closed if pulled files diverge from the plan) → `validate-memory` → Apply vendor/SCM first → Apply memory → `commit-memory` (push memory-repo `main`) if memory changed. **Adjust** reshapes the plan; **Cancel** Applies nothing.
 
-Subagents never HITL, never Apply, never mutate SCM unless executing parent-approved Apply steps.
+Subagents never pause with the orchestrator, never Apply, never mutate SCM unless executing parent-accepted Apply steps.
+
+**Cursor Plan Mode** is the review surface for pausing events (memory/vendor deltas). **`/forge.plan-refresh`** is a different thing: it rewrites `project/plan.md` (delivery sequence).
 
 ### Automation exceptions
 
-`/forge.implement-ticket` and `/forge.validate-ticket` are **invocation-automated**: still human-triggered slash commands, but zero hand-off inside.
+`/forge.implement-ticket` and `/forge.validate-ticket` are **invocation-automated**: still human-triggered slash commands, but no Plan pause inside.
 
 - Bootstrap: `resolve-paths` → `resolve-config` only (skip `sync-memory`)
-- No Questions phase, no apply-set, no orchestrator approve
+- No plan delta, no Accept gate
 - Auto-Apply vendor/SCM only; skip `validate-memory` and `commit-memory`
 - Implement: claim → code → PR → CI wait → board In Review
 - Validate: QA + Security verdicts → PASS/FAIL PR comment → on dual approve auto-merge, delete source branch, board Done; on pass-back FAIL comment only (board stays In Review)
 
 Board, PR/MR, and comments are the audit trail for these two commands.
 
-### HITL modes
+### Event modes
 
-`observe` | `propose` | `approve-before-write` | `approve-before-vendor` | `auto-apply` (implement-ticket / validate-ticket only)
+`observe` | `plan` | `auto-apply` (implement-ticket / validate-ticket only)
 
-### Hand-off shape (every pause)
+Whether the plan lists vendor actions is an event fact, not a mode. `/forge.respond-to-review` and `/forge.cut-release` may also list **Proposed submodule commits**.
 
-Two phases, same event, parent only. Subagents stay propose-only and never HITL. One conversation, one Apply gate: talk until the apply-set is right; Apply only on approve of a set the user has seen. Skip Phase 1 when there are no forks. `observe` (`/forge.help`) reports only — no Questions gate, no Apply.
+### Plan shape (every pause)
 
-**Phase 1 — Questions** (when forks exist). Nothing is written. Each item is one decision; its letters are options to that decision only. Independent forks are separate questions in the same form, not one flat A/B/C list. Exactly one option per question is labeled `(Recommended)` and listed first. Prefer the host structured-question tool (`AskQuestion`) when it is in the session; if missing (Auto, some models, CLI print/headless, cloud), print the same structure in chat. Do not switch to Plan mode to get the picker. After asking, **stop** — do not Apply or mutate SCM until the user answers. Do not put `approve all` inside the picker.
+Same event, parent only. Subagents stay propose-only. Prefer Cursor **Plan Mode**; if unavailable (CLI / Auto / some cloud), print the same delta in markdown. `observe` (`/forge.help`) reports only — no plan, no Apply.
 
-Markdown fallback for Phase 1:
+**During Plan:** research, spawn propose-only subagents, AskQuestion on forks, then present the plan. Nothing is written. If invoked in Agent mode with no accepted plan for this event, request SwitchMode to `plan` and stop — do not research-and-Apply in one Agent pass.
 
-- One heading (or numbered prompt) per question
-- Lettered options; `(Recommended)` on the first option
-- Footer: Pick one option per question (Recommended is the default if you want it). Name a letter, or describe a different idea. Nothing is written yet.
-
-A letter, Other, or freeform during Questions is a **redirect**: reshape and ask again.
-
-**Phase 2 — Apply-set** (after answers, or when Phase 1 was skipped):
+**Plan delta** (reviewable — not a full file dump):
 
 - **Intent** — 1–2 sentences
-- **Proposed memory edits** — per file: update / remove / create
-- **Proposed vendor actions** — none, or explicit list
-- **Questions** — `None` (path letters belong in Phase 1 only)
+- **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy; do not restate unchanged sections)
+- **Proposed vendor actions** — none, or explicit list (tag member/host when group-scoped)
 - **Left alone** — in-scope docs/actions intentionally unchanged
-- Event extras when the command defines them (`Refinement queue`, `Ready gate`, …)
-- **How to reply** — required footer (fixed copy; do not invent a second instruction paragraph)
+- Event extras when the command defines them (`Refinement queue`, `Ready gate`, …) as tables — not pasted tickets
+- **Proposed submodule commits** — only for `/forge.respond-to-review` and `/forge.cut-release` when those events write application git
+
+After the plan exists, only three options:
 
 | Reply | Effect |
 | --- | --- |
-| **Questions phase** | Pick an option (or Other / freeform). Not an Apply. |
-| **approve all** | Apply exactly the memory + vendor list on the **apply-set** screen. Last word. Only valid when Questions is `None`. |
-| **approve subset** | Apply only the memory/vendor lines the user names from that apply-set. Still an Apply; still this proposal, just smaller. |
-| **reject** | Apply nothing. End the event. |
-| **Anything else on the apply-set** | Freeform steer or new idea. **Redirect**: reshape (may re-open Questions), pause again. Never Apply a set the user has not seen. |
+| **Accept (build)** | Apply exactly this plan. Whole plan, last word. |
+| **Conversationally adjust** | Stay in Plan; reshape; show a new whole plan. Dropping a line is an adjust, not a partial Apply. |
+| **Cancel (close)** | Apply nothing. End the event. |
 
-**How to reply** footer on the apply-set:
+Never Apply a plan the user has not accepted as a whole. No `approve subset`. Headless uses the same three options in markdown (accept the whole plan / say what to change / cancel).
 
-> Reply **approve all**, **approve subset** (name the lines), or **reject**. Say what to change to reshape and pause again. Nothing is written until you approve.
+**Apply** writes exactly what the accepted plan specified. It does not re-research or expand scope.
 
 ## Agents
 

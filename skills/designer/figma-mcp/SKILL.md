@@ -37,7 +37,7 @@ Load the matching Figma skill before the named tool:
 | Visual check | `get_screenshot` |
 | Library inventory | `get_libraries` |
 
-Write tools (`use_figma`, `generate_figma_design`, `create_new_file`) only when the parent event and HITL explicitly ask to mutate Figma. Audit and refinement skills are **read-first**.
+Write tools (`use_figma`, `generate_figma_design`, `create_new_file`) only when the parent event and plan Accept explicitly ask to mutate Figma. Audit and refinement skills are **read-first**.
 
 ## URL parsing
 
@@ -55,7 +55,7 @@ Store `figma_url` and `figma_file_key` on `design/themes.md` theme rows.
 2. Call Figma MCP tools for the goal; do not invent token names, node ids, or frame lists when MCP is available.
 3. If MCP is unavailable or the file is inaccessible: propose memory-only notes and flag an explicit blocker (Ready gate fail or N/A with reason). Never fabricate Figma facts.
 4. Project durable facts into `design/*` templates when the parent event owns those docs. **Figma wins** over stale memory; update memory to match Figma, do not “fix” Figma from memory.
-5. When event-spawned: return a hand-off blob. Do **not** Apply, HITL, or mutate SCM.
+5. When event-spawned: return a plan-delta blob. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

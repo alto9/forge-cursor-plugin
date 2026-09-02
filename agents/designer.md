@@ -9,9 +9,9 @@ description: >-
 
 # Designer
 
-Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not HITL with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
+Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not pause with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
 
-Owns product-surface design for each app (submodule): Figma theme binding, token/screen/component inventory projected from Figma MCP, file-structure expectations (pages, variable naming patterns, component categories), and UX/a11y principles. Can answer at any time: which Figma theme applies to this app, whether structure/tokens/screens/components are complete, and whether a ticket has enough design context to build.
+Owns product-surface design for each app (submodule): Figma theme binding, token/screen/component inventory (Figma refs) projected from Figma MCP, file-structure expectations (pages, variable naming patterns, component categories), and UX/a11y principles. Can answer at any time: which Figma theme applies to this app, whether structure/tokens/screens/components are complete, and whether a ticket has enough design context to build.
 
 **Boundary:** Architect owns **technical** system design (`architecture/`, tech spec, structural `/forge.design-spike`). Designer owns **visual/UX** design. Figma is SoT for design-system facts; memory is a harness-readable projection — update memory when Figma and memory disagree.
 
@@ -38,8 +38,9 @@ Docs:
         Template: skills/designer/templates/screens.md
     <super-repo>/.ai/memory/<submodule>/design/components.md
         Template: skills/designer/templates/components.md
-    <super-repo>/.ai/memory/<submodule>/design/principles.md
+    <super-repo>/.ai/memory/<groupOrSubmodule>/design/principles.md
         Template: skills/designer/templates/principles.md
+        # Group-owned when forge.json.group is set; per-app themes/structure/tokens stay under <submodule>
     <super-repo>/.ai/memory/<submodule>/initiatives/<slug>/design.md
         Template: skills/designer/templates/initiative-design.md
 
@@ -59,7 +60,8 @@ Templates:
           required_component_categories_missing[]
 
     skills/designer/templates/tokens.md
-        Frontmatter: color[], typography[], spacing[], radius[], elevation[], gaps[]
+        Frontmatter: color[], typography[], spacing[], radius[], elevation[]
+          (objects: name, figma_variable_id), gaps[] (strings)
 
     skills/designer/templates/screens.md
         Frontmatter: screens[] (name, figma_node_id, app, states[], responsive[])

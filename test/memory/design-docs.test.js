@@ -157,6 +157,44 @@ gaps: []
     expect(validateDesignTokens(md).errors).toEqual([]);
   });
 
+  it("accepts token ref objects", () => {
+    const md = `---
+doc: design.tokens
+schema_version: 1
+updated: 2026-08-23
+color:
+  - name: color/background/primary
+    figma_variable_id: "VariableID:1:2"
+typography: []
+spacing: []
+radius: []
+elevation: []
+gaps: []
+---
+`;
+    const result = validateDesignTokens(md);
+    expect(result.errors).toEqual([]);
+    expect(result.parsed.core.color).toHaveLength(1);
+  });
+
+  it("rejects token family entries that are strings", () => {
+    const md = `---
+doc: design.tokens
+schema_version: 1
+updated: 2026-08-23
+color:
+  - "color/background/primary=#FFFFFF"
+typography: []
+spacing: []
+radius: []
+elevation: []
+gaps: []
+---
+`;
+    const result = validateDesignTokens(md);
+    expect(result.errors.length).toBeGreaterThan(0);
+  });
+
   it("accepts empty screens and components", () => {
     expect(
       validateDesignScreens(`---

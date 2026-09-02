@@ -29,10 +29,12 @@ Exactly one label (from `forge.json` `labels.aiReady` / `labels.humanReady`, def
 
 | Label | Meaning |
 |---|---|
-| `ai-ready` | An agent can complete the work inline in the submodule (code, tests, in-repo docs). |
-| `human-ready` | A human must act (external config, vendor console, credentials, offline ops, org process). |
+| `ai-ready` | An agent finishes the ticket start to finish inline in the submodule (code, tests, in-repo docs). |
+| `human-ready` | A human must act (external config, vendor console, credentials, offline ops, org process, post-deploy commands). |
 
 Both may sit in the Ready column. `/forge.implement-ticket` accepts **only** `ai-ready`. Labels are mutually exclusive — strip the other when applying.
+
+If any step cannot be finished by the agent, that step is its own `human-ready` issue before Ready. Do not bury leftover human executor work in Scope, Constraints, or Verification of an `ai-ready` card. Verification may still name how to **prove** done (watch a reset email arrive); it may not assign leftover **executor** work. Same-initiative leftovers stay on the same host milestone so the sibling-Ready gate still applies.
 
 ## Ready checklist (all must pass; item 10 may be N/A)
 
@@ -41,10 +43,10 @@ Both may sit in the Ready column. `/forge.implement-ticket` accepts **only** `ai
 3. **Acceptance criteria** — testable bullets (Given/When/Then or checkboxes), including edges that change implementation.
 4. **Out of scope** — explicit non-goals for this ticket.
 5. **Constraints** — product/ops rules **inlined** in the body (copy the needed facts; do not point at memory paths). For `ai-ready`, keep body Constraints product-level; technical stack/interfaces belong in the tech spec. For `human-ready`, include enough operational detail in Constraints/Verification since there is no tech spec.
-6. **Verification** — how done is proven (commands, checks, fixtures, or human confirmation steps).
+6. **Verification** — how done is proven (commands, checks, fixtures, or human confirmation of proof). Proof steps are not leftover executor work.
 7. **Open questions** — **None**. Unanswered → stay in Refinement or Blocked.
 8. **Ambiguity scan** — no TBD/maybe/unresolved alternatives.
-9. **Executor class** — AI or human chosen; proposed label matches; human-ready bodies still fully specify what the human must do and how to verify.
+9. **Executor class** — AI or human chosen; proposed label matches; scan Scope/Constraints/Verification for leftover human executor work (console steps, post-deploy commands, credentials, offline ops). Mixed work → fail and split into a separate `human-ready` issue rather than promote. Human-ready bodies still fully specify what the human must do and how to verify.
 10. **Tech spec comment (`ai-ready` only)** — if proposed label is `ai-ready`: newest issue comment with `<!-- forge-tech-spec` exists (or is proposed in this Apply-set), mandatory sections complete (Summary, Technical Context, Constitution Check pass, Project Structure, Security Context, Security Requirements, Security Verification), no `[NEEDS CLARIFICATION]`. If `human-ready`: **N/A** (auto-pass).
 
 ## Board issue body shape (required for Ready)
@@ -79,7 +81,7 @@ Preserve grooming Intention by folding it into Outcome (and Notes→Constraints/
 
 - Marker: `<!-- forge-tech-spec:v1 -->` at the top of the comment body.
 - Shape: `skills/forge/templates/tech-spec.md` (speckit plan-document format + Security sections; not Spec Kit tooling).
-- Parent merges Architect + Security proposals; posts via `vendor-issues-comment` on HITL approve before/with Ready promotion.
+- Parent merges Architect + Security proposals; posts via `vendor-issues-comment` on plan Accept before/with Ready promotion.
 - Re-refinement: update existing note (GitLab) or post a replacement (GitHub — newest marker wins).
 - Reclassify `ai-ready` → `human-ready`: do not block promotion if the tech spec is absent.
 
@@ -92,7 +94,7 @@ Preserve grooming Intention by folding it into Outcome (and Notes→Constraints/
 
 - Only **promote Refinement → Ready** when checklist items 1–9 pass and item 10 passes or is N/A.
 - On promote: set `statusIds.ready`, apply exactly one of `ai-ready` | `human-ready`, mirror under backlog.md `# Ready`. For `ai-ready`, also Apply the tech spec comment.
-- Failures stay in Refinement (or Blocked); include pass/fail table + proposed label + tech spec pass/fail/N/A in HITL.
+- Failures stay in Refinement (or Blocked); include pass/fail table + proposed label + tech spec pass/fail/N/A in the plan.
 - Never say “ready for implementation” unless promoting to Ready.
 
 ## Outputs / stop conditions

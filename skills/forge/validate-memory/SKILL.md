@@ -19,8 +19,8 @@ Parent command runs this before Apply on any proposed memory write; also after i
 3. **Gherkin features** (`initiatives/<slug>/features/*.feature`): require non-empty content with `Feature:` and at least one `Scenario:` / `Scenario Outline:` line (phase-1 syntax check).
 4. **Legacy heading docs** (paths outside the map): require all template `#` section headings; forbid extras; empty sections OK.
 5. Validate forge.json: required fields; `path == submodulePath`; host block matches `host`.
-6. On **errors**: include in HITL hand-off and **block Apply** for invalid files. Valid proposed files in the same apply-set may still Apply.
-7. On **warnings** (weak brief, body soft-max, legacy headings in body): include in HITL hand-off; **do not** block Apply. Readiness warnings are advisory only — no command gates.
+6. On **errors**: include in plan delta and **block Apply** for invalid files. Valid proposed files in the same apply-set may still Apply.
+7. On **warnings** (weak brief, body soft-max, legacy headings in body): include in plan delta; **do not** block Apply. Readiness warnings are advisory only — no command gates.
 
 ## Script
 

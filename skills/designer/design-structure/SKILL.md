@@ -69,4 +69,4 @@ Orphans and duplicates stay `component-audit` concerns; missing a whole category
 
 ## Outputs for other skills
 
-`design-structure-check` returns pass/fail + human-readable `structure_gaps[]`. Memory projection: `design/structure.md`. Token inventory (`design/tokens.md`) stays a value projection; put naming/structure misses in `design/structure.md`, not as invented token values.
+`design-structure-check` returns pass/fail + human-readable `structure_gaps[]`. Memory projection: `design/structure.md`. Token inventory (`design/tokens.md`) is a ref catalog like screens (`name` + `figma_variable_id`); put naming/structure misses in `design/structure.md`, not as invented token entries.

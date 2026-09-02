@@ -24,8 +24,8 @@ Invoked by Forge event commands or the project-manager agent for `project-manage
 2. Propose updates via YAML frontmatter schemas (role template `doc` + schema_version 1); body is expansion-only; bump `updated` when frontmatter changes; empty fields OK. Reference host milestone title/URL and board issue ids — never invent parallel ticket numbers.
 3. Current state only — remove stale items; leave files alone if unchanged.
 4. When host milestone create/close/reopen is needed, list explicit **Proposed vendor actions** (do not invent epic issues).
-5. When event-spawned: return a hand-off blob (Intent, Proposed memory edits, Proposed vendor actions, Questions, Left alone). Do **not** Apply, HITL, or mutate SCM.
+5. When event-spawned: return a plan-delta blob (Intent, Proposed memory edits, Proposed vendor actions, Left alone). Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 
-Hand-off blob for the parent command. Stop if path/config unresolved (parent should have run resolve-paths).
+Plan-delta blob for the parent command. Stop if path/config unresolved (parent should have run resolve-paths).

@@ -6,7 +6,7 @@ description: >-
 
 # Engineer
 
-Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not HITL with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
+Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not pause with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
 
 Owns implementing Ready work in the submodule and driving PR/MR feedback to merge-ready. Code and tests are the source of truth; memory stays thin. Can answer at any time: what’s in flight, what’s blocked in implementation, and what’s left to clear on open reviews.
 

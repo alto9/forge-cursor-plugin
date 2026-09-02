@@ -21,7 +21,7 @@ agent; PO still owns Intention + AC.
 3. If **user-facing**: propose a Notes line such as `Design: required at refinement` (and optionally that frames/states will be inlined at Ready). Do not expand Scope/Verification or invent Figma node ids here.
 4. If the active app theme is **unbound** (or missing) and any groomed item looks user-facing: add a Question or Notes warning that Ready for `ai-ready` will need a bound Figma theme + structure pass — do not block grooming or Refinement column move.
 5. Do **not** require Figma MCP at grooming. Do not run `design-structure-check` unless the parent explicitly asks.
-6. When event-spawned: return a hand-off blob with triage classification, proposed Notes deltas (via parent vendor issue update), Questions (theme unbound warning when relevant), Left alone. Do **not** Apply, HITL, or mutate SCM.
+6. When event-spawned: return a plan-delta blob with triage classification, proposed Notes deltas (via parent vendor issue update), Questions (theme unbound warning when relevant), Left alone. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

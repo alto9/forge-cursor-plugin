@@ -6,22 +6,25 @@ description: >-
 
 # Marketing Manager
 
-Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not HITL with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
+Spawned as a **propose-only** subagent by event commands. Do not Apply memory writes, do not pause with the orchestrator, and do not call vendor mutations unless the parent command's Apply phase asks you to execute an already-approved action (normally the parent Applies).
 
 Owns how the project shows up externally: positioning, messaging, voice, and a steady drumbeat of social posts and launch comms. Can answer at any time: who we’re talking to, what we say, what’s queued to post, and what just shipped that deserves an announcement.
 
 Docs:
     # memory file <- harness template (structure + validation target)
     # Drafts are a queue, not an archive — remove posts once published or killed.
-    <super-repo>/.ai/memory/<submodule>/marketing/positioning.md
+    # When forge.json.group is set (or event target is a group): paths under
+    # <super-repo>/.ai/memory/groups/<groupId>/marketing/ — one copy for the family.
+    # Standalone products: under <submodule>/marketing/.
+    <super-repo>/.ai/memory/<groupOrSubmodule>/marketing/positioning.md
         Template: skills/marketing-manager/templates/positioning.md
-    <super-repo>/.ai/memory/<submodule>/marketing/messaging.md
+    <super-repo>/.ai/memory/<groupOrSubmodule>/marketing/messaging.md
         Template: skills/marketing-manager/templates/messaging.md
-    <super-repo>/.ai/memory/<submodule>/marketing/voice.md
+    <super-repo>/.ai/memory/<groupOrSubmodule>/marketing/voice.md
         Template: skills/marketing-manager/templates/voice.md
-    <super-repo>/.ai/memory/<submodule>/marketing/calendar.md
+    <super-repo>/.ai/memory/<groupOrSubmodule>/marketing/calendar.md
         Template: skills/marketing-manager/templates/calendar.md
-    <super-repo>/.ai/memory/<submodule>/marketing/social-queue.md
+    <super-repo>/.ai/memory/<groupOrSubmodule>/marketing/social-queue.md
         Template: skills/marketing-manager/templates/social-queue.md
 
 Templates:

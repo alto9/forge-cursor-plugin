@@ -19,7 +19,7 @@ Invoked by `/forge.design-system-audit` or the designer agent to inventory desig
 4. Flag inventory gaps in the hand-off Questions: orphans (unused), duplicates, or screens with no component coverage.
 5. When the parent wants structure compliance refreshed, also run `design-structure-check` (loads `design-structure`) so missing required **categories** (Button, Text input, Link) land in `design/structure.md` — separate from orphans/duplicates.
 6. Prefer Figma over inventing component names. If MCP fails, flag blocker; do not invent inventory.
-7. When event-spawned: return a hand-off blob. Do **not** Apply, HITL, or mutate SCM.
+7. When event-spawned: return a plan-delta blob. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

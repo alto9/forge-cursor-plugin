@@ -11,37 +11,38 @@ description: >-
 
 ## Parent execution model
 
-1. Run skills `resolve-paths` → `sync-memory` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure).
-2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath, memoryRepoRoot, memoryRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not HITL, must not mutate vendor/SCM.
-3. Merge subagent proposals into one hand-off. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.** For tech spec merges: PO owns product boundaries, **Designer owns UX/interaction/Figma refs**, Architect owns structure, Security owns safety.
-4. HITL pause using the Mode / Pause when / hand-off shape below.
-5. On orchestrator approve: run `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist (including tech spec comments for `ai-ready`); then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates.
+1. Resolve target via `resolve-paths` → `resolve-config` (fail closed on path ambiguity or memory-repo sync failure). Prefer Cursor **Plan Mode** for research and the plan delta (request SwitchMode to `plan` if invoked in Agent without an accepted plan for this event). Do **not** write memory or mutate vendor/SCM during Plan. Skip `sync-memory` until Accept — Apply pulls then.
+2. Spawn each listed Agent as a **propose-only** subagent with: event id, superRepoRoot, submodulePath (or group members), memoryRepoRoot, memoryRoot / groupRoot, submoduleRoot, docs in scope, skills to use, and relevant Instructions. Subagents must not write memory, must not pause with the orchestrator, must not mutate vendor/SCM.
+3. Merge subagent proposals into one plan delta. On conflict, Lead wins unless Instructions say otherwise. **Board/SCM wins over memory.**
+4. AskQuestion on forks when needed; then present the **plan delta** via CreatePlan when available, else markdown. See Plan shape below. Nothing is written yet.
+5. After **Accept (build):** run `sync-memory` first; if pulled files diverge from the accepted plan, fail closed and return to Plan. Then `validate-memory` on proposed memory files; Apply vendor/SCM ops first when both exist; then Apply memory to match SCM; then run `commit-memory` (push memory-repo `main`) if memory files changed. Never Apply invalid templates. **Adjust** reshapes the plan; **Cancel** Applies nothing.
 
+### Plan shape (required)
 
-### Hand-off shape (required)
+Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / cloud). Parent only; subagents propose-only. See README Plan shape. No writes until Accept.
 
-Two phases; see README Hand-off shape. Parent only; subagents propose-only.
-
-**Phase 1 — Questions** (when forks exist): prefer host AskQuestion when available; else markdown. One named question per fork; lettered options with `(Recommended)` first. Nothing written. Letter / Other / freeform → redirect and ask again. Skip when no forks. Do not put approve all in the picker.
-
-**Phase 2 — Apply-set** (after answers, or when Phase 1 skipped):
+**Plan delta** (reviewable — not a full file dump):
 
 - **Intent** — 1–2 sentences
-- **Proposed memory edits** — per file: update / remove / create
-- **Proposed vendor actions** — none, or explicit list (include `post issue comment` with full tech spec preview per **`ai-ready`** issue only)
-- **Questions** — `None`
+- **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
+- **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
-- **Ready gate** — issue id | pass/fail | failing checklist items | proposed label (`ai-ready` | `human-ready`) | tech spec: pass/fail/N/A | **design: pass/fail/N/A** | missing sections
-- **How to reply** — required footer; see README Hand-off shape
+- Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
-Reply: **approve all** / **approve subset** Applies this set; **reject** Applies nothing; anything else reshapes and pauses again (may re-open Questions). Never Apply a set the user has not seen.
+After the plan exists, only three options:
+
+- **Accept (build)** — Apply exactly this plan. Whole plan, last word.
+- **Conversationally adjust** — stay in Plan, reshape, show a new whole plan. Dropping a line is an adjust, not a partial Apply.
+- **Cancel (close)** — Apply nothing. End the event.
+
+Never Apply a plan the user has not accepted as a whole. Headless: same three options in markdown (accept the whole plan / say what to change / cancel).
 
 ## Event contract
 
 Cadence: On demand (after grooming; before implement-ticket)
 Lead: Product Owner
-HITL:
-Mode: approve-before-vendor
+Gate:
+Mode: plan
 Pause when:
     Expanding issue bodies to Ready product shape
     Tech spec comment draft ready for review (`ai-ready` only)
@@ -50,28 +51,30 @@ Pause when:
     Memory initiative status → executing when all sibling tickets Ready
     Open product/tech/design decisions that block Ready
 Instructions:
+If product scope and `forge.json.kind` is `site`: **STOP** — this project is `kind: site` (no ticket board ritual). Use a group target or an `app`/`library` member.
+If group scope: skip `kind: site` members for ticket work unless that member has a board; family narrative still reads them for context.
 Bind to the **active submodule** only. Do not refine other configured projects in this run; the orchestrator invokes the command again per path.
 Work the board **Refinement** column (forge.json statusIds.refinement) — pull issue ids from board + backlog.md # Refinement.
 For each selected item: expand grooming brief into a full Ready body via skills/product-owner/agent-ready-ticket + requirements-writing + **compile-ticket-feature** when the ticket belongs to an initiative. Issue body must stand alone for product facts — no links to memory paths. Ticket `.feature` scenarios **add to** Intention + AC (do not replace Out of scope / Constraints / Verification).
-Classify executor: exactly one of `ai-ready` | `human-ready` (forge.json labels.aiReady / labels.humanReady).
+Classify executor: exactly one of `ai-ready` | `human-ready` (forge.json labels.aiReady / labels.humanReady). `ai-ready` means the agent finishes the ticket start to finish. If Scope, Constraints, or Verification still assign leftover human executor work (console steps, post-deploy commands, credentials, offline ops), stay in Refinement and split that work into a separate `human-ready` issue on the same milestone when initiative-linked. Verification proof (watch a reset email arrive) is not leftover executor work.
 
 Classify **user-facing** (UI flows, visual states, accessibility, interaction) vs not. For user-facing tickets, spawn Designer with `refinement-design-check` (+ `figma-mcp` / `theme-bind` / `design-structure-check` as needed). Designer proposes **inline** Scope/AC/Verification deltas (Figma file + node refs, states, responsive, a11y) — **no** `<!-- forge-design-spec -->` comment. For non-user-facing tickets, design and structure gates are **N/A**. Prefer HLD `design.md` / Figma refs as input when present.
 
 **If `human-ready`:**
-Run product checklist (items 1–9); tech spec is N/A — do not spawn Architect/Security for tech spec writing. PO may still use Architect constraint-mapping to inline product-level constraints into the body. Design enrichment is recommended for user-facing work; do not hard-fail solely because Figma MCP is unavailable or file structure is incomplete when a human executor owns UX — note MCP/structure gaps in Questions. On HITL approve: promote to Ready with `human-ready` only — no tech spec comment.
+Run product checklist (items 1–9); tech spec is N/A — do not spawn Architect/Security for tech spec writing. PO may still use Architect constraint-mapping to inline product-level constraints into the body. Design enrichment is recommended for user-facing work; do not hard-fail solely because Figma MCP is unavailable or file structure is incomplete when a human executor owns UX — note MCP/structure gaps in the plan delta. On plan Accept: promote to Ready with `human-ready` only — no tech spec comment.
 
 **If `ai-ready`:**
 1. Architect proposes tech spec sections via `write-tech-spec` (template `skills/forge/templates/tech-spec.md`) — **slice from** `initiatives/<slug>/spec.md` when the ticket is initiative-linked — plus constraint-mapping / interface-contracts / change-impact as needed.
 2. Security proposes security sections via `security-write-tech-spec` (and threat-model / initiative `security.md` as needed).
 3. Parent merges into one comment body starting with `<!-- forge-tech-spec:v1 -->`.
 4. Ready gate requires merged tech spec complete (mandatory sections; Constitution Check pass; no open clarifications). **Technical** design gaps → stay Refinement or spawn `/forge.design-spike`. **UX** / **structure** gaps → design/structure gate fail; stay Refinement.
-5. On HITL approve: post comment via `vendor-issues-comment` **before or with** column move to Ready; use `vendor-issues-comments-list` to find an existing marker comment (update on GitLab via `update_issue_note`, or post replacement on GitHub — newest marker wins).
+5. On plan Accept: post comment via `vendor-issues-comment` **before or with** column move to Ready; use `vendor-issues-comments-list` to find an existing marker comment (update on GitLab via `update_issue_note`, or post replacement on GitHub — newest marker wins).
 6. Reclassify `ai-ready` → `human-ready`: do not block promotion if the tech spec is absent.
 
 Only checklist **pass** (items 1–9 + item 10 pass or N/A + **design pass or N/A** + for user-facing **`ai-ready`**, **structure pass**) → vendor move to statusIds.ready, apply the readiness label (strip the other), + backlog.md # Ready. Failures stay Refinement or Blocked; never promote weak tickets.
 **Initiative completing:** when promoting a ticket that is the last sibling still not Ready in `initiative.md` `board_tickets[]`, propose `status: executing` on the initiative after all siblings are Ready. Do not start implement until all initiative tickets are Ready (see implement-ticket gate).
 Do not create new `product/specs/<feature>.md` for initiative work (soft-deprecated). Open questions must be empty before Ready.
-HITL must include Ready gate table (pass/fail + label + tech spec pass/fail/N/A + **design pass/fail/N/A** + **structure pass/fail/N/A**). Do not claim ready for /forge.implement-ticket unless promoting with `ai-ready` **and** a complete tech spec comment.
+Plan delta must include Ready gate table (pass/fail + label + tech spec pass/fail/N/A + **design pass/fail/N/A** + **structure pass/fail/N/A**). Do not claim ready for /forge.implement-ticket unless promoting with `ai-ready` **and** a complete tech spec comment.
 Do not run high-level prioritization/Icebox cleanup here — that is backlog-grooming.
 Docs:
 <super-repo>/.ai/memory/<submodule>/product/backlog.md

@@ -29,7 +29,7 @@ During `/forge.refinement` for **user-facing** tickets (UI flows, visual states,
    - **fail** (`ai-ready` user-facing): unbound/stale theme, MCP blocker, missing frames/states/a11y, or structural fail — stay Refinement
 7. For **`human-ready`** user-facing tickets: design enrichment is recommended; do not hard-fail solely because Figma MCP is unavailable or structure is incomplete if a human executor owns UX — note gaps in Questions and prefer pass with explicit left-alone MCP/structure gap, or fail only when frames/refs are required and missing. Structure row may be **fail** (advisory) without blocking when the parent keeps the softer human-ready rule.
 8. UX gaps (unclear flows, missing states) → stay Refinement or recommend `/forge.design-spike` for **flow exploration**. Technical/structural (Architect) gaps remain Architect’s (`write-tech-spec` / design-spike). File-structure gaps stay Designer’s.
-9. When event-spawned: return a hand-off blob with Intent, Proposed memory edits (usually `design/structure.md` when checked), Proposed vendor actions (none — parent writes issue body), Questions, Left alone, **proposed body deltas**, **design gate**, and **structure gate**. Do **not** Apply, HITL, or mutate SCM.
+9. When event-spawned: return a plan-delta blob with Intent, Proposed memory edits (usually `design/structure.md` when checked), Proposed vendor actions (none — parent writes issue body), Left alone, **proposed body deltas**, **design gate**, and **structure gate**. Do **not** Apply, pause with the orchestrator, or mutate SCM.
 
 ## Outputs / stop conditions
 

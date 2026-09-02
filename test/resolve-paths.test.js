@@ -122,9 +122,90 @@ describe("resolvePaths fixtures", () => {
     expect(r.submodulePath).toBe("apps/foo");
   });
 
-  it("refuses --submodule .ai/memory", () => {
-    const r = resolvePaths({ cwd: tmp, submodule: ".ai/memory" });
-    expect(r.ok).toBe(false);
-    expect(r.error).toMatch(/memory-repo/);
+  it("resolves --group with members", () => {
+    fs.mkdirSync(path.join(tmp, "apps", "bar"), { recursive: true });
+    fs.mkdirSync(path.join(tmp, ".ai", "memory", "apps", "bar"), {
+      recursive: true,
+    });
+    fs.writeFileSync(
+      path.join(tmp, ".gitmodules"),
+      `[submodule "foo"]
+\tpath = apps/foo
+\turl = https://example.com/foo.git
+[submodule "bar"]
+\tpath = apps/bar
+\turl = https://example.com/bar.git
+[submodule "forge-memory"]
+\tpath = .ai/memory
+\turl = https://example.com/memory.git
+\tbranch = main
+`
+    );
+    fs.mkdirSync(path.join(tmp, ".ai", "memory", "groups", "acme"), {
+      recursive: true,
+    });
+    fs.writeFileSync(
+      path.join(tmp, ".ai", "memory", "groups", "acme", "group.json"),
+      JSON.stringify({ id: "acme", members: ["apps/foo", "apps/bar"] })
+    );
+    fs.writeFileSync(
+      path.join(tmp, ".ai", "memory", "apps", "foo", "forge.json"),
+      JSON.stringify({
+        version: 1,
+        path: "apps/foo",
+        host: "github",
+        github: { owner: "o", repo: "foo" },
+        group: "acme",
+      })
+    );
+    const r = resolvePaths({ cwd: tmp, group: "acme" });
+    expect(r.ok).toBe(true);
+    expect(r.scope).toBe("group");
+    expect(r.groupId).toBe("acme");
+    expect(r.members.map((m) => m.submodulePath)).toEqual([
+      "apps/foo",
+      "apps/bar",
+    ]);
+  });
+
+  it("bare --target prefers group id", () => {
+    fs.mkdirSync(path.join(tmp, ".ai", "memory", "groups", "acme"), {
+      recursive: true,
+    });
+    fs.writeFileSync(
+      path.join(tmp, ".ai", "memory", "groups", "acme", "group.json"),
+      JSON.stringify({ id: "acme", members: ["apps/foo"] })
+    );
+    const r = resolvePaths({ cwd: tmp, target: "acme" });
+    expect(r.ok).toBe(true);
+    expect(r.scope).toBe("group");
+    expect(r.groupId).toBe("acme");
+  });
+
+  it("product scope attaches groupRoot from forge.json.group", () => {
+    fs.mkdirSync(path.join(tmp, ".ai", "memory", "groups", "acme"), {
+      recursive: true,
+    });
+    fs.writeFileSync(
+      path.join(tmp, ".ai", "memory", "groups", "acme", "group.json"),
+      JSON.stringify({ id: "acme", members: ["apps/foo"] })
+    );
+    fs.writeFileSync(
+      path.join(tmp, ".ai", "memory", "apps", "foo", "forge.json"),
+      JSON.stringify({
+        version: 1,
+        path: "apps/foo",
+        host: "github",
+        github: { owner: "o", repo: "foo" },
+        group: "acme",
+        kind: "app",
+      })
+    );
+    const r = resolvePaths({ cwd: path.join(tmp, "apps", "foo") });
+    expect(r.ok).toBe(true);
+    expect(r.scope).toBe("product");
+    expect(r.groupId).toBe("acme");
+    expect(r.groupRoot).toBe(path.join(tmp, ".ai", "memory", "groups", "acme"));
+    expect(r.kind).toBe("app");
   });
 });
