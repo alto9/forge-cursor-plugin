@@ -15,7 +15,8 @@ Invoked by Forge event commands or agents for `vendor/branches/write`.
 3. Never invent ticket ids; board/SCM is source of truth.
 4. Propose vendor actions in plan delta before mutating unless parent Apply already accepted them, or the parent event is auto-apply (`/forge.validate-ticket`).
 5. **Memory-repo refuse:** if the target repository is the memory-repo (checkout path `.ai/memory`, or remote URL matching the `.ai/memory` submodule), **STOP**. Never create or delete branches on the memory-repo — memory uses local `commit-memory` on `main` only.
-6. **After `/forge.validate-ticket` merge:** delete the merged PR/MR source/head branch only (auto-Apply after dual approve). Never delete the default or a protected branch. Skip if merge did not succeed.
+6. **From `/forge.implement-ticket`:** create the remote branch from the fetched **host** default SHA only (via `vendor-branches-write` after local worktree setup). Never create from `issue-(N-1)`, local checkout HEAD, or fork `origin/main` when that remote is not the host.
+7. **After `/forge.validate-ticket` merge:** delete the merged PR/MR source/head branch only (auto-Apply after dual approve). Never delete the default or a protected branch. Skip if merge did not succeed.
 
 ## MCP mapping
 

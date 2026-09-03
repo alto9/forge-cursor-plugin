@@ -109,7 +109,7 @@ Board fields (`projectId` / `boardId` / `statusIds`) required only before board-
 
 `backlog` · `refinement` · `ready` · `in_progress` · `in_review` · `done`
 
-(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress` then PR + CI green → `in_review`; `/forge.validate-ticket` dual approve → auto-merge → `done`.)
+(`/forge.backlog-grooming` → `refinement`; `/forge.refinement` → `ready` + `ai-ready` or `human-ready`; `/forge.implement-ticket` claims `in_progress`, worktree from fetched host main, then PR + CI green → `in_review`; `/forge.validate-ticket` dual approve → auto-merge → `done`.)
 
 Optional `labels.aiReady` / `labels.humanReady` (default `ai-ready` / `human-ready`) — ensured on the host during init/refinement.
 
@@ -140,7 +140,7 @@ One concern per file; reference board issue id/URL.
 6. **LLD:** `/forge.backlog-grooming` — require initiative `status == lld`; split into actionable tickets → board **Refinement** (one host milestone per initiative; Designer triage: likely user-facing → Notes `Design: required at refinement`; stub `features/<ticket-slug>.feature` per ticket)
 7. `/forge.plan-refresh` — sequence initiative `board_tickets[]` into `project/plan.md` / milestones once grooming has created them
 8. `/forge.refinement` — compile ticket `.feature` into Intention + AC; full Ready product body (`agent-ready-ticket`) → board **Ready** (product contract in issue body for all tickets; **`ai-ready` only** — Architect + Security tech spec comment with `<!-- forge-tech-spec -->` from HLD `spec.md`; `human-ready` body-only is OK; **user-facing** — Designer inlines Figma refs/states/a11y; Ready gate includes design pass/fail/N/A and structure pass/fail/N/A; for user-facing **`ai-ready`**, unbound theme or file-structure gaps fail the gate). When the last sibling goes Ready, mark initiative `status: executing`.
-9. `/forge.implement-ticket` — only Ready + `ai-ready`; requires issue body + complete tech spec comment; **all initiative siblings Ready**; claims **In Progress** immediately; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no Plan pause, no memory); refuses Refinement / `human-ready` / missing tech spec / partial initiative. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
+9. `/forge.implement-ticket` — only Ready + `ai-ready`; requires issue body + complete tech spec comment; **all initiative siblings Ready**; claims **In Progress** immediately; **fetches host default and creates a worktree from that SHA before any code**; waits for CI after the PR/MR exists; PR + CI green → **In Review**; auto-Applies SCM only (no Plan pause, no memory); refuses Refinement / `human-ready` / missing tech spec / partial initiative / stacked branch. Brief readiness is advisory only (`validate-memory` warns on weak briefs; no command gates).
 10. `/forge.validate-ticket` — QA + Security gate on In Review; required PASS/FAIL PR/MR comment; dual approve → auto-merge → delete source branch → **Done** (auto-Applies SCM only; no Plan pause, no memory)
 
 **Initiative lifecycle (memory):** `intake → hld → lld → executing → shipped` on `initiatives/<slug>/initiative.md`. HLD package: `features/initiative.feature`, `spec.md`, `design.md`, `security.md`, `open-questions.md`. LLD ticket features under `features/<ticket-slug>.feature`. Project rollup: `product/open-questions.md`. Soft-deprecated: `product/specs/<feature>.md` (legacy validation only; new work uses initiatives).
@@ -170,7 +170,7 @@ Subagents never pause with the orchestrator, never Apply, never mutate SCM unles
 - Bootstrap: `resolve-paths` → `resolve-config` only (skip `sync-memory`)
 - No plan delta, no Accept gate
 - Auto-Apply vendor/SCM only; skip `validate-memory` and `commit-memory`
-- Implement: claim → code → PR → CI wait → board In Review
+- Implement: claim → worktree from fetched host main → code → PR → CI wait → board In Review
 - Validate: QA + Security verdicts → PASS/FAIL PR comment → on dual approve auto-merge, delete source branch, board Done; on pass-back FAIL comment only (board stays In Review)
 
 Board, PR/MR, and comments are the audit trail for these two commands.

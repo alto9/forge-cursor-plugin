@@ -682,7 +682,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "The Engineer implements a Ready ticket that is marked for an agent. They write the code and tests, open a pull request, and keep the branch current while review happens.",
+              "The Engineer implements a Ready ticket that is marked for an agent. After claim they fetch the host default branch, create a worktree from that SHA, and write code and tests there — not on whatever branch was already checked out.",
               "They claim In Progress so nobody else starts the same ticket. After the pull request exists they wait for the checks, then move the card to In Review when those checks are green (or when the host has no checks, which they say out loud), and they leave the merge to a human.",
               "One short page of what is in flight is enough, because the code, the ticket, and the pull request are the source of truth.",
             ],
@@ -1019,7 +1019,7 @@ export const courses = [
             rows: [
               ["Intake / HLD", "/forge.new-initiative, /forge.initiative-design, /forge.initiative-planning (+ optional /forge.design-spike)", "Memory only: feature, spec, design, security, OQs, sign-offs → status lld"],
               ["LLD", "/forge.backlog-grooming, /forge.plan-refresh, /forge.refinement", "Board tickets + milestone; ticket .feature files; Ready bodies + tech spec comments"],
-              ["Execute", "/forge.implement-ticket, /forge.validate-ticket", "All siblings Ready first; then claim, PR, dual gate, Done"],
+              ["Execute", "/forge.implement-ticket, /forge.validate-ticket", "All siblings Ready first; then claim, worktree from fetched host main, PR, dual gate, Done"],
             ],
           },
           {
@@ -1078,7 +1078,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "/forge.implement-ticket will not start unless the card is Ready, marked for an agent, and has a complete tech spec comment on the issue. If the card sits on an initiative milestone, every sibling on that milestone must also be Ready — no partial slices. It loads the issue body and that comment, claims In Progress right away, opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no Plan pause and no memory write; the board, the tech spec comment, and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
+              "/forge.implement-ticket will not start unless the card is Ready, marked for an agent, and has a complete tech spec comment on the issue. If the card sits on an initiative milestone, every sibling on that milestone must also be Ready — no partial slices. It loads the issue body and that comment, claims In Progress right away, fetches the host default branch from forge.json, and creates a worktree from that SHA before any code. It will not stack on the previous ticket branch after a squash, even when the files look the same. Then it opens the PR, waits for CI, and moves to In Review when those checks succeeded — or when the host has no CI, which you should treat as a fact. There is no Plan pause and no memory write; the board, the tech spec comment, and the PR are the trail. /forge.respond-to-review is the conversation until the change is ready to re-gate. Neither command merges. Merge comes from /forge.validate-ticket after QA and Security both approve.",
               "Read the diff against the issue and the tech spec, not against your hope. Extra scope is not a gift. Tests should be able to fail the acceptance criteria. New packages you do not recognize are a question, not a flourish.",
             ],
           },
@@ -1692,7 +1692,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Implementing a Ready ticket marked for an agent, opening a pull request, and keeping the branch current is already the job. You lead two events, and you attend when refinement, a spike, or a release needs an implementation fact. Code, the ticket body, the tech spec comment, and the pull request are the source of truth; implement-ticket does not keep an in-flight diary.",
+              "Implementing a Ready ticket marked for an agent, opening a pull request, and keeping the branch current is already the job. Every implement run fetches host default and branches from that SHA in a worktree before any code. You lead two events, and you attend when refinement, a spike, or a release needs an implementation fact. Code, the ticket body, the tech spec comment, and the pull request are the source of truth; implement-ticket does not keep an in-flight diary.",
             ],
           },
           {
@@ -1703,7 +1703,7 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["On demand", "/forge.implement-ticket", "Ready + ai-ready + tech spec comment only: claim In Progress right away, open the PR, wait for CI, and move to In Review when checks are green, or when the host has no checks, which you say out loud. No Plan pause, no memory. Merge waits for validate-ticket."],
+              ["On demand", "/forge.implement-ticket", "Ready + ai-ready + tech spec comment only: claim In Progress, fetch host default, worktree from that SHA, then code and PR. Wait for CI and move to In Review when checks are green, or when the host has no checks, which you say out loud. No Plan pause, no memory. Merge waits for validate-ticket."],
               ["On demand", "/forge.respond-to-review", "The conversation until the change is ready to re-gate; merge still waits for validate-ticket."],
             ],
           },
@@ -1736,10 +1736,10 @@ export const courses = [
             type: "table",
             headers: ["Skill", "Reach for it when"],
             rows: [
-              ["implement-ticket", "The card is Ready and ai-ready with a tech spec comment. Build from the body (including any Figma refs) and the comment."],
+              ["implement-ticket", "The card is Ready and ai-ready with a tech spec comment. Fetch host default, worktree from that SHA, then build from the body (including any Figma refs) and the comment."],
               ["write-tests", "The acceptance criteria need a test that can fail them."],
-              ["open-pr", "The change exists and needs a pull request."],
-              ["update-branch", "Main moved, or review asked for a refresh."],
+              ["open-pr", "The change exists in the worktree and needs a pull request against host default. Refuses stacked ancestry."],
+              ["update-branch", "Host main moved during review, or CI fix loops need a refresh on an already-correct ticket branch."],
               ["respond-to-review", "Comments arrived. Stay inside the review ask."],
               ["debug", "The build, the test, or the path is lying and you do not know why yet."],
               ["fix-bug", "The ticket is a defect with a reproduction; the outcome is a fix rather than a new capability."],
@@ -1788,7 +1788,8 @@ export const courses = [
               "Gate: Ready + ai-ready. Open questions: None. Mail spike has landed.",
               "",
               "1. /forge.implement-ticket",
-              "   Claims In Progress, builds the path on the card, and writes tests that can fail the AC.",
+              "   Claims In Progress, fetches host default, and opens a worktree from that SHA.",
+              "   Builds the path on the card in the worktree and writes tests that can fail the AC.",
               "   Opens the PR, waits for CI, and moves to In Review when green.",
               "2. QA or Security leaves a comment.",
               "   /forge.respond-to-review until ready to re-gate. Merge still waits for validate-ticket.",
