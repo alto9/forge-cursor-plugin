@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -42,9 +43,11 @@ Mode: plan
 Pause when:
     stay / adjust / stop decision is non-trivial
     metrics.md, experiments.md, or insights.md would change
-# If unchanged read: Mode may downgrade to observe for that run (report only).
+# If unchanged read after re-examination: Movement may be stay-put. Empty Current read → AskQuestion, not silent observe.
 Instructions:
-Decide stay / adjust / stop against targets; leave files alone if the read is unchanged.
+Decide stay / adjust / stop against targets. Re-examine metrics.md Current read as of this run — a filled file is not “done.”
+**Idle fork:** If Current read was never filled (or Primary/Supporting targets exist with no read), AskQuestion **before** CreatePlan which claimed metric to read this period; stay put always allowed. Do not invent metrics from fog.
+Leave files alone only when the read is still true after that judgment (and after any idle AskQuestion).
 Propose metrics.md Current read (and Targets only if the target itself changed); remove retired metrics from Primary/Supporting.
 Propose experiments.md changes: stop dead bets (Active → Concluded, then remove when no longer needed for the next decision); don’t accumulate old experiments.
 Propose insights.md edits only when the metrics read changes themes/implications; drop implications that no longer drive action.

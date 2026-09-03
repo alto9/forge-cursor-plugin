@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -43,7 +44,8 @@ Pause when:
     Risks/issues/dependencies added or removed
     status.md or plan.md would change from risk posture
 Instructions:
-Keep risks.md as live posture only — not a history log.
+Keep risks.md as live posture only — not a history log. Re-examine active Risks/Issues/Dependencies as of this run.
+**Idle fork:** If nothing is in flight and Ready/Refinement are empty while risks are empty or all cleared, AskQuestion **before** CreatePlan pointing at `/forge.backlog-grooming` / Icebox (or stay put) — an empty risk page with a starved pipeline is still a movement fork.
 Propose risks.md updates: add only active Risks/Issues/Dependencies/Assumptions; delete resolved, expired, or irrelevant rows (no “mitigated on …” archive).
 Propose status.md / plan.md edits only when risk posture changes delivery (new blocker, resequence, handoff); otherwise leave them alone.
 Docs:

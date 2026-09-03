@@ -23,7 +23,8 @@ Templates:
     # YAML frontmatter schema (doc: engineering.in_flight, schema_version: 1);
     #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
     # Current state only — delete finished work from active[]; no done archive.
-    # If a file doesn't need to change, leave it alone.
+    # If a file doesn't need to change after re-examination, leave it alone.
+    # Scheduled events this role leads: re-examine living docs as of this run; an idle input column is an AskQuestion fork (parent), not a successful empty plan.
 
     skills/engineer/templates/in-flight.md
         Frontmatter: active[], approach, open_questions[], blockers[], review_state

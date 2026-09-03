@@ -30,7 +30,8 @@ Templates:
     # All architecture/* docs: YAML frontmatter schema (doc: architecture.*, schema_version: 1);
     #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
     # Current state only — decisions.md holds active/superseded ADRs; no silent history rewrites elsewhere.
-    # If a file doesn't need to change, leave it alone.
+    # If a file doesn't need to change after re-examination, leave it alone.
+    # Scheduled events this role leads: re-examine living docs as of this run; an idle input column is an AskQuestion fork (parent), not a successful empty plan.
 
     skills/architect/templates/overview.md
         Frontmatter: system, context, major_components[], data_flow, deployment_shape, current_focus

@@ -27,6 +27,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -54,6 +55,7 @@ Instructions:
 If product scope and `forge.json.kind` is `site`: **STOP** — this project is `kind: site` (no ticket board ritual). Use a group target or an `app`/`library` member.
 If group scope: skip `kind: site` members for ticket work unless that member has a board; family narrative still reads them for context.
 Bind to the **active submodule** only. Do not refine other configured projects in this run; the orchestrator invokes the command again per path.
+**Idle fork:** If the board Refinement column (and backlog.md # Refinement) is empty, AskQuestion **before** CreatePlan: run `/forge.backlog-grooming` (with Icebox / Now / Later hints from the forge.help map); stay put. Do not invent Ready tickets.
 Work the board **Refinement** column (forge.json statusIds.refinement) — pull issue ids from board + backlog.md # Refinement.
 For each selected item: expand grooming brief into a full Ready body via skills/product-owner/agent-ready-ticket + requirements-writing + **compile-ticket-feature** when the ticket belongs to an initiative. Issue body must stand alone for product facts — no links to memory paths. Ticket `.feature` scenarios **add to** Intention + AC (do not replace Out of scope / Constraints / Verification).
 Classify executor: exactly one of `ai-ready` | `human-ready` (forge.json labels.aiReady / labels.humanReady). `ai-ready` means the agent finishes the ticket start to finish. If Scope, Constraints, or Verification still assign leftover human executor work (console steps, post-deploy commands, credentials, offline ops), stay in Refinement and split that work into a separate `human-ready` issue on the same milestone when initiative-linked. Verification proof (watch a reset email arrive) is not leftover executor work.

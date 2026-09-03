@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -42,9 +43,10 @@ Mode: plan
 Pause when:
     Material blocker/ask changes
     plan.md would change
-# Unchanged run: observe (report only). Routine status refreshes apply only after orchestrator says apply.
+# Unchanged docs after re-examination: report + Movement stay-put OK. Pipeline starved → AskQuestion, not silent observe.
 Instructions:
-Refresh delivery truth; leave files alone if nothing material changed.
+Refresh delivery truth against the board as of this run (board/SCM wins). Leave files alone only when still true after that judgment.
+**Idle fork:** If nothing is in flight and Ready/Refinement are empty, AskQuestion **before** CreatePlan pointing at `/forge.backlog-grooming` / Icebox (or stay put). Do not invent status rows from fog.
 Propose status.md updates in place (Summary/In flight/Blockers/Next up/Asks); remove cleared blockers and finished in-flight items.
 Read plan.md and backlog.md for reconciliation; propose plan.md edits only if sequence/ownership drifted from reality.
 Propose risks.md edits only for blockers that are true risks/dependencies; delete entries that are no longer active.

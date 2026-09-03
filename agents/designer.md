@@ -49,7 +49,8 @@ Templates:
     # All design/* docs: YAML frontmatter schema (doc: design.*, schema_version: 1);
     #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
     # Current state only.
-    # If a file doesn't need to change, leave it alone.
+    # If a file doesn't need to change after re-examination, leave it alone.
+    # Scheduled events this role leads: re-examine living docs as of this run; an idle input column is an AskQuestion fork (parent), not a successful empty plan.
 
     skills/designer/templates/themes.md
         Frontmatter: themes[] (app, figma_url, figma_file_key, status, last_audited)

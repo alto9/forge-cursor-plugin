@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -45,7 +46,9 @@ Pause when:
     Experiments started or stopped
     Any GitHub/GitLab issue/ticket mutation
 Instructions:
-Pull new signal (issues, comments, usage, user feedback); do not paste raw threads into docs.
+Pull new signal (issues, comments, usage, user feedback); do not paste raw threads into docs. Still invent no tickets from thin anecdotes.
+Re-examine insights.md / Icebox as of this run — drop resolved themes; promote, park, or kill candidates that should move.
+**Idle fork:** If there is no new signal, AskQuestion **before** CreatePlan over existing Icebox / insights open questions: promote toward a ticket or Now, park, drop, or stay put. Empty insights is a “what should we go look at” fork (or stay put), not a skip.
 Propose insights.md updates: rewrite Themes/Open questions/Implications to current truth; remove themes that are resolved or no longer relevant.
 Propose backlog.md changes only when triage creates, re-ranks, or drops a candidate; remove won't-do items rather than commenting them out.
 Propose experiments.md changes only when triage starts/stops a bet; move stopped work out of Active (Concluded briefly, then drop when no longer actionable).

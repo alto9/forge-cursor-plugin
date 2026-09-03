@@ -194,7 +194,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Grooming is weekly, and it is the first pass rather than the last. You pick a vague item and make the outcome honest enough that refinement can finish the contract. Write why this matters and how we will know, and stop before you have designed the solution.",
+              "Grooming is weekly, and it is the first pass rather than the last. You pick a vague item from an lld initiative or the icebox and make the outcome honest enough that refinement can finish the contract. Write why this matters and how we will know, and stop before you have designed the solution. If there is nothing to pick, the Agent asks which icebox or Later slice to take (or whether to stay put) before it writes a plan.",
               "If you try to make a Ready ticket in grooming, you will either stall the room or call it Ready on a guess. Grooming lands the card in Refinement: clearer, and still not something a builder can finish alone.",
             ],
           },
@@ -297,14 +297,14 @@ export const courses = [
             rows: [
               ["Project start", "Write the first brief and a first-pass roadmap. Vague ideas can sit in the icebox; large ideas become initiatives."],
               ["On demand — new initiative", "Stub initiatives/<slug>/ and start HLD (feature, spec, design, security, open questions)."],
-              ["Weekly — initiative planning", "Roll up open questions; flip status to lld when every sign-off is green."],
-              ["Weekly — grooming (LLD)", "Split an lld initiative (or a small wish) into Intention and acceptance criteria; stop at Refinement under one milestone per initiative."],
-              ["When a card is groomed", "Refine it to a full Ready contract (compile ticket .feature into AC), or send it back if questions remain."],
-              ["Weekly — feedback", "Read what users and the team are saying. Promote a comment toward a ticket or Now, park it in the icebox, or drop it (we are not doing this), rather than opening a ticket for every comment."],
-              ["Weekly — stakeholders", "Say what is still true and what changed, and get decisions out of hallway chat."],
-              ["Every other week — roadmap", "Check whether the current bets are still the right ones, and update the roadmap where the team can see it."],
-              ["Every other week — metrics", "Read the numbers you claimed would move, and say so if they did not."],
-              ["Monthly — insights / competitive", "Go looking on purpose: problems, alternatives, where we win and lose (research, not initiative intake)."],
+              ["Weekly — initiative planning", "Roll up open questions; flip status to lld when every sign-off is green. If there is no HLD work, the Agent asks whether to start an initiative from the icebox or stay put."],
+              ["Weekly — grooming (LLD)", "Split an lld initiative (or a small wish from the icebox) into Intention and acceptance criteria; stop at Refinement under one milestone per initiative. Empty board with only icebox left: the Agent asks which slice to take."],
+              ["When a card is groomed", "Refine it to a full Ready contract (compile ticket .feature into AC), or send it back if questions remain. Empty Refinement: the Agent asks whether to run grooming first."],
+              ["Weekly — feedback", "Read what users and the team are saying. Promote a comment toward a ticket or Now, park it in the icebox, or drop it (we are not doing this), rather than opening a ticket for every comment. No new signal still means re-reading insights and asking what should move."],
+              ["Weekly — stakeholders", "Say what is still true and what changed, and get decisions out of hallway chat. Idle delivery is a pull-work question, not only a brief-copy check."],
+              ["Every other week — roadmap", "Check whether the current bets are still the right ones, and update the roadmap where the team can see it. Empty or stale Now: the Agent asks what to promote or kill."],
+              ["Every other week — metrics", "Read the numbers you claimed would move, and say so if they did not. An empty Current read is a question about which metric to read, not a skip."],
+              ["Monthly — insights / competitive", "Go looking on purpose: problems, alternatives, where we win and lose (research, not initiative intake). Empty or stale pages still get a “what should we look at” ask."],
               ["After a release", "Can we tell a true launch story? Then look back: did the outcome happen?"],
             ],
           },
@@ -931,7 +931,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Forge is a Cursor plugin, but the important picture is simpler: you are the parent of the ritual. A command calls the roles. They propose. They do not ship. Pausing events prefer Cursor Plan Mode: research and AskQuestion happen while nothing is written, then you get a plan delta — intent, material memory edits, remote actions, what they left alone — not a dump of every file body. Talk until that whole plan is right. Only then do you Accept (build).",
+              "Forge is a Cursor plugin, but the important picture is simpler: you are the parent of the ritual. A command calls the roles. They propose. They do not ship. Pausing events prefer Cursor Plan Mode: research and AskQuestion happen while nothing is written, then you get a plan delta — intent, material memory edits, remote actions, what they left alone, and Movement (what this run advances, or a stay-put you confirmed) — not a dump of every file body. Talk until that whole plan is right. Only then do you Accept (build).",
               "Ask the Agent any time: between rituals, mid-sentence, or when a page is half-written. /forge.help just looks and does not write, so start there when the map goes fuzzy. Cursor Plan Mode is the review surface; /forge.plan-refresh is a different command that rewrites the delivery plan.md.",
             ],
           },
@@ -948,7 +948,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Picture a grooming pass where the board is empty. The Agent asks which slice to take — Hold marked recommended — then shows a plan delta with the Hold ticket titles and what stays alone. You Accept and it Applies. If one ticket is wrong, say so; the plan revises; you Accept the new whole plan. You never Apply a direction you have not accepted as a whole.",
+              "Picture a grooming pass where the board is empty. The Agent asks which icebox slice to take — Hold marked recommended — then shows a plan delta with Movement (those Hold ticket titles), what stays alone, and the suggested next command if the pipeline is still starved. You Accept and it Applies. If one ticket is wrong, say so; the plan revises; you Accept the new whole plan. You never Apply a direction you have not accepted as a whole. Confirming stay put after that ask is still a valid ritual; inventing work from fog is not.",
             ],
           },
           {
@@ -1040,7 +1040,7 @@ export const courses = [
           {
             type: "prose",
             paragraphs: [
-              "Grooming and refinement are the LLD board passes after an initiative leaves HLD (status lld), or for small work that never needed an initiative folder. Once a week, /forge.backlog-grooming reads the HLD package, splits into actionable tickets, parks them on Refinement under one host milestone per initiative, and stubs per-ticket Gherkin features. Designer attends lightly: if the work looks user-facing, Notes get Design: required at refinement, and an unbound Figma theme is a warning rather than a block. When you are actually ready to let go, /forge.refinement compiles the ticket .feature into Intention and AC, writes the product contract into the issue, and moves it to Ready with one label: for an agent, or still for a human. Agent-bound cards also get a tech spec comment from Architect and Security (sliced from HLD spec.md) before promotion; human-ready cards do not need one. When the work is user-facing, Designer also attends refinement: Figma refs, states, and accessibility checks land in the issue body, and the Ready gate includes design and structure rows (pass, fail, or N/A). For user-facing ai-ready work, an unbound theme or missing file structure (required pages, token naming patterns, component categories) fails the gate; brand colors can still differ per app.",
+              "Grooming and refinement are the LLD board passes after an initiative leaves HLD (status lld), or for small work that never needed an initiative folder. Once a week, /forge.backlog-grooming reads the HLD package, splits into actionable tickets, parks them on Refinement under one host milestone per initiative, and stubs per-ticket Gherkin features. When Refinement is empty and nothing is lld, the Agent AskQuestions over icebox and Later titles (recommended pick, or stay put) before the plan — that empty board is a question, not a successful skip. Designer attends lightly: if the work looks user-facing, Notes get Design: required at refinement, and an unbound Figma theme is a warning rather than a block. When you are actually ready to let go, /forge.refinement compiles the ticket .feature into Intention and AC, writes the product contract into the issue, and moves it to Ready with one label: for an agent, or still for a human. Agent-bound cards also get a tech spec comment from Architect and Security (sliced from HLD spec.md) before promotion; human-ready cards do not need one. When the work is user-facing, Designer also attends refinement: Figma refs, states, and accessibility checks land in the issue body, and the Ready gate includes design and structure rows (pass, fail, or N/A). For user-facing ai-ready work, an unbound theme or missing file structure (required pages, token naming patterns, component categories) fails the gate; brand colors can still differ per app. Empty Refinement on /forge.refinement is the same idle fork: ask whether to run grooming, or stay put; do not invent Ready tickets.",
               "Each command binds to the target you passed — a group id for one plan across members, or the product folder you are standing in / named. A family grooming pass can list several members in that same plan; adjust if the batch is too big.",
               "Judge the plan the same way Course 2 taught you: Accept, conversationally adjust, or Cancel. If a groom is secretly an epic, redirect toward an initiative instead of an umbrella issue. If Open questions is not None, it is not Ready. For ai-ready, the tech spec row on the Ready gate must pass too. For user-facing work, the design and structure rows must pass or be N/A. The board is the truth; memory just points at the issue.",
             ],
@@ -1063,7 +1063,7 @@ export const courses = [
             type: "prose",
             paragraphs: [
               "These rituals do not move a single ticket, and they still matter. Weekly, the PM looks at status and delivery risk. Every other week they reshuffle the plan if Ready work has piled up, and the Architect reviews the system shape. A spike is a short investigation when the team does not yet know enough to write a feature ticket. The Product Owner’s roadmap review asks whether the current bets are still the right ones.",
-              "When you approve, approve the pages that should change. Practice saying “leave that alone” out loud. Most of the mess in memory is someone “helpfully” rewriting a file that was fine.",
+              "When you approve, approve the pages that should change. Practice saying “leave that alone” out loud when the page is still true. Most of the mess in memory is someone “helpfully” rewriting a file that was fine. An empty pipeline (nothing In Progress, Ready, or Refinement) is a different case: the Agent asks whether to pull from the icebox or stay put, rather than treating a silent no-op as a successful ritual.",
             ],
           },
         ],
@@ -1285,15 +1285,15 @@ export const courses = [
               ["On demand", "/forge.init-project", "First brief and a first-pass roadmap. Icebox is fine on day one; refining tickets into Ready is work for later."],
               ["On demand", "/forge.new-initiative", "Stub initiatives/<slug>/ for a large idea. Memory only — no board issues yet."],
               ["On demand", "/forge.initiative-design", "Incremental HLD: initiative.feature, spec.md, design.md, security.md."],
-              ["Weekly", "/forge.initiative-planning", "Roll up open questions; propose status: lld when all sign-offs are green."],
-              ["Weekly", "/forge.backlog-grooming", "LLD: split an lld initiative into Intention + AC. Land cards in Refinement under one milestone. Designer triage flags likely user-facing work."],
-              ["On demand", "/forge.refinement", "LLD: compile ticket .feature into Intention + AC; write the product Ready contract. One label: ai-ready (agent finishes start to finish) or human-ready. Split leftover human executor steps. ai-ready also needs a tech spec comment. User-facing work also needs Designer inline Figma context and design + structure Ready gates."],
-              ["Weekly", "/forge.feedback-triage", "Promote a comment toward a ticket or Now, park it in the icebox, or drop it."],
-              ["Weekly", "/forge.stakeholder-sync", "Say what is still true and what changed. Get decisions out of hallway chat."],
-              ["Every other week", "/forge.metrics-review", "Read the numbers you claimed would move, and say so when they did not."],
-              ["Every other week", "/forge.roadmap-review", "Check whether the current bets are still the right ones. Rewrite Now / Next / Later in place."],
-              ["Monthly", "/forge.insights-review", "Go looking on purpose: users, problems, personas. Research synthesis — not initiative intake."],
-              ["Monthly", "/forge.competitive-scan", "Go look at alternatives, then rewrite the competitive page. Change the brief or roadmap only when a bet actually moves."],
+              ["Weekly", "/forge.initiative-planning", "Roll up open questions; propose status: lld when all sign-offs are green. No HLD work: ask whether to start an initiative from the icebox or stay put."],
+              ["Weekly", "/forge.backlog-grooming", "LLD: split an lld initiative into Intention + AC. Land cards in Refinement under one milestone. Designer triage flags likely user-facing work. Empty input: AskQuestion over icebox titles."],
+              ["On demand", "/forge.refinement", "LLD: compile ticket .feature into Intention + AC; write the product Ready contract. One label: ai-ready (agent finishes start to finish) or human-ready. Split leftover human executor steps. ai-ready also needs a tech spec comment. User-facing work also needs Designer inline Figma context and design + structure Ready gates. Empty Refinement: ask whether to run grooming."],
+              ["Weekly", "/forge.feedback-triage", "Promote a comment toward a ticket or Now, park it in the icebox, or drop it. No new signal: re-read insights and ask what should move."],
+              ["Weekly", "/forge.stakeholder-sync", "Say what is still true and what changed. Get decisions out of hallway chat. Idle delivery includes a pull-work fork."],
+              ["Every other week", "/forge.metrics-review", "Read the numbers you claimed would move, and say so when they did not. Empty Current read: ask which metric to read."],
+              ["Every other week", "/forge.roadmap-review", "Check whether the current bets are still the right ones. Rewrite Now / Next / Later in place. Empty or stale Now: ask what to promote or kill."],
+              ["Monthly", "/forge.insights-review", "Go looking on purpose: users, problems, personas. Research synthesis — not initiative intake. Empty or stale pages still get a look-at ask."],
+              ["Monthly", "/forge.competitive-scan", "Go look at alternatives, then rewrite the competitive page. Change the brief or roadmap only when a bet actually moves. Stale page: ask which alternative to research."],
               ["Per release", "/forge.launch-readiness-check", "Go, no-go, or ship-with-exceptions. The launch words have to match the outcome you asked for."],
               ["Per release", "/forge.outcomes-retro", "Did the outcome happen? Fold the learning into insights and the next roadmap."],
             ],
@@ -1359,7 +1359,7 @@ export const courses = [
             type: "callout",
             tone: "note",
             title: "Ask versus event",
-            body: "A one-card groom can be an ask; a weekly pass over the icebox is /forge.backlog-grooming. That weekly pass is still one target (group or product). If the Agent would create or move issues, run the event so you get a plan you can Accept.",
+            body: "A one-card groom can be an ask; a weekly pass over the icebox is /forge.backlog-grooming (and when the board is empty, that pass AskQuestions which icebox slice to take before it plans). That weekly pass is still one target (group or product). If the Agent would create or move issues, run the event so you get a plan you can Accept.",
           },
           {
             type: "heading",
@@ -1445,9 +1445,9 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["Weekly", "/forge.delivery-status", "Write what is in flight, blocked, next, and who we need. Leave the page alone if nothing material changed."],
-              ["Weekly", "/forge.risk-review", "Keep live posture: add what is true, delete what is no longer live. Touch the plan only when risk changes the sequence."],
-              ["Every other week", "/forge.plan-refresh", "Reshuffle the sequence now that Ready work exists. Rewrite the page; do not append last fortnight’s order."],
+              ["Weekly", "/forge.delivery-status", "Write what is in flight, blocked, next, and who we need. Leave the page alone when it is still true. Starved pipeline: ask whether to pull from grooming / icebox."],
+              ["Weekly", "/forge.risk-review", "Keep live posture: add what is true, delete what is no longer live. Touch the plan only when risk changes the sequence. Empty risks with an empty board is still a pull-work fork."],
+              ["Every other week", "/forge.plan-refresh", "Reshuffle the sequence now that Ready work exists. Rewrite the page; do not append last fortnight’s order. Nothing to sequence: ask whether to groom first."],
               ["Per milestone", "/forge.milestone-check", "Met, at risk, or slipped. Close or re-date the host milestone to match."],
             ],
           },
@@ -1571,7 +1571,7 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["Every other week", "/forge.architecture-review", "Walk overview, constraints, interfaces, risks. Lock or supersede a decision when the kitchen actually changed."],
+              ["Every other week", "/forge.architecture-review", "Walk overview, constraints, interfaces, risks as of this run. Lock or supersede a decision when the kitchen actually changed. Now items that violate a constraint: ask spike vs cut vs accept risk."],
               ["Per major bet", "/forge.design-spike", "A short investigation when the team does not yet know enough to write an honest feature ticket."],
             ],
           },
@@ -1955,7 +1955,7 @@ export const courses = [
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
               ["On demand", "/forge.security-review", "A surface with no PR/MR: config, a dependency bump, a station that never got a ticket. Approve or pass back."],
-              ["Monthly", "/forge.dependency-audit", "Read the real manifests and the lockfile, propose findings, and recommend upgrades. Version bumps wait for an Engineer ticket after you say so."],
+              ["Monthly", "/forge.dependency-audit", "Read the real manifests and the lockfile, propose findings, and recommend upgrades with a follow-up path. Version bumps wait for an Engineer ticket after you say so."],
               ["Per release", "/forge.security-release-gate", "OK, not OK, or ship-with-exceptions for this version."],
             ],
           },
@@ -2202,8 +2202,8 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["Weekly", "/forge.social-post-batch", "Draft or refresh the queue. Ready to post gets a human look before it stays Ready."],
-              ["Monthly", "/forge.messaging-refresh", "Positioning, messaging, voice. Product Owner attends so the words still match the brief."],
+              ["Weekly", "/forge.social-post-batch", "Draft or refresh the queue against roadmap or release hooks. Ready to post gets a human look before it stays Ready. Empty queue: ask which hook to write against."],
+              ["Monthly", "/forge.messaging-refresh", "Re-examine positioning, messaging, voice against the brief. Product Owner attends so the words still match. Stale words: ask which hook to refresh from."],
               ["Per release", "/forge.launch-comms", "Announce what shipped, after the tag exists, in words that match the notes."],
             ],
           },
@@ -2319,7 +2319,7 @@ export const courses = [
             type: "table",
             headers: ["Cadence", "Command", "What you are doing"],
             rows: [
-              ["Monthly", "/forge.design-system-audit", "Bind or verify the Figma theme, run structure-check, then refresh tokens, screens, and components from MCP. Flag structure and inventory gaps; do not invent values when MCP is down."],
+              ["Monthly", "/forge.design-system-audit", "Bind or verify the Figma theme, run structure-check, then refresh tokens, screens, and components from MCP. Flag structure and inventory gaps with a next move (bind, fix, or defer); do not invent values when MCP is down."],
             ],
           },
           {
@@ -2441,7 +2441,9 @@ export const courses = [
             headers: ["If you are here this week", "Run"],
             rows: [
               ["The story is still fog", "/forge.init-project or /forge.backlog-grooming"],
+              ["Grooming has nothing to split", "/forge.backlog-grooming (AskQuestion over icebox / Later; stay put is allowed)"],
               ["A groomed card needs a contract", "/forge.refinement"],
+              ["Refinement is empty", "/forge.refinement (AskQuestion: run grooming first, or stay put)"],
               ["The design theme or tokens look stale", "/forge.design-system-audit"],
               ["Ready work has no order", "/forge.plan-refresh"],
               ["The kitchen layout might move", "/forge.architecture-review or /forge.design-spike"],

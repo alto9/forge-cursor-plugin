@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -45,7 +46,8 @@ Pause when:
     positioning.md or messaging.md would change (prefer messaging-refresh unless a post forces a fix)
 Instructions:
 Produce a small batch of on-brand social posts for this project’s channels (default: enough for the week, not a content farm).
-Read positioning, messaging, voice, calendar, brief, and recent release notes / roadmap hooks as inputs.
+Read positioning, messaging, voice, calendar, brief, and recent release notes / roadmap hooks as inputs. Re-examine the queue as of this run.
+**Idle fork:** If Ready to post is empty and there are no roadmap / release hooks, AskQuestion **before** CreatePlan which roadmap Now item or release note to write against this week (or stay put). Do not invent product claims from fog.
 Propose social-queue.md Ready to post entries with channel + full post text; move weak drafts to Needs revision or delete; remove items already published or killed (orchestrator confirms published).
 Propose calendar.md This period / Upcoming hooks updates only when themes shift; don’t append a post history.
 Do not auto-publish to social networks in-harness unless a future vendor skill exists — hand-off is approve drafts, then you post.

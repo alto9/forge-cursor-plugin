@@ -28,6 +28,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -54,6 +55,8 @@ Instructions:
 If product scope and `forge.json.kind` is `site`: **STOP** — this project is `kind: site` (no ticket board ritual). Use a group target or an `app`/`library` member.
 If group scope: skip `kind: site` members for ticket work unless that member has a board; family narrative still reads them for context.
 Bind to the **active submodule** only. Do not groom other configured projects in this run; the orchestrator invokes the command again per path.
+Re-examine Icebox, roadmap Now/Next/Later, and initiative statuses as of this run — kill or re-rank Icebox items that should not sit another week.
+**Idle fork:** If no initiative has `status: lld` **and** there is nothing coarse already selected to split (Refinement empty / only Icebox or Later holding work), AskQuestion **before** CreatePlan. List Icebox titles and Now/Later coarse outcomes with a recommended pick. Options: groom selected item(s) → Refinement; start `/forge.new-initiative` when the pick is too large for one LLD pass; stay put (operator confirms). Do not invent tickets from fog. Empty Icebox + empty Later with no `lld` → AskQuestion whether to stay put or open `/forge.new-initiative` / `/forge.roadmap-review` (reuse forge.help map).
 **Initiative LLD (preferred):** For each selected `initiatives/<slug>/` with `initiative.md` `status: lld`, run split-initiative:
   - Gate: HLD package present (`features/initiative.feature`, `spec.md`, security; design when user_facing). If still `hld` → stop; hand off to `/forge.initiative-planning`.
   - Split into actionable tickets only (no epics). Intention + AC derived from initiative.feature scenarios via groom-ticket / split-initiative.

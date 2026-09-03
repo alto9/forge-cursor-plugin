@@ -193,6 +193,7 @@ Same event, parent only. Subagents stay propose-only. Prefer Cursor **Plan Mode*
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy; do not restate unchanged sections)
 - **Proposed vendor actions** — none, or explicit list (tag member/host when group-scoped)
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — on Weekly / Biweekly / Monthly rituals and `/forge.refinement`: what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, include suggested next from the `forge.help` state→command map (`lld` without tickets → `/forge.backlog-grooming`; empty Refinement → `/forge.refinement`; no initiative → `/forge.new-initiative`; …). Re-examine living docs as of this run; an empty input column is an AskQuestion fork (options from Icebox / Later / board / release notes; stay put always allowed), not a successful empty plan. Do not invent work from fog.
 - Event extras when the command defines them (`Refinement queue`, `Ready gate`, …) as tables — not pasted tickets
 - **Proposed submodule commits** — only for `/forge.respond-to-review` and `/forge.cut-release` when those events write application git
 

@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -43,7 +44,8 @@ Pause when:
     overview.md / constraints.md / interfaces.md / risks.md would change
     New or superseded ADR in decisions.md
 Instructions:
-Reconcile architecture memory with code and near-term roadmap/plan — current shape only.
+Reconcile architecture memory with code and near-term roadmap/plan — current shape only. Re-examine as of this run; do not no-op because overview.md already exists.
+**Idle fork:** If Now/Next items violate constraints or need a spike, AskQuestion **before** CreatePlan: `/forge.design-spike` vs cut vs accept risk; stay put always allowed.
 Propose overview.md updates when major components, data flow, or deployment shape drifted; remove obsolete components rather than archiving them in-file.
 Propose constraints.md / interfaces.md rewrites to current truth; delete constraints/interfaces that no longer apply; clear finished Contracts in flight.
 Propose risks.md updates for structural risks only (not delivery blockers — those stay in project/risks.md); delete resolved structural risks.

@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -42,7 +43,8 @@ Mode: plan
 Pause when:
     positioning.md / messaging.md / voice.md / calendar.md would change
 Instructions:
-Refresh external story against current brief, competitive notes, and proof — not a slogan brainstorm dump.
+Refresh external story against current brief, competitive notes, and proof — not a slogan brainstorm dump. Re-examine positioning/messaging/voice as of this run.
+**Idle fork:** If words are empty or stale with no brief/competitive/proof signal to refresh from, AskQuestion **before** CreatePlan which roadmap / release hook or competitive implication to write against (or stay put).
 Propose positioning.md and messaging.md updates in place; delete pillars/CTAs/proof that are no longer true.
 Propose voice.md Example/Anti-pattern updates only when tone drift is real; keep rules short.
 Propose calendar.md Themes for the next period; clear stale Upcoming hooks.

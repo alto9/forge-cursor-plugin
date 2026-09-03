@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -44,7 +45,8 @@ Pause when:
     status.md or risks.md would drop or add material items
 # Always pause for the “still true / changed” call even if proposed edits are empty.
 Instructions:
-Align on intent vs delivery; hand-off must lead with “still true / changed.”
+Align on intent vs delivery; hand-off must lead with “still true / changed.” Re-examine brief/roadmap/status as of this run.
+**Idle fork:** If delivery is idle (nothing In Progress / Ready), the changed AskQuestion must include whether to pull work via `/forge.backlog-grooming` or `/forge.roadmap-review` (Icebox/Later options), not only whether brief copy is pretty; stay put always allowed.
 Propose brief.md edits only when who/problem/goals/non-goals/current focus actually changed — not for status color commentary.
 Propose roadmap.md / backlog.md edits only for decisions that change priority or cuts; remove killed items from Now/Ready rather than striking through.
 Propose status.md and risks.md updates to current delivery truth; delete cleared blockers/risks/issues (do not keep resolved history in-file).

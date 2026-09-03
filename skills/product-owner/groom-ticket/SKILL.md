@@ -43,13 +43,13 @@ Enough that a refinement pass can expand into a Ready ticket without re-discover
 
 ## Steps
 
-1. Prefer splitting `status: lld` initiatives via **split-initiative**; otherwise read roadmap focus and split/merge/Icebox coarse outcomes into **actionable** tickets only.
+1. Prefer splitting `status: lld` initiatives via **split-initiative**. If none are `lld`, re-read Icebox / Now / Later as of this run and split/merge coarse outcomes into **actionable** tickets only. When Refinement is empty and only Icebox/Later holds work, the parent must AskQuestion (list titles, recommended pick, stay put) before CreatePlan — do not return an empty grooming plan as success. Do not invent tickets from fog.
 2. Draft or update board issues with Intention + Acceptance criteria (not full Scope/Constraints/Verification yet). For initiatives, derive AC from `initiative.feature` scenario groups.
 3. Apply milestone rules above.
 4. Set board status to `statusIds.refinement` (forge.json). Never place newly groomed work in Ready. Do not apply `ai-ready` / `human-ready` here.
 5. Mirror ids under backlog.md `# Refinement`. Keep `# Ready` for post-refinement only.
-6. Leave lasting product decisions via AskQuestion in Plan; park blocked items in Blocked.
+6. Leave lasting product decisions via AskQuestion in Plan; park blocked items in Blocked. Include Movement in the plan-delta blob (what advanced, or operator-confirmed stay-put).
 
 ## Outputs / stop conditions
 
-Vendor issue upserts (+ optional milestone ops) + backlog Refinement list. Stop short of claiming implement-ready.
+Vendor issue upserts (+ optional milestone ops) + backlog Refinement list, or parent idle AskQuestion when nothing to groom. Stop short of claiming implement-ready.

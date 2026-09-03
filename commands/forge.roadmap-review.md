@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -43,7 +44,8 @@ Pause when:
     Any Now/Next/Later/Not planning move or delete
     brief.md, backlog.md, plan.md, or milestones.md would change
 Instructions:
-Reconcile Now/Next/Later with brief, metrics, and delivery capacity.
+Re-examine Now/Next/Later against brief, metrics, and delivery capacity as of this run — a filled roadmap is not “done.”
+**Idle fork:** If Now is empty or stale vs the board (nothing In Progress / Ready / Refinement matching Now), AskQuestion **before** CreatePlan which Next/Later/Icebox item to promote or kill; stay put always allowed. Do not invent bets from fog.
 Propose roadmap.md updates in place: move items across sections; put hard cuts in Not planning; delete items that are obsolete even as “not planning.”
 Propose brief.md edits only if roadmap changes force a goals/non-goals/current-focus rewrite.
 Propose backlog.md updates to match roadmap cuts/promotions; remove items that roadmap killed.

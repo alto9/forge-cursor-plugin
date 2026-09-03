@@ -26,7 +26,8 @@ Templates:
     # All project/* docs: YAML frontmatter schema (doc: project.*, schema_version: 1);
     #   body is expansion-only; empty fields/body OK at init. Bump updated on frontmatter change.
     # Current state only — no decision history baked into these files.
-    # If a file doesn't need to change, leave it alone.
+    # If a file doesn't need to change after re-examination, leave it alone.
+    # Scheduled events this role leads: re-examine living docs as of this run; an idle input column is an AskQuestion fork (parent), not a successful empty plan.
 
     skills/project-manager/templates/plan.md
         Frontmatter: objective, in_scope[], sequence[], dependencies[], handoffs[]

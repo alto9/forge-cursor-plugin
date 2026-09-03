@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -45,7 +46,8 @@ Pause when:
     Any product doc cut proposed (prefer redirect to PO events)
     Architecture dependency/order changes proposed
 Instructions:
-Propose rewrite of plan.md to the current execution story (replace stale Sequence/Dependencies/Handoffs; don’t append old plan versions).
+Propose rewrite of plan.md to the current execution story (replace stale Sequence/Dependencies/Handoffs; don’t append old plan versions). Re-examine against board + backlog as of this run.
+**Idle fork:** If nothing is in flight and Ready/Refinement are empty, AskQuestion **before** CreatePlan pointing at `/forge.backlog-grooming` / Icebox (or stay put). Prefer PO events for product cuts.
 Read backlog.md and roadmap.md as inputs; don’t propose product doc edits here unless a delivery constraint forces an explicit cut (prefer PO grooming/roadmap-review).
 **Initiative LLD:** When initiatives with `status: lld` have `board_tickets[]`, sequence those tickets in plan.md and align `milestones.md` / host milestone dates with the initiative milestone.
 Propose milestones.md updates to match the plan: move/remove completed or abandoned milestones; use Slipped temporarily, then clear or re-date — don’t stockpile slips.

@@ -24,6 +24,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -47,6 +48,8 @@ Pause when:
 Instructions:
 Bind to the **active submodule** only.
 List all `initiatives/*/initiative.md` with `status: hld` (and `intake` if any).
+**Idle fork:** If none are `hld`/`intake`, AskQuestion **before** CreatePlan: open `/forge.new-initiative` from Icebox/Later; run `/forge.backlog-grooming` when an initiative is already `lld` waiting; stay put. Do not invent initiatives from fog.
+When HLD/`intake` exists: re-examine packages as of this run; flag stale HLD (unchanged sign-offs / long-deferred blocking OQs).
 Run open-questions-rollup → refresh `product/open-questions.md` from per-initiative `open-questions.md`.
 Surface blocking open questions to Phase 1; fold answers into initiative docs and remove/answer OQ entries; deferred stay with status deferred.
 Recommend next `/forge.initiative-design` targets and stale initiatives.

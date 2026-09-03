@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -44,10 +45,11 @@ Pause when:
     checklist.md Dependencies gate would change
     Proposed upgrade/removal actions in the submodule (vendor/code) — list them in the plan before Accept Applies them
 Instructions:
-Audit dependencies for known issues and risky upgrades; current posture only.
+Audit dependencies for known issues and risky upgrades; current posture only. Re-examine findings.md as of this run.
 Propose findings.md updates for actionable dependency issues; delete noise and cleared items.
 Propose checklist.md Dependencies updates when the recurring gate itself should change.
 Recommend upgrade/remove actions in the hand-off; don’t silently bump deps — Engineer/implement-ticket or a dedicated change applies after approval.
+**Movement:** Findings that need upgrades must list recommended follow-up (ticket / `/forge.implement-ticket` path after Ready, or stay put) — not a findings.md-only plan with no next step.
 Leave threat-model.md alone unless the dependency changes a trust boundary.
 Docs:
 <super-repo>/.ai/memory/<submodule>/security/findings.md

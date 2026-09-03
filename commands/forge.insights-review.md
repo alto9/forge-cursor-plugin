@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -45,6 +46,8 @@ Pause when:
 Instructions:
 Synthesize insights against open questions and evidence; no work invented from thin anecdotes.
 This is research synthesis (insights, personas, brief promotions) — **not** initiative intake. Large ideas → `/forge.new-initiative`.
+Re-examine insights.md / personas.md as of this run — replace stale Themes/Evidence/Implications; delete personas you are not designing for.
+**Idle fork:** If insights/personas are empty or stale with no fresh evidence this month, AskQuestion **before** CreatePlan which open question to go look at (or stay put). Do not invent backlog candidates from fog.
 Propose insights.md updates: replace stale Themes/Evidence/Implications; remove Open questions that are answered.
 Propose personas.md edits only with durable evidence; delete personas/segments you are not actually designing for.
 Propose backlog.md changes only for validated promotions; remove speculative items evidence disproved.

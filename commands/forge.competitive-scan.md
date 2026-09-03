@@ -23,6 +23,7 @@ Cursor **Plan Mode** when available; markdown fallback otherwise (CLI / Auto / c
 - **Proposed memory edits** — per file: update / create / remove + the material change only (include high-stakes wording when Accept must mean that copy)
 - **Proposed vendor actions** — none, or explicit list
 - **Left alone** — in-scope docs/actions intentionally unchanged
+- **Movement** — what this run advances, or operator-confirmed stay-put after an idle AskQuestion; when the pipeline is starved, suggested next from the forge.help state→command map
 - Event extras when the command defines them (Ready gate, HLD gate, Refinement queue, …) as tables — not pasted tickets
 
 After the plan exists, only three options:
@@ -45,6 +46,8 @@ Pause when:
 Instructions:
 Go look first, then rewrite competitive truth; not a feature-parity checklist.
 Look at public competitor product surfaces, pricing, changelogs, and recent signal named in alternatives/watch_list before proposing memory edits.
+Re-examine competitive.md as of this run — remove Watch list entries that no longer matter; rewrite Implications to what matters now.
+**Idle fork:** If competitive.md is empty or stale and alternatives/watch_list give nothing to look at, AskQuestion **before** CreatePlan which alternative to research this month (or stay put). Large posture shifts that are initiatives → `/forge.new-initiative`.
 Propose competitive.md updates in place: update Alternatives/win/lose; remove Watch list entries that no longer matter; rewrite Implications to what matters now.
 Propose brief.md / roadmap.md edits only when implications change a real bet; otherwise leave them alone.
 Marketing: propose positioning/messaging Differentiator or Words we use/avoid only when competitive implications change the external story; optionally queue one competitive-angle post in social-queue.md Holding — not a feature-parity rant.

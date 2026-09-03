@@ -14,9 +14,9 @@ Invoked by Forge event commands or the marketing-manager agent for `marketing-ma
 
 1. Read in-scope memory under `memoryRoot/marketing/` (and related event Docs). Match templates in `skills/marketing-manager/templates/`.
 2. Propose updates via YAML frontmatter schemas (role template `doc` + schema_version 1); body is expansion-only; bump `updated` when frontmatter changes; empty fields OK.
-3. Current state only — remove stale items; leave files alone if unchanged.
+3. Re-read in-scope docs as of this run; remove stale items; leave files alone only when still true after that judgment (and after any idle AskQuestion the parent must run).
 4. Reference board issue ids/URLs; never invent parallel ticket numbers. **Board/SCM wins** over memory.
-5. When event-spawned: return a plan-delta blob (Intent, Proposed memory edits, Proposed vendor actions, Left alone). Do **not** Apply, pause with the orchestrator, or mutate SCM.
+5. When event-spawned: return a plan-delta blob (Intent, Proposed memory edits, Proposed vendor actions, Left alone, Movement). Do **not** Apply, pause with the orchestrator, or mutate SCM. Parent owns idle AskQuestion forks.
 
 ## Outputs / stop conditions
 
